@@ -1,0 +1,130 @@
+---
+title: "Machine Learning Concepts"
+---
+
+<span class="time-badge">⏱ 10 minutes</span>
+
+
+Before we fit any models, it's essential to understand the conceptual framework. This section gives you the mental model you need to follow the next section.
+
+## What is Machine Learning?
+
+Machine learning (ML) is a set of techniques for building **algorithms that learn from data** — rather than algorithms that follow explicit rules written by a programmer.
+
+In clinical practice, you already use the output of ML models without knowing it:
+
+- **QRISK3** uses a statistical model (Cox regression) fitted on primary care data
+- **Sepsis-3** criteria were validated against survival data in ICU cohorts
+
+The difference today is that we are building the model ourselves, end to end.
+
+## Classification vs Regression
+
+| Problem | Output | Example |
+|---------|--------|---------|
+| **Classification** | Category | Will this patient be readmitted? (Yes / No) |
+| **Regression** | Number | How long will this patient stay? (days) |
+
+Today we focus on **binary classification** — predicting a Yes/No outcome.
+
+## The Machine Learning Pipeline
+
+```
+Raw data → Feature engineering → Train/Test split → Fit model → Evaluate → (optionally) Deploy
+```
+
+### Features and labels
+
+- **Features** (X): the input variables — age, HbA1c, Charlson index, etc.
+- **Label** (y): the thing we want to predict — `readmitted_30d`
+
+### Train / Test split
+
+This is the most important concept in applied ML. We **never** evaluate a model on the same data it was trained on — this would be like revising using the exam paper itself.
+
+```
+All data (N=5000)
+│
+├── Training set (80%, N=4000)  ← model learns from this
+│
+└── Test set (20%, N=1000)      ← evaluate here only, at the very end
+```
+
+We use `scikit-learn`'s `train_test_split()` function:
+
+```python
+from sklearn.model_selection import train_test_split
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y,
+    test_size=0.2,       # 20% held out for testing
+    random_state=42,     # reproducible random split
+    stratify=y           # preserve 77/23 class ratio in both splits
+)
+```
+
+::: {.callout-warning}
+## Data leakage
+If any information from the test set influences the training process (e.g. fitting a scaler on all data, then splitting), performance estimates will be **optimistically biased**. In a real NHS deployment, this would mean your model underperforms compared to your evaluation — a potentially dangerous failure mode.
+:::
+
+## Evaluating Classification Models
+
+Accuracy alone is misleading when classes are imbalanced (77% No, 23% Yes). A model that always predicts "No" achieves 77% accuracy but is clinically useless.
+
+The key metrics are:
+
+| Metric | Formula | Clinical meaning |
+|--------|---------|-----------------|
+| **Sensitivity** (Recall) | TP / (TP + FN) | What fraction of readmissions did we catch? |
+| **Specificity** | TN / (TN + FP) | What fraction of non-readmissions did we correctly identify? |
+| **Precision** (PPV) | TP / (TP + FP) | Of our flagged patients, how many were actually readmitted? |
+| **F1 Score** | 2 × (Prec × Rec) / (Prec + Rec) | Harmonic mean of precision and recall |
+| **AUC-ROC** | Area under ROC curve | Overall discriminative ability (0.5 = random, 1.0 = perfect) |
+
+::: {.callout-note}
+## AUC-ROC in clinical context
+An AUC of 0.70–0.80 is considered "acceptable" for clinical prediction models. QRISK3 achieves ~0.88 for cardiovascular events. Most published NHS readmission models achieve 0.65–0.75 AUC — moderate discrimination but clinically useful at scale.
+:::
+
+### The confusion matrix
+
+The confusion matrix visualises all four possible outcomes (True/False Positive/Negative):
+
+```
+                   Predicted: No    Predicted: Yes
+Actual: No              TN                FP        ← False alarm (unnecessary intervention)
+Actual: Yes             FN                TP        ← Correctly caught readmission
+                                          ↑
+                                 Miss (patient readmitted but not flagged)
+```
+
+In most NHS readmission models, we accept some false positives (over-referral) in exchange for higher sensitivity (catching more readmissions). The right trade-off depends on the cost of the intervention.
+
+## Feature Preparation
+
+Before fitting models, features need to be in a numeric format. Two steps are required:
+
+### 1. Encode categorical variables
+
+```python
+# Convert sex (M/F) and diagnosis to numbers
+X = pd.get_dummies(df[feature_cols], columns=["sex", "primary_diagnosis"], drop_first=True)
+```
+
+### 2. Scale numeric features (for logistic regression)
+
+Logistic regression requires features on a similar scale. We use `StandardScaler` (zero mean, unit variance):
+
+```python
+from sklearn.preprocessing import StandardScaler
+
+scaler = StandardScaler()
+X_train_scaled = scaler.fit_transform(X_train)   # fit AND transform
+X_test_scaled  = scaler.transform(X_test)         # transform ONLY — no re-fitting
+```
+
+::: {.callout-warning}
+## Always fit the scaler on training data only
+The test set must be transformed using the scaler's statistics learned from the training set. Fitting on the test set is data leakage.
+:::

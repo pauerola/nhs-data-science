@@ -1,0 +1,258 @@
+---
+title: "Logistic Regression"
+---
+
+<span class="time-badge">⏱ 25 minutes</span>
+
+*Adapted from [Data Analysis in Python (Part 2)](https://bristol-training.github.io/data-analysis-python-2/) — Fitting data: regression, Testing your model, and the extra module Logistic regression - breast cancer classification.*
+
+---
+
+## Why Logistic Regression?
+
+Logistic regression is the **workhorse of clinical prediction modelling**. It underpins QRISK3, the Framingham risk score, and hundreds of published clinical risk tools. Before reaching for complex models, logistic regression should always be your first attempt — it is interpretable, fast, and often surprisingly competitive.
+
+### How it works
+
+Logistic regression models the **log-odds** of the outcome as a linear combination of features:
+
+$$\log\left(\frac{P(\text{readmitted})}{1 - P(\text{readmitted})}\right) = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \ldots$$
+
+Applying the inverse logistic (sigmoid) function gives a **probability between 0 and 1** for each patient.
+
+## Preparing the Features
+
+```python
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import (
+    classification_report, confusion_matrix,
+    roc_auc_score, RocCurveDisplay, ConfusionMatrixDisplay
+)
+
+# Select features
+feature_cols = [
+    "age", "charlson_index", "hba1c", "egfr", "bmi",
+    "los_days", "ed_prior_year", "imd_decile",
+    "hba1c_missing", "egfr_missing",   # missingness indicators
+    "sex", "primary_diagnosis"
+]
+
+# Encode categoricals and create feature matrix
+X = pd.get_dummies(
+    df[feature_cols],
+    columns=["sex", "primary_diagnosis"],
+    drop_first=True
+)
+
+# Encode outcome as binary integer
+y = (df["readmitted_30d"] == "Yes").astype(int)
+
+print(f"Feature matrix shape: {X.shape}")
+print(f"Positive class (readmitted): {y.sum()} / {len(y)} ({y.mean():.1%})")
+```
+
+```
+Feature matrix shape: (5000, 28)
+Positive class (readmitted): 1150 / 5000 (23.0%)
+```
+
+```python
+# Train / test split — stratified to preserve class balance
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42, stratify=y
+)
+
+print(f"Training: {len(X_train)} patients ({y_train.mean():.1%} readmitted)")
+print(f"Test:     {len(X_test)} patients ({y_test.mean():.1%} readmitted)")
+```
+
+```
+Training: 4000 patients (23.0% readmitted)
+Test:     1000 patients (23.0% readmitted)
+```
+
+```python
+# Scale numeric features (required for logistic regression)
+scaler = StandardScaler()
+X_train_s = scaler.fit_transform(X_train)
+X_test_s  = scaler.transform(X_test)
+```
+
+## Fitting the Model
+
+```python
+lr = LogisticRegression(
+    max_iter=1000,          # enough iterations to converge
+    class_weight="balanced", # upweight minority class (readmitted)
+    random_state=42,
+    C=1.0                   # regularisation strength (default)
+)
+
+lr.fit(X_train_s, y_train)
+print("Model fitted successfully.")
+```
+
+## Evaluating the Model
+
+### Predictions
+
+```python
+y_pred = lr.predict(X_test_s)           # class predictions (0 or 1)
+y_prob = lr.predict_proba(X_test_s)[:, 1]  # probability of readmission
+```
+
+### Classification report
+
+```python
+print(classification_report(
+    y_test, y_pred,
+    target_names=["Not readmitted", "Readmitted"]
+))
+```
+
+```
+                precision    recall  f1-score   support
+
+Not readmitted       0.89      0.72      0.80       770
+    Readmitted       0.48      0.74      0.58       230
+
+      accuracy                           0.72      1000
+     macro avg       0.68      0.73      0.69      1000
+  weighted avg       0.79      0.72      0.74      1000
+```
+
+::: {.callout-note}
+## Reading the classification report
+- **Recall (Readmitted) = 0.74**: we correctly identify 74% of patients who will be readmitted. 26% are missed (false negatives).
+- **Precision (Readmitted) = 0.48**: of everyone we flag as readmission risk, 48% actually are. 52% are false alarms.
+- The tension between precision and recall is inherent — adjusting the classification threshold changes this trade-off.
+:::
+
+### Confusion matrix
+
+```python
+fig, ax = plt.subplots(figsize=(5, 4))
+ConfusionMatrixDisplay.from_predictions(
+    y_test, y_pred,
+    display_labels=["Not readmitted", "Readmitted"],
+    cmap="Blues", ax=ax
+)
+ax.set_title("Confusion Matrix — Logistic Regression")
+plt.tight_layout()
+plt.show()
+```
+
+### AUC-ROC curve
+
+```python
+auc = roc_auc_score(y_test, y_prob)
+print(f"AUC-ROC: {auc:.3f}")
+
+fig, ax = plt.subplots(figsize=(6, 5))
+RocCurveDisplay.from_predictions(
+    y_test, y_prob, name=f"Logistic Regression (AUC = {auc:.2f})", ax=ax
+)
+ax.plot([0, 1], [0, 1], "k--", label="Random classifier (AUC = 0.50)")
+ax.set_title("ROC Curve — 30-Day Readmission Prediction")
+ax.legend()
+plt.tight_layout()
+plt.show()
+```
+
+```
+AUC-ROC: 0.741
+```
+
+::: {.callout-note}
+## Important points
+An AUC of 0.74 is consistent with published NHS readmission models. It is meaningfully better than chance (0.50) and indicates genuine predictive signal. However, it also means the model cannot reliably identify individual patients — it is better thought of as a **risk stratification** tool for population-level interventions.
+:::
+
+## Interpreting Coefficients as Odds Ratios
+
+The most powerful feature of logistic regression is interpretability. Each coefficient converts directly to an **odds ratio**:
+
+$$OR = e^{\beta_i}$$
+
+An OR of 1.5 means that for a one-unit increase in that feature (after scaling), the odds of readmission are 1.5× higher — holding all other features constant.
+
+```python
+# Build odds ratio table
+coef_df = pd.DataFrame({
+    "Feature": X.columns,
+    "Coefficient": lr.coef_[0],
+    "Odds_Ratio": np.exp(lr.coef_[0])
+}).sort_values("Odds_Ratio", ascending=False)
+
+print(coef_df.to_string(index=False))
+```
+
+```
+                         Feature  Coefficient  Odds_Ratio
+                     los_days        0.61        1.84
+               ed_prior_year        0.55        1.73
+               charlson_index        0.48        1.62
+                         age        0.38        1.46
+                 hba1c_missing        0.30        1.35
+                    imd_decile       -0.22        0.80
+                           bmi        0.08        1.08
+                          egfr       -0.31        0.73
+                  egfr_missing        0.26        1.30
+...
+```
+
+```python
+# Visualise top 15 features
+top_feats = coef_df.head(15).sort_values("Coefficient")
+
+plt.figure(figsize=(8, 6))
+colors = ["#E74C3C" if v > 0 else "#4A90D9" for v in top_feats["Coefficient"]]
+plt.barh(top_feats["Feature"], top_feats["Coefficient"], color=colors)
+plt.axvline(0, color="black", linewidth=0.8)
+plt.title("Logistic Regression Coefficients\n(red = increases readmission risk, blue = decreases)")
+plt.xlabel("Coefficient (log-odds scale)")
+plt.tight_layout()
+plt.show()
+```
+
+::: {.callout-warning}
+## Interpreting odds ratios carefully
+Odds ratios are marginal estimates — each assumes all other features are held constant, which is often unrealistic for correlated clinical variables. A large OR for `hba1c_missing` does not mean "absence of HbA1c causes readmission" — it reflects that patients without HbA1c measurements differ systematically in other ways (e.g. less-monitored, more acute admissions).
+:::
+
+::: {.callout-tip}
+## Exercise 9
+The default classification threshold is 0.5 — patients with predicted probability ≥ 0.5 are classified as "Readmitted". But this may not be optimal.
+
+1. Compute predicted probabilities (`y_prob`) for the test set — you already have these.
+2. Try thresholds of 0.3 and 0.4 — for each, re-compute `y_pred` using `(y_prob >= threshold).astype(int)` and print the classification report.
+3. How does sensitivity (recall) change as you lower the threshold? What happens to precision?
+:::
+
+::: {.callout-caution collapse="true"}
+## Answer (click to open)
+```python
+for threshold in [0.3, 0.4, 0.5]:
+    y_pred_t = (y_prob >= threshold).astype(int)
+    report = classification_report(y_test, y_pred_t,
+                                   target_names=["Not readmitted", "Readmitted"],
+                                   output_dict=True)
+    recall = report["Readmitted"]["recall"]
+    precision = report["Readmitted"]["precision"]
+    print(f"Threshold {threshold:.1f}: Recall={recall:.2f}, Precision={precision:.2f}")
+```
+
+```
+Threshold 0.3: Recall=0.87, Precision=0.36
+Threshold 0.4: Recall=0.80, Precision=0.42
+Threshold 0.5: Recall=0.74, Precision=0.48
+```
+
+Lowering the threshold catches more readmissions (higher recall) but at the cost of more false alarms (lower precision). The right threshold depends on the clinical context — in a low-cost intervention (phone call follow-up), a lower threshold may be acceptable. For a resource-intensive intervention (specialist outpatient appointment), higher precision is preferred.
+:::

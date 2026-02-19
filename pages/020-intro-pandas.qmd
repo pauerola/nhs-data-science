@@ -1,0 +1,174 @@
+---
+title: "Introduction to Pandas"
+---
+
+<span class="time-badge">⏱ 15 minutes</span>
+
+*Adapted from [Data Analysis in Python (Part 1)](https://bristol-training.github.io/data-analysis-python-1/) — Introduction to Pandas.*
+
+---
+
+[pandas](https://pandas.pydata.org/) is the most widely used Python library for working with tabular data. You can think of it as Excel in code form — but far more powerful, reproducible, and scriptable.
+
+## Why pandas?
+
+| Task | Excel | pandas |
+|------|-------|--------|
+| Reproducible workflow | ❌ Manual clicks | ✅ Written code |
+| Datasets > 1M rows | ❌ Crashes | ✅ Handles millions |
+| Merging multiple files | ❌ Manual VLOOKUP | ✅ One line of code |
+| Auditability | ❌ Hidden formulas | ✅ Code review |
+| Machine learning pipeline | ❌ Not possible | ✅ Direct integration |
+
+## The DataFrame
+
+The core pandas object is the **DataFrame** — a two-dimensional table with labelled rows and columns.
+
+```python
+import pandas as pd
+
+# A minimal patient DataFrame built from a dictionary
+data = {
+    "patient_id":  ["P001", "P002", "P003", "P004"],
+    "age":         [67, 45, 82, 55],
+    "sex":         ["M", "F", "F", "M"],
+    "diagnosis":   ["E11", "I10", "J44", "E11"],   # ICD-10 codes
+    "hba1c":       [71, None, 58, 84],              # mmol/mol; None = missing
+    "readmitted":  [True, False, True, False],
+}
+
+df = pd.DataFrame(data)
+print(df)
+```
+
+```
+  patient_id  age sex diagnosis  hba1c  readmitted
+0       P001   67   M       E11   71.0        True
+1       P002   45   F       I10    NaN       False
+2       P003   82   F       J44   58.0        True
+3       P004   55   M       E11   84.0       False
+```
+
+::: {.callout-note}
+## Key vocabulary
+- **DataFrame**: the whole table (rows × columns)  
+- **Series**: a single column (or row) of a DataFrame  
+- **Index**: the row labels (by default 0, 1, 2, …)  
+- **NaN**: *Not a Number* — pandas' representation of a missing value
+:::
+
+## Accessing Columns
+
+Select a single column using square brackets — this returns a **Series**:
+
+```python
+ages = df["age"]
+print(ages)
+print(type(ages))
+```
+
+```
+0    67
+1    45
+2    82
+3    55
+Name: age, dtype: int64
+<class 'pandas.core.series.Series'>
+```
+
+Select multiple columns by passing a list of names — this returns a **DataFrame**:
+
+```python
+demographics = df[["patient_id", "age", "sex"]]
+print(demographics)
+```
+
+```
+  patient_id  age sex
+0       P001   67   M
+1       P002   45   F
+2       P003   82   F
+3       P004   55   M
+```
+
+## Quick Inspection Methods
+
+When you first receive a dataset, always run these four commands:
+
+```python
+print(df.shape)           # (rows, columns)
+print(df.dtypes)          # data type of each column
+print(df.head())          # first 5 rows
+print(df.describe())      # summary statistics for numeric columns
+```
+
+```
+(4, 6)
+patient_id     object
+age             int64
+sex            object
+diagnosis      object
+hba1c         float64
+readmitted       bool
+dtype: object
+```
+
+`describe()` gives count, mean, standard deviation, min, quartiles, and max for every numeric column — equivalent to running `=AVERAGE()`, `=STDEV()`, `=MIN()`, `=MAX()` in Excel simultaneously.
+
+::: {.callout-tip}
+## Exercise 3
+Using the small DataFrame `df` we built above:
+
+1. Print the `diagnosis` column.
+2. Print only the `age` and `readmitted` columns together.
+3. What is the mean age? (*Hint*: `df["age"].mean()`)
+:::
+
+::: {.callout-caution collapse="true"}
+## Answer (click to open)
+```python
+# 1.
+print(df["diagnosis"])
+
+# 2.
+print(df[["age", "readmitted"]])
+
+# 3.
+print(df["age"].mean())   # 62.25
+```
+:::
+
+## Series Operations
+
+A Series supports vectorised operations — you apply a function to every element at once, without a loop:
+
+```python
+# Classify each patient's age in a single line
+age_over_65 = df["age"] > 65
+print(age_over_65)
+```
+
+```
+0     True
+1    False
+2     True
+3    False
+Name: age, dtype: bool
+```
+
+Common Series methods:
+
+```python
+df["age"].mean()      # average age
+df["age"].median()    # median age
+df["age"].std()       # standard deviation
+df["age"].min()       # minimum
+df["age"].max()       # maximum
+df["hba1c"].count()   # non-missing count
+df["sex"].value_counts()  # frequency of each category
+```
+
+::: {.callout-note}
+## Important points
+Series operations are **vectorised** — they are applied to all elements simultaneously using optimised C code under the hood, making them much faster than Python `for` loops. For large NHS datasets with hundreds of thousands of rows, this matters.
+:::

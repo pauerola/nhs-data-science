@@ -1,0 +1,257 @@
+---
+title: "Python Crash Course"
+---
+
+<span class="time-badge">⏱ 20 minutes</span>
+
+*Adapted from [Introduction to Python (Part 1)](https://bristol-training.github.io/intro-python-1/), compressed to the essentials you need for this course.*
+
+---
+
+Python is one of the most widely used programming languages in healthcare data science. It is clear to read, easy to learn, and has a rich ecosystem of tools for data analysis and machine learning. In this session we cover just enough Python to follow the rest of the course — `pandas` and `scikit-learn` do the heavy lifting from here on.
+
+## Jupyter Notebooks
+
+We will work inside **Jupyter Notebooks** — an interactive environment where code, output, and notes live together. Think of it as an annotated lab book for data analysis.
+
+Key shortcuts:
+
+| Action | Shortcut |
+|--------|----------|
+| Run the current cell | `Shift + Enter` |
+| Run and insert new cell below | `Alt + Enter` |
+| Add cell above | `A` (in command mode) |
+| Add cell below | `B` (in command mode) |
+| Delete cell | `DD` (in command mode) |
+| Toggle command / edit mode | `Esc` / `Enter` |
+
+Two types of cell exist: **Code** cells (run Python) and **Markdown** cells (formatted notes). Click a cell and press `Esc` then `M` to switch to Markdown, or `Y` to switch back to code.
+
+## Variables and Data Types
+
+A **variable** is a labelled container for a value. Think of it as a named test tube. Python works out the type automatically — you never need to declare it.
+
+```python
+# A simple patient record
+patient_age = 67          # integer (int)
+bmi = 28.4                # decimal number (float)
+diagnosis = "Type 2 DM"   # text (str)
+readmitted = True         # yes/no flag (bool)
+
+print(patient_age)
+print(type(patient_age))
+```
+
+```
+67
+<class 'int'>
+```
+
+::: {.callout-note}
+## Python is case-sensitive
+`patient_age` and `Patient_Age` are different variables. By convention, Python variable names use `lower_snake_case`.
+:::
+
+### Arithmetic operators
+
+```python
+# Calculating BMI from weight and height
+weight_kg = 82
+height_m = 1.75
+
+bmi = weight_kg / height_m ** 2     # ** means "to the power of"
+print(f"BMI: {bmi:.1f}")            # :.1f formats to 1 decimal place
+```
+
+```
+BMI: 26.8
+```
+
+### String formatting with f-strings
+
+The `f"..."` syntax (f-string) lets you embed variable values directly into text — very useful for generating readable output:
+
+```python
+name = "Smith"
+age = 71
+ward = "Cardiology"
+
+print(f"Patient {name}, age {age}, admitted to {ward}")
+```
+
+```
+Patient Smith, age 71, admitted to Cardiology
+```
+
+## Lists
+
+A **list** stores multiple values in order. Lists use square brackets `[]` and can hold any mix of types.
+
+```python
+# HbA1c readings over 6 months (mmol/mol)
+hba1c_readings = [52, 64, 71, 48, 89, 55]
+
+print(hba1c_readings[0])    # First element (index 0)
+print(hba1c_readings[-1])   # Last element
+print(len(hba1c_readings))  # Number of elements
+```
+
+```
+52
+55
+6
+```
+
+::: {.callout-tip}
+## Exercise 1
+A patient's blood pressure readings (systolic, mmHg) over one week were:
+138, 142, 135, 150, 141, 137, 145.
+
+1. Store these in a list called `bp_readings`.
+2. Print the number of readings.
+3. Print the third reading (index 2).
+:::
+
+::: {.callout-caution collapse="true"}
+## Answer (click to open)
+```python
+bp_readings = [138, 142, 135, 150, 141, 137, 145]
+print(len(bp_readings))   # 7
+print(bp_readings[2])     # 135
+```
+:::
+
+## Conditionals (if / elif / else)
+
+Conditionals let your code make decisions — essential for flagging abnormal values.
+
+```python
+hba1c = 71   # mmol/mol
+
+if hba1c >= 48 and hba1c < 58:
+    print("Pre-diabetes range (NICE criteria)")
+elif hba1c >= 58:
+    print("Diabetes range — review management")
+else:
+    print("Within normal limits")
+```
+
+```
+Diabetes range — review management
+```
+
+The comparison operators are: `==` (equals), `!=` (not equals), `<`, `>`, `<=`, `>=`. Combine conditions with `and`, `or`, `not`.
+
+## For Loops
+
+A **for loop** repeats an action for every item in a list (or other collection).
+
+```python
+# Flag each patient's eGFR reading
+egfr_values = [85, 42, 61, 28, 90, 55]
+
+for egfr in egfr_values:
+    if egfr < 30:
+        stage = "Stage 4 CKD"
+    elif egfr < 60:
+        stage = "Stage 3 CKD"
+    else:
+        stage = "Normal / Stage 1–2"
+    print(f"eGFR {egfr}: {stage}")
+```
+
+```
+eGFR 85: Normal / Stage 1–2
+eGFR 42: Stage 3 CKD
+eGFR 61: Normal / Stage 1–2
+eGFR 28: Stage 4 CKD
+eGFR 90: Normal / Stage 1–2
+eGFR 55: Stage 3 CKD
+```
+
+## Functions
+
+A **function** packages reusable code into a named block. You define it once and call it many times — just like a clinical algorithm or scoring system.
+
+```python
+def charlson_risk_category(score):
+    """Classify a Charlson Comorbidity Index score into risk tier.
+    
+    Args:
+        score (int): Charlson Comorbidity Index (0–37)
+    
+    Returns:
+        str: Risk category label
+    """
+    if score == 0:
+        return "Low"
+    elif score <= 2:
+        return "Moderate"
+    elif score <= 4:
+        return "High"
+    else:
+        return "Very High"
+
+# Test it
+for score in [0, 1, 3, 6]:
+    category = charlson_risk_category(score)
+    print(f"Charlson {score}: {category}")
+```
+
+```
+Charlson 0: Low
+Charlson 1: Moderate
+Charlson 3: High
+Charlson 6: Very High
+```
+
+::: {.callout-tip}
+## Exercise 2
+Write a function `news2_alert(score)` that returns:
+
+- `"Routine"` if NEWS2 score is 0–4
+- `"Escalate"` if NEWS2 score is 5–6
+- `"Emergency"` if NEWS2 score is 7 or above
+
+Test it with scores 2, 5, and 9.
+:::
+
+::: {.callout-caution collapse="true"}
+## Answer (click to open)
+```python
+def news2_alert(score):
+    if score <= 4:
+        return "Routine"
+    elif score <= 6:
+        return "Escalate"
+    else:
+        return "Emergency"
+
+for score in [2, 5, 9]:
+    print(f"NEWS2 {score}: {news2_alert(score)}")
+```
+
+```
+NEWS2 2: Routine
+NEWS2 5: Escalate
+NEWS2 9: Emergency
+```
+:::
+
+## Importing Libraries
+
+Python's real power comes from its libraries. We import them at the top of a notebook:
+
+```python
+import pandas as pd          # Data manipulation — we use this alias throughout
+import numpy as np           # Numerical operations
+import matplotlib.pyplot as plt   # Plotting
+import seaborn as sns        # Statistical plots (built on matplotlib)
+```
+
+The `as pd` part creates a short alias so we write `pd.read_csv(...)` instead of `pandas.read_csv(...)`.
+
+::: {.callout-note}
+## That's all the Python you need!
+Variables, lists, `if`/`else`, `for` loops, functions, and imports. Everything else in this course is `pandas` and `scikit-learn`. Let's move on to the interesting part.
+:::

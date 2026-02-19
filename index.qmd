@@ -1,0 +1,64 @@
+---
+title: "Introduction"
+---
+
+Welcome to **Data Science in Pythonfor Healthcare** — a 3-hour intensive course adapted from the University of Bristol's *Introduction to Python* and *Data Analysis in Python* series (Parts 1 & 2), personalised with NHS clinical datasets and examples.
+
+This course is designed for healthcare professionals with **no prior programming experience**. By the end of today's session, you will be able to load, clean, and visualise datasets, and fit machine learning models that are directly relevant to clinical practice.
+
+## Intended Learning Outcomes
+
+By the end of this course, you will:
+
+- Know how to use **Notebooks** for interactive clinical data analysis.
+- Be familiar with **`pandas`** and **`seaborn`** for data manipulation and visualisation.
+- Know how to read a data file, handle format issues, and deal with missing data.
+- Understand the principles of **logistic regression** and **random forest** classification.
+- Be able to **evaluate and compare** machine learning models using appropriate clinical metrics.
+
+
+## How to Read This Course
+
+Code is shown in grey boxes with a blue left border:
+
+```python
+print("Hello, NHS!")
+```
+
+Output appears below:
+
+```
+Hello, NHS!
+```
+
+::: {.callout-tip}
+## Exercise
+These blue boxes contain exercises. Try to solve them before opening the answer.
+:::
+
+::: {.callout-caution collapse="true"}
+## Answer (click to open)
+The answer appears here.
+:::
+
+::: {.callout-note}
+## Important points
+Green boxes highlight key clinical or technical concepts.
+:::
+
+::: {.callout-warning}
+## Clinical caution
+Orange/red boxes flag important clinical interpretation caveats.
+:::
+
+
+### About this course
+
+These course materials have been designed and developed by  **Pau Erola, PhD** (Jean Golding Institute, University of Bristol).
+
+We used the enhancement of AI in alignment with our institutional guidance:
+
+- **Microsoft Copilot (GPT-4 & GPT-5)**-- Generation of synthetic datasets, documents and examples
+- **Claude (Sonnet 4)** -- Writing assistance, examples generation
+
+For queries related to this course please contact [jgi-training@bristol.ac.uk](mailto:jgi-training@bristol.ac.uk).

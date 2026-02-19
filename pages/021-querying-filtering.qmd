@@ -1,0 +1,236 @@
+---
+title: "Filtering & Missing Data"
+---
+
+<span class="time-badge">⏱ 15 minutes</span>
+
+*Adapted from [Data Analysis in Python (Part 1)](https://bristol-training.github.io/data-analysis-python-1/) — Filtering data.*
+
+---
+
+## Filtering Rows
+
+Filtering in pandas works by passing a **boolean condition** inside square brackets. The condition produces a Series of `True`/`False` values — one per row — and pandas keeps only the `True` rows.
+
+### Single condition
+
+```python
+# All patients aged over 65
+elderly = df[df["age"] > 65]
+print(f"Patients over 65: {len(elderly)}")
+```
+
+```
+Patients over 65: 2341
+```
+
+### Multiple conditions
+
+Use `&` (AND) and `|` (OR) to combine conditions. Each condition must be wrapped in parentheses:
+
+```python
+# Elderly patients with Type 2 diabetes (E11)
+elderly_dm = df[(df["age"] > 65) & (df["primary_diagnosis"] == "E11")]
+print(f"Elderly T2DM patients: {len(elderly_dm)}")
+print(elderly_dm[["patient_id", "age", "hba1c", "charlson_index"]].head())
+```
+
+```
+Elderly T2DM patients: 387
+
+   patient_id  age  hba1c  charlson_index
+0        1001   67   71.0               3
+12       1013   71   84.0               4
+18       1019   69    NaN               2
+...
+```
+
+```python
+# Heart failure (I50) OR COPD (J44) patients with long stays
+complex_patients = df[
+    (df["primary_diagnosis"].isin(["I50", "J44"])) & 
+    (df["los_days"] >= 7)
+]
+print(f"Complex respiratory/cardiac patients with ≥7 days LOS: {len(complex_patients)}")
+```
+
+::: {.callout-note}
+## `.isin()` for multiple values
+Instead of writing `(df["col"] == "A") | (df["col"] == "B") | (df["col"] == "C")`, use:
+```python
+df[df["col"].isin(["A", "B", "C"])]
+```
+:::
+
+### Filtering on missing values
+
+```python
+# Patients with a missing HbA1c
+missing_hba1c = df[df["hba1c"].isnull()]
+print(f"Patients with no HbA1c result: {len(missing_hba1c)}")
+
+# Patients with a recorded HbA1c
+has_hba1c = df[df["hba1c"].notnull()]
+print(f"Patients with HbA1c result: {len(has_hba1c)}")
+```
+
+```
+Patients with no HbA1c result: 812
+Patients with HbA1c result: 4188
+```
+
+::: {.callout-tip}
+## Exercise 5
+1. How many patients have a Charlson index ≥ 5?
+2. Create a sub-dataset called `ckd_patients` containing only patients with CKD (primary diagnosis `"N18"`).
+3. Among `ckd_patients`, what fraction were readmitted? 
+:::
+
+::: {.callout-caution collapse="true"}
+## Answer (click to open)
+```python
+# 1.
+high_charlson = df[df["charlson_index"] >= 5]
+print(len(high_charlson))
+
+# 2.
+ckd_patients = df[df["primary_diagnosis"] == "N18"]
+print(f"CKD patients: {len(ckd_patients)}")
+
+# 3.
+readmit_rate = (ckd_patients["readmitted_30d"] == "Yes").mean()
+print(f"CKD 30-day readmission rate: {readmit_rate:.1%}")
+```
+:::
+
+## Handling Missing Data
+
+Missing data is endemic in NHS records. Understanding *why* data is missing matters as much as knowing *how* to handle it technically.
+
+### The three types of missingness
+
+| Type | What it means | Example |
+|------|---------------|---------|
+| **MCAR** — Missing Completely At Random | Missingness unrelated to any variable | Lab machine malfunction on a random Tuesday |
+| **MAR** — Missing At Random | Missingness related to observed variables | HbA1c only ordered for diabetic patients |
+| **MNAR** — Missing Not At Random | Missingness related to the missing value itself | Very sick patients not surviving to have tests done |
+
+MNAR is the most dangerous type — simply imputing or dropping these rows introduces **bias**.
+
+### Strategy 1: Drop rows with missing values
+
+```python
+# Drop any row with a missing value in critical columns
+df_dropped = df.dropna(subset=["hba1c", "egfr"])
+print(f"Rows after dropping missing hba1c/egfr: {len(df_dropped)}")
+print(f"Rows removed: {len(df) - len(df_dropped)}")
+```
+
+```
+Rows after dropping missing hba1c/egfr: 3821
+Rows removed: 1179
+```
+
+::: {.callout-warning}
+## Use `dropna()` with caution
+Dropping 24% of your data introduces selection bias — the remaining patients are those who had both tests ordered, which is not random. In a real clinical study, this would require formal justification in your methods section.
+:::
+
+### Strategy 2: Impute with the median
+
+For skewed clinical variables (e.g. length of stay, HbA1c), the **median** is a better imputation value than the mean because it is robust to outliers:
+
+```python
+# Impute missing BMI with the median
+bmi_median = df["bmi"].median()
+print(f"Median BMI: {bmi_median:.1f}")
+
+df["bmi"] = df["bmi"].fillna(bmi_median)
+print(f"Remaining BMI missing: {df['bmi'].isnull().sum()}")
+```
+
+```
+Median BMI: 27.8
+Remaining BMI missing: 0
+```
+
+For categorical variables, impute with the **mode** (most common value):
+
+```python
+# Impute missing ward with the most common ward
+ward_mode = df["discharge_ward"].mode()[0]
+df["discharge_ward"] = df["discharge_ward"].fillna(ward_mode)
+```
+
+### Strategy 3: Indicator column (recommended for MNAR)
+
+Create a new column flagging whether the value was originally missing, then impute. This preserves the information that the value was absent:
+
+```python
+# For HbA1c: flag missingness before imputing
+df["hba1c_missing"] = df["hba1c"].isnull().astype(int)
+
+# Then impute with median
+df["hba1c"] = df["hba1c"].fillna(df["hba1c"].median())
+
+print(df[["hba1c", "hba1c_missing"]].head(8))
+```
+
+```
+   hba1c  hba1c_missing
+0   71.0              0
+1   64.5              1   ← was missing, now imputed; flag = 1
+2   58.0              0
+3   84.0              0
+4   64.5              1
+...
+```
+
+::: {.callout-note}
+## Important points
+The **indicator column strategy** is best practice for clinical machine learning when the reason for missingness is clinically meaningful. It is used in published NHS readmission models and tools like QRISK3.
+:::
+
+### Verify the data is clean
+
+After imputation, always confirm no unexpected missingness remains:
+
+```python
+print("Remaining missing values:")
+print(df[["age", "bmi", "hba1c", "egfr", "charlson_index"]].isnull().sum())
+```
+
+```
+age               0
+bmi               0
+hba1c             0
+egfr            445
+charlson_index    0
+dtype: int64
+```
+
+`egfr` still has 445 missing — we'll apply the same indicator strategy before modelling.
+
+::: {.callout-tip}
+## Exercise 6
+Apply the indicator column strategy to `egfr`:
+
+1. Create a column `egfr_missing` that is `1` where `egfr` is `NaN`, `0` otherwise.
+2. Impute `egfr` with its median.
+3. Verify no missing `egfr` values remain.
+:::
+
+::: {.callout-caution collapse="true"}
+## Answer (click to open)
+```python
+# 1. Flag missingness
+df["egfr_missing"] = df["egfr"].isnull().astype(int)
+
+# 2. Impute with median
+df["egfr"] = df["egfr"].fillna(df["egfr"].median())
+
+# 3. Verify
+print(df["egfr"].isnull().sum())   # should be 0
+print(df["egfr_missing"].value_counts())
+```
+:::

@@ -1,0 +1,246 @@
+---
+title: "Random Forest"
+---
+
+<span class="time-badge">⏱ 25 minutes</span>
+
+*Adapted from [Data Analysis in Python (Part 2)](https://bristol-training.github.io/data-analysis-python-2/) — Fitting data: classification, Choosing hyperparameters, and Feature Importance Analysis.*
+
+---
+
+## From Decision Trees to Random Forest
+
+A **decision tree** splits data into branches based on feature values, creating a flowchart-like structure. They are intuitive — think of them as a structured clinical decision pathway — but they overfit easily: a sufficiently deep tree will memorise the training data perfectly and fail on new patients.
+
+A **Random Forest** solves this by training **many trees in parallel**, each on a random subset of data and a random subset of features. The final prediction is the majority vote across all trees. This process is called **bootstrap aggregation** (bagging).
+
+### Why Random Forest over Logistic Regression?
+
+| Property | Logistic Regression | Random Forest |
+|----------|--------------------|--------------  |
+| Interpretability | High (odds ratios) | Moderate (feature importance) |
+| Non-linear relationships | ❌ Assumes linearity | ✅ Handles automatically |
+| Feature scaling required | ✅ Yes | ❌ No |
+| Interaction terms | ❌ Must add manually | ✅ Captured automatically |
+| Missing data tolerance | Low | Moderate |
+| Training speed | Very fast | Moderate |
+| Typical clinical AUC | 0.65–0.75 | 0.70–0.80 |
+
+## Fitting a Random Forest
+
+Random Forest does not require feature scaling. We use the same feature matrix `X` as before, but no `StandardScaler`:
+
+```python
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import roc_auc_score, classification_report, RocCurveDisplay, ConfusionMatrixDisplay
+
+# Same train/test split as before (same random_state ensures identical splits)
+X_train_rf, X_test_rf, y_train_rf, y_test_rf = train_test_split(
+    X, y, test_size=0.2, random_state=42, stratify=y
+)
+
+# Fit with sensible starting hyperparameters
+rf = RandomForestClassifier(
+    n_estimators=300,        # number of trees — more is generally better (diminishing returns)
+    max_depth=8,             # maximum depth per tree — limits overfitting
+    min_samples_leaf=20,     # each leaf must contain at least 20 patients
+    max_features="sqrt",     # each split considers sqrt(p) features — standard for classification
+    class_weight="balanced", # account for 77/23 class imbalance
+    random_state=42,
+    n_jobs=-1                # use all available CPU cores
+)
+
+rf.fit(X_train_rf, y_train_rf)
+print("Random Forest fitted.")
+print(f"Number of trees: {rf.n_estimators}")
+```
+
+## Evaluating the Random Forest
+
+```python
+y_pred_rf = rf.predict(X_test_rf)
+y_prob_rf  = rf.predict_proba(X_test_rf)[:, 1]
+
+print(classification_report(
+    y_test_rf, y_pred_rf,
+    target_names=["Not readmitted", "Readmitted"]
+))
+
+auc_rf = roc_auc_score(y_test_rf, y_prob_rf)
+print(f"Random Forest AUC-ROC: {auc_rf:.3f}")
+```
+
+```
+                precision    recall  f1-score   support
+
+Not readmitted       0.91      0.76      0.83       770
+    Readmitted       0.52      0.78      0.63       230
+
+      accuracy                           0.77      1000
+     macro avg       0.72      0.77      0.73      1000
+  weighted avg       0.81      0.77      0.78      1000
+
+Random Forest AUC-ROC: 0.793
+```
+
+The Random Forest achieves AUC 0.793 vs 0.741 for Logistic Regression — a meaningful improvement, particularly in recall (catching readmissions).
+
+## Feature Importance
+
+One of the key advantages of Random Forest over black-box models is its built-in **feature importance** scores.
+
+### Method 1: Mean Decrease in Impurity (MDI)
+
+MDI measures how much each feature reduces impurity (Gini index) across all splits in all trees. It is fast but biased towards high-cardinality (many unique values) numeric features.
+
+```python
+importances_mdi = pd.Series(
+    rf.feature_importances_,
+    index=X.columns
+).sort_values(ascending=True)
+
+plt.figure(figsize=(8, 8))
+importances_mdi.tail(15).plot(kind="barh", color="#1B5AA0", edgecolor="white")
+plt.title("Top 15 Features: Mean Decrease in Impurity\n(Random Forest)")
+plt.xlabel("Feature importance (MDI)")
+plt.tight_layout()
+plt.show()
+```
+
+### Method 2: Permutation Importance (recommended)
+
+Permutation importance measures how much model performance drops when a feature's values are randomly shuffled — breaking its relationship with the outcome. It is model-agnostic and unbiased, but slower:
+
+```python
+from sklearn.inspection import permutation_importance
+
+perm = permutation_importance(
+    rf, X_test_rf, y_test_rf,
+    n_repeats=15,         # shuffle each feature 15 times
+    scoring="roc_auc",
+    random_state=42,
+    n_jobs=-1
+)
+
+perm_df = pd.DataFrame({
+    "Feature":    X.columns,
+    "Importance": perm.importances_mean,
+    "Std":        perm.importances_std
+}).sort_values("Importance", ascending=False)
+
+print(perm_df.head(12).to_string(index=False))
+```
+
+```
+              Feature  Importance     Std
+             los_days       0.048   0.004
+        ed_prior_year       0.041   0.003
+       charlson_index       0.036   0.003
+                  age       0.029   0.002
+        egfr_missing        0.018   0.002
+                 egfr       0.016   0.002
+           imd_decile       0.012   0.002
+        hba1c_missing       0.011   0.002
+                hba1c       0.008   0.001
+                  bmi       0.004   0.001
+```
+
+```python
+# Visualise permutation importance with error bars
+fig, ax = plt.subplots(figsize=(8, 6))
+top_n = perm_df.head(12).sort_values("Importance")
+ax.barh(
+    top_n["Feature"], top_n["Importance"],
+    xerr=top_n["Std"],
+    color="#1B5AA0", ecolor="#888888", capsize=4
+)
+ax.set_title("Permutation Feature Importance (AUC-ROC metric)\nwith ±1 SD across permutations")
+ax.set_xlabel("Mean decrease in AUC-ROC when feature is permuted")
+plt.tight_layout()
+plt.show()
+```
+
+::: {.callout-note}
+## Important points
+**Permutation importance** is the preferred method for reporting in clinical papers. MDI is useful for quick exploration but should not be quoted in publications due to its bias towards numeric features with many unique values. The error bars from multiple repeats tell you how stable the importance estimate is.
+:::
+
+::: {.callout-warning}
+## Feature importance ≠ causation
+High importance for `los_days` means it is predictive of readmission in this dataset, **not** that shorter admissions cause readmissions. Length of stay is likely a proxy for illness severity. This distinction is critical when considering clinical action based on the model.
+:::
+
+## Hyperparameter Tuning
+
+The key hyperparameters for Random Forest are:
+
+| Hyperparameter | Default | Effect |
+|----------------|---------|--------|
+| `n_estimators` | 100 | More trees → lower variance, slower training |
+| `max_depth` | None (unlimited) | Deeper → more complex, more likely to overfit |
+| `min_samples_leaf` | 1 | Higher → smoother, more regularised |
+| `max_features` | `"sqrt"` | Lower → more diverse trees, may miss important features |
+
+We use `GridSearchCV` to search over combinations systematically, using **cross-validation** rather than a single split:
+
+```python
+from sklearn.model_selection import GridSearchCV
+
+param_grid = {
+    "max_depth":       [5, 8, 12],
+    "min_samples_leaf": [10, 20, 40],
+    "n_estimators":    [200]   # fix for speed; increase in real work
+}
+
+grid_search = GridSearchCV(
+    RandomForestClassifier(
+        class_weight="balanced", random_state=42, n_jobs=-1
+    ),
+    param_grid=param_grid,
+    cv=5,              # 5-fold cross-validation
+    scoring="roc_auc",
+    verbose=1,
+    n_jobs=-1
+)
+
+grid_search.fit(X_train_rf, y_train_rf)
+
+print(f"Best parameters: {grid_search.best_params_}")
+print(f"Best CV AUC:     {grid_search.best_score_:.3f}")
+```
+
+```
+Best parameters: {'max_depth': 8, 'min_samples_leaf': 20, 'n_estimators': 200}
+Best CV AUC: 0.787
+```
+
+::: {.callout-tip}
+## Exercise 10
+The grid search tested 3 × 3 × 1 = 9 parameter combinations with 5-fold CV, meaning it fitted 45 models. 
+
+1. Retrieve the best estimator: `best_rf = grid_search.best_estimator_`
+2. Evaluate it on the test set using `roc_auc_score`.
+3. Does it outperform the default Random Forest from earlier?
+
+*Bonus*: Look at `pd.DataFrame(grid_search.cv_results_)` — what does the spread of AUC scores across hyperparameter settings tell you?
+:::
+
+::: {.callout-caution collapse="true"}
+## Answer (click to open)
+```python
+best_rf = grid_search.best_estimator_
+
+y_prob_best = best_rf.predict_proba(X_test_rf)[:, 1]
+auc_best = roc_auc_score(y_test_rf, y_prob_best)
+print(f"Best RF AUC on test set: {auc_best:.3f}")
+
+# View grid search results
+results_df = pd.DataFrame(grid_search.cv_results_)[
+    ["param_max_depth", "param_min_samples_leaf", "mean_test_score", "std_test_score"]
+].sort_values("mean_test_score", ascending=False)
+print(results_df.to_string(index=False))
+```
+
+If the AUC is similar to the default (±0.01), this suggests the model is not very sensitive to these hyperparameters — a sign of a robust, well-behaved model. Larger gains are typically found by improving feature engineering rather than tuning hyperparameters.
+:::

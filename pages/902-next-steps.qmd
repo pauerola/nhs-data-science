@@ -1,0 +1,41 @@
+---
+title: "What's Next?"
+---
+
+## Continuing Your Learning
+
+### Immediate next steps (this week)
+- Re-run today's notebooks on a real dataset from your own clinical area
+- Read the [TRIPOD reporting guideline](https://www.bmj.com/content/350/bmj.g7594) — the standard for publishing prediction models
+- Explore the [scikit-learn documentation](https://scikit-learn.org/stable/) — it is exceptionally well-written with clinical examples
+
+### Short-term (1–3 months)
+- **Model explainability**: SHAP (SHapley Additive exPlanations) — the gold standard for explaining individual predictions
+- **Imbalanced datasets**: `imbalanced-learn` library for SMOTE and other oversampling techniques
+- **Survival analysis**: `lifelines` library — when you care about *time to* readmission, not just binary outcome
+- **Cross-validation**: replace single train/test splits with k-fold CV for more robust performance estimates
+
+### NHS-Specific Resources
+- **OpenSAFELY** ([opensafely.org](https://www.opensafely.org)) — secure platform for COVID-era and beyond NHS data analysis
+- **NHS Digital Data Access** ([digital.nhs.uk/data](https://digital.nhs.uk/data)) — HES, ECDS, CPRD access for research
+- **Health Data Research Innovation Gateway** ([healthdatagateway.org](https://www.healthdatagateway.org)) — discover NHS datasets
+- **NHS England AI and Digital Regulations** — understand MHRA guidance on software as a medical device (SaMD)
+
+### Governance Checklist for Clinical ML Projects
+
+Before sharing or deploying any model in a clinical setting, ensure you have addressed:
+
+- [ ] **Ethics approval** — IRAS / HRA for research use of patient data
+- [ ] **Data governance** — DPIA (Data Protection Impact Assessment) under UK GDPR
+- [ ] **Model documentation** — Model Card or Datasheet describing training data, limitations, intended use
+- [ ] **Fairness audit** — performance disaggregated by age, sex, ethnicity, deprivation
+- [ ] **External validation** — test on data from a different Trust or time period
+- [ ] **Regulatory check** — does the model constitute a medical device under MHRA guidance?
+- [ ] **Clinical governance** — sign-off from Chief Clinical Information Officer or equivalent
+
+::: {.callout-warning}
+## A note on AI in the NHS
+Building a model that works on training data is the easy part. Deploying it safely — so that it improves outcomes rather than causing harm through automation bias, fairness failures, or poor calibration — requires multidisciplinary collaboration between clinicians, data scientists, information governance leads, and patients.
+
+The [NHS AI Ethics Initiative](https://www.nhsx.nhs.uk/ai-lab/) and [Alan Turing Institute's guidance](https://www.turing.ac.uk/research/research-projects/understanding-accountability-ai) are good starting points for understanding responsible deployment.
+:::

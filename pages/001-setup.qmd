@@ -1,0 +1,59 @@
+---
+title: "Workspace Setup"
+---
+
+Before we start, let's make sure everyone has a working Python environment with the right packages installed.
+
+## Option A — Anaconda (Recommended for NHS Laptops)
+
+1. Download **Anaconda Individual Edition** from [anaconda.com/download](https://www.anaconda.com/download) (free).
+2. Install it, accepting the default settings.
+3. Open **Anaconda Navigator** → click **Launch** next to **JupyterLab**.
+4. In a terminal (or Anaconda Prompt on Windows), install the extra packages:
+
+```bash
+conda install -c conda-forge scikit-learn seaborn
+```
+
+## Option B — pip
+
+If you have Python 3.9+ already:
+
+```bash
+pip install pandas matplotlib seaborn scikit-learn jupyterlab
+```
+
+## Option C — Binder (No Installation)
+
+Click the badge below to launch a pre-configured environment in your browser — no installation needed:
+
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org)
+
+::: {.callout-note}
+## Required packages
+
+| Package | Version | Purpose |
+|---------|---------|---------|
+| `pandas` | ≥ 2.0 | Data manipulation |
+| `matplotlib` | ≥ 3.7 | Plotting |
+| `seaborn` | ≥ 0.13 | Statistical visualisation |
+| `scikit-learn` | ≥ 1.4 | Machine learning |
+| `numpy` | ≥ 1.26 | Numerical operations |
+:::
+
+## Download the Course Data
+
+Download `nhs_readmission.csv` from the course repository and place it in your working directory. You can verify everything is set up correctly by running this in a new notebook cell:
+
+```python
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.ensemble import RandomForestClassifier
+
+print("All packages loaded successfully!")
+df = pd.read_csv("nhs_readmission.csv")
+print(f"Dataset loaded: {df.shape[0]} patients, {df.shape[1]} columns")
+```
+
+If you see the success messages, you're ready to go!

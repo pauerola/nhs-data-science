@@ -1,0 +1,75 @@
+project:
+  type: website
+  execute-dir: project
+
+jupyter: python3
+
+resources:
+  - "data/*"
+  - "img/*"  
+
+website:
+  title: "Data Science in Python for Healthcare"
+  page-navigation: true
+
+  sidebar: 
+    title: "Data Science in Python for Healthcare "
+    logo: "assets/UoB_RGB_24.png"
+    align: center
+    logo-alt: "University of Bristol logo"
+    style: "docked"
+    border: true
+    contents: 
+      - index.qmd
+      - auto: "pages/*qmd"
+
+
+#      - section: "Working framework"
+#        contents:
+#          - pages/001-workspace-setup.qmd
+#          - pages/002-jupyter-notebooks.qmd
+#          - pages/091-loading-data.qmd
+#
+#      - section: "Model fitting"
+#        contents:
+#          - pages/300-machine-learning.qmd
+#          - pages/100-fitting-data.qmd
+#          - pages/200-validation.qmd
+#          - pages/102-nearest-neighbours.qmd
+#          - pages/500-hyperparameters.qmd
+#
+#      - section: "Discussion"
+#        contents:
+#          - pages/990-what-next.qmd
+#          - extra/logistic-regression-cancer.qmd
+#          - extra/logistic-regression-housing.qmd
+#          - extra/medical-image-clustering.qmd
+#          - extra/feature-importance-analysis.qmd
+#          - extra/pca-morphological-traits.qmd
+#          - extra/prediction-alzheimer-disease.qmd
+          
+#      - section: About
+#        contents:
+#          - pages/999-how-to.qmd
+#          - pages/999-contributors.qmd
+
+
+  page-footer:
+     left: "[Jean Golding Institute](https://www.bristol.ac.uk/golding/) © [CC-BY 4.0](http://creativecommons.org/licenses/by/4.0/)"  
+  repo-url: https://github.com/bristol-training/applied-data-analysis-in-python
+  repo-actions: [edit, issue]
+
+format:
+  html:
+    theme: [cosmo, styles.scss]
+    toc: true
+    #shift-heading-level-by: 1
+    #highlight-style: github
+
+    # code-line-numbers: true
+execute:
+  freeze: auto
+  error: true
+
+
+

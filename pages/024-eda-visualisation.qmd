@@ -1,0 +1,246 @@
+---
+title: "Exploratory Data Analysis & Visualisation"
+---
+
+<span class="time-badge">⏱ 25 minutes</span>
+
+*Adapted from [Data Analysis in Python (Part 1)](https://bristol-training.github.io/data-analysis-python-1/) — Visualising data.*
+
+---
+
+Exploratory Data Analysis (EDA) is the systematic process of summarising and visualising a dataset before modelling. Good EDA reveals data quality issues, suggests feature engineering ideas, and builds clinical intuition about which variables might predict the outcome.
+
+## Setting up Visualisation
+
+```python
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Use a clean, readable style
+sns.set_theme(style="whitegrid", palette="muted")
+plt.rcParams["figure.dpi"] = 120
+plt.rcParams["figure.figsize"] = (8, 5)
+```
+
+## Univariate Analysis — Understanding Each Variable
+
+Always start by looking at each variable in isolation.
+
+### Continuous variables: histograms and KDE plots
+
+```python
+fig, axes = plt.subplots(1, 2, figsize=(12, 4))
+
+# Age distribution
+sns.histplot(df["age"], bins=25, kde=True, ax=axes[0], color="#1B5AA0")
+axes[0].axvline(df["age"].median(), color="red", linestyle="--", label=f"Median: {df['age'].median():.0f}")
+axes[0].set_title("Age Distribution of Admitted Patients")
+axes[0].set_xlabel("Age (years)")
+axes[0].legend()
+
+# HbA1c distribution
+sns.histplot(df["hba1c"], bins=25, kde=True, ax=axes[1], color="#2E6DA4")
+axes[1].axvline(48, color="orange", linestyle="--", label="Pre-diabetes threshold (48)")
+axes[1].axvline(58, color="red", linestyle="--", label="Diabetes threshold (58)")
+axes[1].set_title("HbA1c Distribution (Imputed)")
+axes[1].set_xlabel("HbA1c (mmol/mol)")
+axes[1].legend()
+
+plt.tight_layout()
+plt.show()
+```
+
+### Categorical variables: bar charts
+
+```python
+# Primary diagnoses — top 10
+top_diagnoses = df["primary_diagnosis"].value_counts().head(10)
+
+plt.figure(figsize=(10, 5))
+sns.barplot(x=top_diagnoses.values, y=top_diagnoses.index, palette="Blues_r")
+plt.title("Top 10 Primary Diagnoses (ICD-10)")
+plt.xlabel("Number of admissions")
+plt.ylabel("ICD-10 Code")
+plt.tight_layout()
+plt.show()
+```
+
+::: {.callout-tip}
+## Exercise 7
+Create a histogram of `los_days` (length of stay). Does the distribution look normal?  
+Add a vertical dashed line at the median.  
+What does the shape tell you about length of stay patterns in this cohort?
+:::
+
+::: {.callout-caution collapse="true"}
+## Answer (click to open)
+```python
+plt.figure(figsize=(8, 4))
+sns.histplot(df["los_days"], bins=30, kde=True, color="#1B5AA0")
+plt.axvline(df["los_days"].median(), color="red", linestyle="--",
+            label=f"Median: {df['los_days'].median():.0f} days")
+plt.title("Distribution of Length of Stay")
+plt.xlabel("Length of Stay (days)")
+plt.legend()
+plt.show()
+```
+
+The distribution is right-skewed — most patients have short stays (1–5 days) but a minority have very long stays. This is typical of NHS inpatient data. The long tail means `mean > median` and suggests we should use `log(los_days)` as a feature, or use tree-based models that are robust to skew.
+:::
+
+## Bivariate Analysis — Variable vs Outcome
+
+Now we examine how each predictor relates to our outcome of interest: `readmitted_30d`.
+
+### Box plots and violin plots
+
+```python
+fig, axes = plt.subplots(1, 2, figsize=(12, 5))
+
+# Length of stay by outcome
+sns.boxplot(
+    data=df, x="readmitted_30d", y="los_days",
+    palette={"No": "#4A90D9", "Yes": "#E74C3C"},
+    ax=axes[0]
+)
+axes[0].set_title("Length of Stay by Readmission Status")
+axes[0].set_xlabel("Readmitted within 30 days")
+axes[0].set_ylabel("Length of Stay (days)")
+
+# Charlson index by outcome
+sns.violinplot(
+    data=df, x="readmitted_30d", y="charlson_index",
+    palette={"No": "#4A90D9", "Yes": "#E74C3C"},
+    inner="box", ax=axes[1]
+)
+axes[1].set_title("Charlson Comorbidity Index by Readmission Status")
+axes[1].set_xlabel("Readmitted within 30 days")
+axes[1].set_ylabel("Charlson Comorbidity Index")
+
+plt.tight_layout()
+plt.show()
+```
+
+### Readmission rate by categorical variable
+
+```python
+# Readmission rate by age group
+readmit_by_age = (
+    df.groupby("age_group", observed=True)["readmitted_30d"]
+    .apply(lambda x: (x == "Yes").mean() * 100)
+    .reset_index(name="readmission_rate_pct")
+)
+
+plt.figure(figsize=(8, 4))
+sns.barplot(data=readmit_by_age, x="age_group", y="readmission_rate_pct",
+            palette="Blues_r")
+plt.title("30-Day Readmission Rate by Age Group")
+plt.xlabel("Age group")
+plt.ylabel("Readmission rate (%)")
+plt.ylim(0, 50)
+for i, row in readmit_by_age.iterrows():
+    plt.text(i, row["readmission_rate_pct"] + 0.5, f"{row['readmission_rate_pct']:.1f}%",
+             ha="center", fontsize=10)
+plt.tight_layout()
+plt.show()
+```
+
+```python
+# Readmission rate by IMD deprivation decile
+readmit_by_imd = df.groupby("imd_decile")["readmitted_30d"].apply(
+    lambda x: (x == "Yes").mean() * 100
+).reset_index(name="readmission_rate_pct")
+
+plt.figure(figsize=(9, 4))
+sns.lineplot(data=readmit_by_imd, x="imd_decile", y="readmission_rate_pct",
+             marker="o", color="#003087", linewidth=2)
+plt.title("30-Day Readmission Rate by Deprivation Decile\n(IMD 1 = most deprived)")
+plt.xlabel("IMD Decile")
+plt.ylabel("Readmission rate (%)")
+plt.xticks(range(1, 11))
+plt.tight_layout()
+plt.show()
+```
+
+::: {.callout-warning}
+## Clinical interpretation
+A clear deprivation gradient (higher readmission in lower IMD deciles) is consistent with the NHS evidence base. However, IMD may act as a proxy for other variables (housing quality, social support, medication adherence) rather than being a direct causal pathway. This is important when considering fairness of any model deployed in clinical practice.
+:::
+
+## Multivariate Analysis
+
+### Correlation matrix
+
+```python
+# Select numeric features
+numeric_features = ["age", "charlson_index", "hba1c", "egfr", "bmi",
+                    "los_days", "ed_prior_year", "imd_decile"]
+
+corr_matrix = df[numeric_features].corr()
+
+plt.figure(figsize=(9, 7))
+mask = corr_matrix.abs() < 0.1  # hide very weak correlations
+sns.heatmap(
+    corr_matrix, annot=True, fmt=".2f", cmap="coolwarm",
+    center=0, vmin=-1, vmax=1,
+    linewidths=0.5, linecolor="white",
+    mask=mask
+)
+plt.title("Feature Correlation Matrix\n(cells blanked where |r| < 0.1)")
+plt.tight_layout()
+plt.show()
+```
+
+::: {.callout-note}
+## Important points
+A correlation matrix tells you about **linear** pairwise relationships only. High correlation between features (multicollinearity) can destabilise logistic regression coefficients but is less of a problem for tree-based models like Random Forest. Always examine clinically — a correlation between `charlson_index` and `egfr` is expected, since CKD contributes to the Charlson score.
+:::
+
+### Pair plot — quick multivariate overview
+
+A pair plot shows scatter plots for every pair of numeric variables, coloured by outcome:
+
+```python
+# Sample 500 patients for speed
+df_sample = df.sample(500, random_state=42)
+
+g = sns.pairplot(
+    df_sample[["age", "charlson_index", "hba1c", "los_days", "readmitted_30d"]],
+    hue="readmitted_30d",
+    palette={"No": "#4A90D9", "Yes": "#E74C3C"},
+    plot_kws={"alpha": 0.4, "s": 15},
+    diag_kind="kde"
+)
+g.fig.suptitle("Pairplot: Key Features Coloured by Readmission Status", y=1.02)
+plt.show()
+```
+
+::: {.callout-tip}
+## Exercise 8
+Create a boxplot showing `hba1c` by `readmitted_30d`.  
+
+1. Do readmitted patients have higher HbA1c on average?  
+2. Is there much overlap between the two groups?  
+3. What does this tell you about HbA1c as a standalone predictor?
+:::
+
+::: {.callout-caution collapse="true"}
+## Answer (click to open)
+```python
+plt.figure(figsize=(6, 5))
+sns.boxplot(
+    data=df, x="readmitted_30d", y="hba1c",
+    palette={"No": "#4A90D9", "Yes": "#E74C3C"}
+)
+plt.title("HbA1c by 30-Day Readmission Status")
+plt.xlabel("Readmitted within 30 days")
+plt.ylabel("HbA1c (mmol/mol)")
+plt.show()
+
+# Means
+print(df.groupby("readmitted_30d")["hba1c"].mean().round(1))
+```
+
+There is typically a modest difference in median HbA1c (~3–5 mmol/mol) between the groups, but with substantial overlap. This means HbA1c alone is a weak predictor — consistent with clinical experience. Better predictions come from combining multiple features in a model.
+:::
