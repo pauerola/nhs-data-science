@@ -5,20 +5,15 @@ title: "Machine Learning Concepts"
 <span class="time-badge">⏱ 10 minutes</span>
 
 
-Before we fit any models, it's essential to understand the conceptual framework. This section gives you the mental model you need to follow the next section.
-
-## What is Machine Learning?
-
 Machine learning (ML) is a set of techniques for building **algorithms that learn from data** — rather than algorithms that follow explicit rules written by a programmer.
 
-In clinical practice, you already use the output of ML models without knowing it:
+In clinical practice, you may be already using the output of ML models without knowing it:
 
 - **QRISK3** uses a statistical model (Cox regression) fitted on primary care data
 - **Sepsis-3** criteria were validated against survival data in ICU cohorts
 
-The difference today is that we are building the model ourselves, end to end.
 
-## Classification vs Regression
+### Classification vs Regression
 
 | Problem | Output | Example |
 |---------|--------|---------|
@@ -27,7 +22,7 @@ The difference today is that we are building the model ourselves, end to end.
 
 Today we focus on **binary classification** — predicting a Yes/No outcome.
 
-## The Machine Learning Pipeline
+### The Machine Learning Pipeline
 
 ```
 Raw data → Feature engineering → Train/Test split → Fit model → Evaluate → (optionally) Deploy
@@ -64,11 +59,11 @@ X_train, X_test, y_train, y_test = train_test_split(
 ```
 
 ::: {.callout-warning}
-## Data leakage
+### Data leakage
 If any information from the test set influences the training process (e.g. fitting a scaler on all data, then splitting), performance estimates will be **optimistically biased**. In a real NHS deployment, this would mean your model underperforms compared to your evaluation — a potentially dangerous failure mode.
 :::
 
-## Evaluating Classification Models
+### Evaluating Classification Models
 
 Accuracy alone is misleading when classes are imbalanced (77% No, 23% Yes). A model that always predicts "No" achieves 77% accuracy but is clinically useless.
 
@@ -83,7 +78,7 @@ The key metrics are:
 | **AUC-ROC** | Area under ROC curve | Overall discriminative ability (0.5 = random, 1.0 = perfect) |
 
 ::: {.callout-note}
-## AUC-ROC in clinical context
+### AUC-ROC in clinical context
 An AUC of 0.70–0.80 is considered "acceptable" for clinical prediction models. QRISK3 achieves ~0.88 for cardiovascular events. Most published NHS readmission models achieve 0.65–0.75 AUC — moderate discrimination but clinically useful at scale.
 :::
 
@@ -101,7 +96,7 @@ Actual: Yes             FN                TP        ← Correctly caught readmis
 
 In most NHS readmission models, we accept some false positives (over-referral) in exchange for higher sensitivity (catching more readmissions). The right trade-off depends on the cost of the intervention.
 
-## Feature Preparation
+### Feature Preparation
 
 Before fitting models, features need to be in a numeric format. Two steps are required:
 
@@ -125,6 +120,6 @@ X_test_scaled  = scaler.transform(X_test)         # transform ONLY — no re-fit
 ```
 
 ::: {.callout-warning}
-## Always fit the scaler on training data only
+### Always fit the scaler on training data only
 The test set must be transformed using the scaler's statistics learned from the training set. Fitting on the test set is data leakage.
 :::

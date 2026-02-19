@@ -1,9 +1,0 @@
----
-title: "Missing Data"
----
-
-<span class="time-badge">⏱ included in Session 4</span>
-
-::: {.callout-note}
-Missing data handling is covered in detail on the [Filtering & Missing Data](04-querying-filtering.qmd) page, which walks through all three strategies (drop, impute, indicator columns) with clinical context for each.
-:::

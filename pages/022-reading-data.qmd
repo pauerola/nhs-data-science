@@ -4,53 +4,35 @@ title: "Reading & Querying Clinical Data"
 
 <span class="time-badge">⏱ 15 minutes</span>
 
-*Adapted from [Data Analysis in Python (Part 1)](https://bristol-training.github.io/data-analysis-python-1/) — Reading from file & Querying your data.*
 
----
 
-## Reading Data from a File
+### Reading Data from a File
 
 Real clinical datasets live in files, not Python dictionaries. `pandas` can read CSV, Excel, JSON, and many other formats. We'll use our NHS readmission dataset:
 
 ::: {.callout-note}
+## nhs_readmission.csv dataset
 
-The dataset is entirely synthetic — I generated it programmatically with Python (numpy and pandas) during our conversation, using:
+This dataset is entirely synthetic. It was generated programmatically with Python purely to serve as a teaching example.
 
 Simulated distributions based on typical NHS inpatient population parameters (e.g. age ~Normal(62, 16), length of stay ~Exponential(4.5), HbA1c ~Normal(60, 18))
 Clinically plausible missingness patterns (HbA1c missing in ~16% of patients, eGFR in ~9%)
 A logistic outcome model where readmission probability depends on age, Charlson index, length of stay, prior ED attendances, eGFR, and IMD decile — consistent with the published literature on readmission predictors, but not derived from any real data
 
-It does not come from any real NHS dataset, published repository, or external source. It was created purely to serve as a realistic teaching example.
 :::
 
-```python
+```{python}
 import pandas as pd
 
-df = pd.read_csv("nhs_readmission.csv")
+df = pd.read_csv("https://raw.githubusercontent.com/pauerola/nhs-data-science/refs/heads/main/data/nhs_readmission.csv")
 
 print(df.shape)
 print(df.head())
 ```
 
-```
-(5000, 12)
-   patient_id  age sex  imd_decile primary_diagnosis  charlson_index  \
-0        1001   67   M           5               E11               3   
-1        1002   45   F           2               I10               1   
-2        1003   82   F           8               J44               4   
-3        1004   55   M           3               E11               2   
-4        1005   71   F           6               I50               5   
-
-   hba1c   egfr   bmi  los_days  ed_prior_year readmitted_30d  
-0   71.0   55.0  28.4         5            2.0            Yes  
-1    NaN   80.0  24.1         2            0.0             No  
-2   58.0   62.0  31.2         8            1.0            Yes  
-3   84.0    NaN  26.8         3            1.0             No  
-4    NaN   38.0  33.1        12            4.0            Yes  
-```
 
 ::: {.callout-note}
-## Column descriptions
+### Column descriptions
 
 | Column | Description |
 |--------|-------------|
@@ -83,7 +65,7 @@ df = pd.read_csv("nhs_readmission.csv", parse_dates=["admission_date"])
 df = pd.read_csv("nhs_readmission.csv", encoding="latin1")
 ```
 
-## Exploring the Dataset
+### Exploring the Dataset
 
 After loading, always run a structured data quality check:
 
@@ -139,11 +121,11 @@ dtype: int64
 ```
 
 ::: {.callout-warning}
-## Clinical note: Why is data missing?
+### Clinical note: Why is data missing?
 Missing `hba1c` (16% of patients) likely means the test was not ordered — common in surgical or trauma admissions. Missing `egfr` (9%) may mean no recent blood tests. In machine learning, "missing" can itself be an informative signal: patients without eGFR measurements may be less well-monitored. Always think about *why* data is absent before deciding how to handle it.
 :::
 
-## Querying Data
+### Querying Data
 
 ### `value_counts()` — Frequency tables
 
@@ -215,7 +197,7 @@ Yes           70.4   71.0            3.4    3.0       7.2    6.0
 Readmitted patients are on average 8 years older, have higher comorbidity burden, and stay nearly twice as long.
 
 ::: {.callout-tip}
-## Exercise 4
+### Exercise 4
 1. How many unique values are in the `primary_diagnosis` column?  
    (*Hint*: `df["column"].nunique()`)
 2. What is the mean HbA1c for readmitted vs non-readmitted patients?  
@@ -225,7 +207,7 @@ Readmitted patients are on average 8 years older, have higher comorbidity burden
 :::
 
 ::: {.callout-caution collapse="true"}
-## Answer (click to open)
+### Answer (click to open)
 ```python
 # 1.
 print(df["primary_diagnosis"].nunique())
@@ -242,7 +224,7 @@ print(readmit_by_imd.sort_values(ascending=False))
 ```
 :::
 
-## Creating New Columns
+### Creating New Columns
 
 You can create derived columns by applying operations to existing ones:
 

@@ -2,12 +2,13 @@
 title: "Why Python?"
 ---
 
-## What is Python?
+<span class="time-badge">⏱ 5 minutes</span>
+
 
 Python is a general-purpose programming language first released in 1991.
 It was designed around a simple philosophy: code should be easy to read, easy to write, and easy to share.
 Python runs line by line in an interactive environment —
-which is why it works so naturally inside Jupyter Notebooks, where you can run a single cell, inspect
+which is why it works so naturally inside *notebooks*, where you can run a single *cell*, inspect
 the output, and decide what to do next.
 Python is free, open-source, and runs on any operating system.
 
@@ -17,21 +18,8 @@ Its ecosystem — `pandas` for data wrangling, `scikit-learn` for machine learni
 and quality.
 
 
----
 
-## Why not R, Stata, or SAS?
-
-Healthcare professionals approaching data science for the first time often encounter a confusing
-landscape of tools. R, Stata, SAS, and SPSS all claim to solve similar problems, and each has a
-legitimate place in the clinical research toolkit. 
-
-
-
-
-
----
-
-## Python by the numbers
+### Python by the numbers
 
 The evidence for Python's dominance is unambiguous. After more than a decade of steady growth,
 Python's adoption accelerated significantly in 2025, seeing a seven percentage point increase from
@@ -50,10 +38,9 @@ modelling.
 
 ---
 
-## Python and the NHS digital transformation
+### Python and the NHS digital transformation
 
-For NHS doctors specifically, the argument is even more pointed. The NHS is in the middle of
-a substantial digital transformation, and Python has become the de facto language of NHS England's
+The NHS is in the middle of a substantial digital transformation, and Python has become the de facto language of NHS England's
 data science function.
 
 With the legal merger of NHS Digital into NHS England, the new NHS England became one of the largest
@@ -70,23 +57,17 @@ as its primary language for analytical and machine learning work.
 Crucially, NHS England has recognised that clinical staff — not just specialist data scientists —
 need these skills. The NHS Clinical Data Science Programme, funded by NHS England since 2023
 with growing cohorts in 2024 and 2025, aims to empower healthcare professionals from across the
-health and social care workforce — from nurses and AHPs to doctors and healthcare scientists — to
+health and social care workforce to
 apply data science in practice and translate data into patient benefit.
 
-::: {.callout-note}
-## Important points
-NHS England publishes its data science code openly at
-[github.com/NHSEngland](https://github.com/NHSEngland). Browsing those repositories gives a
-realistic sense of how Python is used in NHS analytical work — from population health models to
-waiting list analytics. Almost everything is Python.
-:::
+
 
 ---
 
-## What this means for you
+### What this means for you
 
-The skills you build in this course — `pandas` for data wrangling, `scikit-learn` for machine
-learning, `seaborn` for visualisation — are exactly the skills listed in NHS data science job
+The skills you will build in this course — `pandas` for data wrangling, `scikit-learn` for machine
+learning, `seaborn` for visualisation — are the skills listed in health data science job
 specifications, clinical informatics fellowships, and applied health research postdoctoral
 positions. They are also the foundation for everything that comes next: deep learning, natural
 language processing of clinical notes, survival analysis, and Bayesian statistical modelling.

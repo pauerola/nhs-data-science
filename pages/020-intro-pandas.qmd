@@ -4,13 +4,11 @@ title: "Introduction to Pandas"
 
 <span class="time-badge">⏱ 15 minutes</span>
 
-*Adapted from [Data Analysis in Python (Part 1)](https://bristol-training.github.io/data-analysis-python-1/) — Introduction to Pandas.*
 
----
 
-[pandas](https://pandas.pydata.org/) is the most widely used Python library for working with tabular data. You can think of it as Excel in code form — but far more powerful, reproducible, and scriptable.
+[`Pandas`](https://pandas.pydata.org/) is the most widely used Python library for working with tabular data. You can think of it as Excel in code form — but far more powerful, reproducible, and *scriptable*.
 
-## Why pandas?
+### Why pandas?
 
 | Task | Excel | pandas |
 |------|-------|--------|
@@ -20,7 +18,7 @@ title: "Introduction to Pandas"
 | Auditability | ❌ Hidden formulas | ✅ Code review |
 | Machine learning pipeline | ❌ Not possible | ✅ Direct integration |
 
-## The DataFrame
+### The DataFrame
 
 The core pandas object is the **DataFrame** — a two-dimensional table with labelled rows and columns.
 
@@ -32,8 +30,8 @@ data = {
     "patient_id":  ["P001", "P002", "P003", "P004"],
     "age":         [67, 45, 82, 55],
     "sex":         ["M", "F", "F", "M"],
-    "diagnosis":   ["E11", "I10", "J44", "E11"],   # ICD-10 codes
-    "hba1c":       [71, None, 58, 84],              # mmol/mol; None = missing
+    "diagnosis":   ["E11", "I10", "J44", "E11"],  # ICD-10 codes
+    "hba1c":       [71, None, 58, 84],            # mmol/mol; None = missing
     "readmitted":  [True, False, True, False],
 }
 
@@ -50,14 +48,14 @@ print(df)
 ```
 
 ::: {.callout-note}
-## Key vocabulary
+### Key vocabulary
 - **DataFrame**: the whole table (rows × columns)  
 - **Series**: a single column (or row) of a DataFrame  
 - **Index**: the row labels (by default 0, 1, 2, …)  
 - **NaN**: *Not a Number* — pandas' representation of a missing value
 :::
 
-## Accessing Columns
+### Accessing Columns
 
 Select a single column using square brackets — this returns a **Series**:
 
@@ -91,7 +89,7 @@ print(demographics)
 3       P004   55   M
 ```
 
-## Quick Inspection Methods
+### Quick Inspection Methods
 
 When you first receive a dataset, always run these four commands:
 
@@ -116,7 +114,7 @@ dtype: object
 `describe()` gives count, mean, standard deviation, min, quartiles, and max for every numeric column — equivalent to running `=AVERAGE()`, `=STDEV()`, `=MIN()`, `=MAX()` in Excel simultaneously.
 
 ::: {.callout-tip}
-## Exercise 3
+### Exercise 3
 Using the small DataFrame `df` we built above:
 
 1. Print the `diagnosis` column.
@@ -125,7 +123,7 @@ Using the small DataFrame `df` we built above:
 :::
 
 ::: {.callout-caution collapse="true"}
-## Answer (click to open)
+### Answer (click to open)
 ```python
 # 1.
 print(df["diagnosis"])
@@ -138,7 +136,7 @@ print(df["age"].mean())   # 62.25
 ```
 :::
 
-## Series Operations
+### Series Operations
 
 A Series supports vectorised operations — you apply a function to every element at once, without a loop:
 
@@ -169,6 +167,6 @@ df["sex"].value_counts()  # frequency of each category
 ```
 
 ::: {.callout-note}
-## Important points
-Series operations are **vectorised** — they are applied to all elements simultaneously using optimised C code under the hood, making them much faster than Python `for` loops. For large NHS datasets with hundreds of thousands of rows, this matters.
+### Important points
+Series operations are **vectorised** — they are applied to all elements simultaneously using optimised C code under the hood, making them much faster than Python `for` loops. For large datasets with hundreds of thousands of rows, this matters.
 :::

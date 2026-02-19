@@ -2,13 +2,11 @@
 title: "Random Forest"
 ---
 
-<span class="time-badge">⏱ 25 minutes</span>
-
-*Adapted from [Data Analysis in Python (Part 2)](https://bristol-training.github.io/data-analysis-python-2/) — Fitting data: classification, Choosing hyperparameters, and Feature Importance Analysis.*
+<span class="time-badge">⏱ 30 minutes</span>
 
 ---
 
-## From Decision Trees to Random Forest
+### From Decision Trees to Random Forest
 
 A **decision tree** splits data into branches based on feature values, creating a flowchart-like structure. They are intuitive — think of them as a structured clinical decision pathway — but they overfit easily: a sufficiently deep tree will memorise the training data perfectly and fail on new patients.
 
@@ -26,7 +24,7 @@ A **Random Forest** solves this by training **many trees in parallel**, each on 
 | Training speed | Very fast | Moderate |
 | Typical clinical AUC | 0.65–0.75 | 0.70–0.80 |
 
-## Fitting a Random Forest
+### Fitting a Random Forest
 
 Random Forest does not require feature scaling. We use the same feature matrix `X` as before, but no `StandardScaler`:
 
@@ -56,7 +54,7 @@ print("Random Forest fitted.")
 print(f"Number of trees: {rf.n_estimators}")
 ```
 
-## Evaluating the Random Forest
+### Evaluating the Random Forest
 
 ```python
 y_pred_rf = rf.predict(X_test_rf)
@@ -86,7 +84,7 @@ Random Forest AUC-ROC: 0.793
 
 The Random Forest achieves AUC 0.793 vs 0.741 for Logistic Regression — a meaningful improvement, particularly in recall (catching readmissions).
 
-## Feature Importance
+### Feature Importance
 
 One of the key advantages of Random Forest over black-box models is its built-in **feature importance** scores.
 
@@ -162,16 +160,16 @@ plt.show()
 ```
 
 ::: {.callout-note}
-## Important points
+### Important points
 **Permutation importance** is the preferred method for reporting in clinical papers. MDI is useful for quick exploration but should not be quoted in publications due to its bias towards numeric features with many unique values. The error bars from multiple repeats tell you how stable the importance estimate is.
 :::
 
 ::: {.callout-warning}
-## Feature importance ≠ causation
+### Feature importance ≠ causation
 High importance for `los_days` means it is predictive of readmission in this dataset, **not** that shorter admissions cause readmissions. Length of stay is likely a proxy for illness severity. This distinction is critical when considering clinical action based on the model.
 :::
 
-## Hyperparameter Tuning
+### Hyperparameter Tuning
 
 The key hyperparameters for Random Forest are:
 
@@ -216,7 +214,7 @@ Best CV AUC: 0.787
 ```
 
 ::: {.callout-tip}
-## Exercise 10
+### Exercise 10
 The grid search tested 3 × 3 × 1 = 9 parameter combinations with 5-fold CV, meaning it fitted 45 models. 
 
 1. Retrieve the best estimator: `best_rf = grid_search.best_estimator_`
@@ -227,7 +225,7 @@ The grid search tested 3 × 3 × 1 = 9 parameter combinations with 5-fold CV, me
 :::
 
 ::: {.callout-caution collapse="true"}
-## Answer (click to open)
+### Answer (click to open)
 ```python
 best_rf = grid_search.best_estimator_
 

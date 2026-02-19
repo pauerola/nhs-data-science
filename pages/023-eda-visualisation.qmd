@@ -4,15 +4,11 @@ title: "Exploratory Data Analysis & Visualisation"
 
 <span class="time-badge">⏱ 25 minutes</span>
 
-*Adapted from [Data Analysis in Python (Part 1)](https://bristol-training.github.io/data-analysis-python-1/) — Visualising data.*
-
----
-
 Exploratory Data Analysis (EDA) is the systematic process of summarising and visualising a dataset before modelling. Good EDA reveals data quality issues, suggests feature engineering ideas, and builds clinical intuition about which variables might predict the outcome.
 
-## Setting up Visualisation
+### Setting up Visualisation
 
-```python
+```{python}
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -23,37 +19,45 @@ plt.rcParams["figure.dpi"] = 120
 plt.rcParams["figure.figsize"] = (8, 5)
 ```
 
-## Univariate Analysis — Understanding Each Variable
+```{python}
+import pandas as pd
+
+df = pd.read_csv("https://raw.githubusercontent.com/pauerola/nhs-data-science/refs/heads/main/data/nhs_readmission.csv")
+
+print(df.shape)
+print(df.head())
+```
+### Univariate Analysis — Understanding Each Variable
 
 Always start by looking at each variable in isolation.
 
 ### Continuous variables: histograms and KDE plots
 
-```python
-fig, axes = plt.subplots(1, 2, figsize=(12, 4))
-
+```{python}
 # Age distribution
-sns.histplot(df["age"], bins=25, kde=True, ax=axes[0], color="#1B5AA0")
-axes[0].axvline(df["age"].median(), color="red", linestyle="--", label=f"Median: {df['age'].median():.0f}")
-axes[0].set_title("Age Distribution of Admitted Patients")
-axes[0].set_xlabel("Age (years)")
-axes[0].legend()
+hist_age = sns.histplot(df["age"], bins=25, kde=True, color="#1B5AA0")
+hist_age.axvline(df["age"].median(), color="red", linestyle="--", label=f"Median: {df['age'].median():.0f}")
+hist_age.set_title("Age Distribution of Admitted Patients")
+hist_age.set_xlabel("Age (years)")
+hist_age.legend()
+hist_age
+```
 
+
+```{python}
 # HbA1c distribution
-sns.histplot(df["hba1c"], bins=25, kde=True, ax=axes[1], color="#2E6DA4")
-axes[1].axvline(48, color="orange", linestyle="--", label="Pre-diabetes threshold (48)")
-axes[1].axvline(58, color="red", linestyle="--", label="Diabetes threshold (58)")
-axes[1].set_title("HbA1c Distribution (Imputed)")
-axes[1].set_xlabel("HbA1c (mmol/mol)")
-axes[1].legend()
-
-plt.tight_layout()
-plt.show()
+hist_hba1c = sns.histplot(df["hba1c"], bins=25, kde=True, color="#2E6DA4")
+hist_hba1c.axvline(48, color="orange", linestyle="--", label="Pre-diabetes threshold (48)")
+hist_hba1c.axvline(58, color="red", linestyle="--", label="Diabetes threshold (58)")
+hist_hba1c.set_title("HbA1c Distribution (Imputed)")
+hist_hba1c.set_xlabel("HbA1c (mmol/mol)")
+hist_hba1c.legend()
+hist_hba1c
 ```
 
 ### Categorical variables: bar charts
 
-```python
+```{python}
 # Primary diagnoses — top 10
 top_diagnoses = df["primary_diagnosis"].value_counts().head(10)
 
@@ -67,15 +71,15 @@ plt.show()
 ```
 
 ::: {.callout-tip}
-## Exercise 7
+### Exercise 7
 Create a histogram of `los_days` (length of stay). Does the distribution look normal?  
 Add a vertical dashed line at the median.  
 What does the shape tell you about length of stay patterns in this cohort?
 :::
 
 ::: {.callout-caution collapse="true"}
-## Answer (click to open)
-```python
+### Answer (click to open)
+```{python}
 plt.figure(figsize=(8, 4))
 sns.histplot(df["los_days"], bins=30, kde=True, color="#1B5AA0")
 plt.axvline(df["los_days"].median(), color="red", linestyle="--",
@@ -89,13 +93,13 @@ plt.show()
 The distribution is right-skewed — most patients have short stays (1–5 days) but a minority have very long stays. This is typical of NHS inpatient data. The long tail means `mean > median` and suggests we should use `log(los_days)` as a feature, or use tree-based models that are robust to skew.
 :::
 
-## Bivariate Analysis — Variable vs Outcome
+### Bivariate Analysis — Variable vs Outcome
 
 Now we examine how each predictor relates to our outcome of interest: `readmitted_30d`.
 
 ### Box plots and violin plots
 
-```python
+```{python}
 fig, axes = plt.subplots(1, 2, figsize=(12, 5))
 
 # Length of stay by outcome
@@ -124,7 +128,7 @@ plt.show()
 
 ### Readmission rate by categorical variable
 
-```python
+```{python}
 # Readmission rate by age group
 readmit_by_age = (
     df.groupby("age_group", observed=True)["readmitted_30d"]
@@ -146,7 +150,7 @@ plt.tight_layout()
 plt.show()
 ```
 
-```python
+```{python}
 # Readmission rate by IMD deprivation decile
 readmit_by_imd = df.groupby("imd_decile")["readmitted_30d"].apply(
     lambda x: (x == "Yes").mean() * 100
@@ -164,15 +168,15 @@ plt.show()
 ```
 
 ::: {.callout-warning}
-## Clinical interpretation
+### Clinical interpretation
 A clear deprivation gradient (higher readmission in lower IMD deciles) is consistent with the NHS evidence base. However, IMD may act as a proxy for other variables (housing quality, social support, medication adherence) rather than being a direct causal pathway. This is important when considering fairness of any model deployed in clinical practice.
 :::
 
-## Multivariate Analysis
+### Multivariate Analysis
 
 ### Correlation matrix
 
-```python
+```{python}
 # Select numeric features
 numeric_features = ["age", "charlson_index", "hba1c", "egfr", "bmi",
                     "los_days", "ed_prior_year", "imd_decile"]
@@ -180,20 +184,18 @@ numeric_features = ["age", "charlson_index", "hba1c", "egfr", "bmi",
 corr_matrix = df[numeric_features].corr()
 
 plt.figure(figsize=(9, 7))
-mask = corr_matrix.abs() < 0.1  # hide very weak correlations
 sns.heatmap(
     corr_matrix, annot=True, fmt=".2f", cmap="coolwarm",
     center=0, vmin=-1, vmax=1,
     linewidths=0.5, linecolor="white",
-    mask=mask
 )
-plt.title("Feature Correlation Matrix\n(cells blanked where |r| < 0.1)")
+plt.title("Feature Correlation Matrix")
 plt.tight_layout()
 plt.show()
 ```
 
 ::: {.callout-note}
-## Important points
+### Important points
 A correlation matrix tells you about **linear** pairwise relationships only. High correlation between features (multicollinearity) can destabilise logistic regression coefficients but is less of a problem for tree-based models like Random Forest. Always examine clinically — a correlation between `charlson_index` and `egfr` is expected, since CKD contributes to the Charlson score.
 :::
 
@@ -201,7 +203,7 @@ A correlation matrix tells you about **linear** pairwise relationships only. Hig
 
 A pair plot shows scatter plots for every pair of numeric variables, coloured by outcome:
 
-```python
+```{python}
 # Sample 500 patients for speed
 df_sample = df.sample(500, random_state=42)
 
@@ -217,7 +219,7 @@ plt.show()
 ```
 
 ::: {.callout-tip}
-## Exercise 8
+### Exercise 8
 Create a boxplot showing `hba1c` by `readmitted_30d`.  
 
 1. Do readmitted patients have higher HbA1c on average?  
@@ -226,7 +228,7 @@ Create a boxplot showing `hba1c` by `readmitted_30d`.
 :::
 
 ::: {.callout-caution collapse="true"}
-## Answer (click to open)
+### Answer (click to open)
 ```python
 plt.figure(figsize=(6, 5))
 sns.boxplot(

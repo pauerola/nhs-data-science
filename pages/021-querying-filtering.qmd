@@ -4,11 +4,8 @@ title: "Filtering & Missing Data"
 
 <span class="time-badge">⏱ 15 minutes</span>
 
-*Adapted from [Data Analysis in Python (Part 1)](https://bristol-training.github.io/data-analysis-python-1/) — Filtering data.*
 
----
-
-## Filtering Rows
+### Filtering Rows
 
 Filtering in pandas works by passing a **boolean condition** inside square brackets. The condition produces a Series of `True`/`False` values — one per row — and pandas keeps only the `True` rows.
 
@@ -44,7 +41,7 @@ Elderly T2DM patients: 387
 18       1019   69    NaN               2
 ...
 ```
-
+w
 ```python
 # Heart failure (I50) OR COPD (J44) patients with long stays
 complex_patients = df[
@@ -55,7 +52,7 @@ print(f"Complex respiratory/cardiac patients with ≥7 days LOS: {len(complex_pa
 ```
 
 ::: {.callout-note}
-## `.isin()` for multiple values
+### `.isin()` for multiple values
 Instead of writing `(df["col"] == "A") | (df["col"] == "B") | (df["col"] == "C")`, use:
 ```python
 df[df["col"].isin(["A", "B", "C"])]
@@ -80,14 +77,14 @@ Patients with HbA1c result: 4188
 ```
 
 ::: {.callout-tip}
-## Exercise 5
+### Exercise 5
 1. How many patients have a Charlson index ≥ 5?
 2. Create a sub-dataset called `ckd_patients` containing only patients with CKD (primary diagnosis `"N18"`).
 3. Among `ckd_patients`, what fraction were readmitted? 
 :::
 
 ::: {.callout-caution collapse="true"}
-## Answer (click to open)
+### Answer (click to open)
 ```python
 # 1.
 high_charlson = df[df["charlson_index"] >= 5]
@@ -103,9 +100,10 @@ print(f"CKD 30-day readmission rate: {readmit_rate:.1%}")
 ```
 :::
 
-## Handling Missing Data
 
-Missing data is endemic in NHS records. Understanding *why* data is missing matters as much as knowing *how* to handle it technically.
+### Handling Missing Data
+
+Missing data is endemic in medical records. Understanding *why* data is missing matters as much as knowing *how* to handle it technically.
 
 ### The three types of missingness
 
@@ -132,7 +130,7 @@ Rows removed: 1179
 ```
 
 ::: {.callout-warning}
-## Use `dropna()` with caution
+### Use `dropna()` with caution
 Dropping 24% of your data introduces selection bias — the remaining patients are those who had both tests ordered, which is not random. In a real clinical study, this would require formal justification in your methods section.
 :::
 
@@ -187,7 +185,7 @@ print(df[["hba1c", "hba1c_missing"]].head(8))
 ```
 
 ::: {.callout-note}
-## Important points
+### Important points
 The **indicator column strategy** is best practice for clinical machine learning when the reason for missingness is clinically meaningful. It is used in published NHS readmission models and tools like QRISK3.
 :::
 
@@ -212,7 +210,7 @@ dtype: int64
 `egfr` still has 445 missing — we'll apply the same indicator strategy before modelling.
 
 ::: {.callout-tip}
-## Exercise 6
+### Exercise 6
 Apply the indicator column strategy to `egfr`:
 
 1. Create a column `egfr_missing` that is `1` where `egfr` is `NaN`, `0` otherwise.
@@ -221,7 +219,7 @@ Apply the indicator column strategy to `egfr`:
 :::
 
 ::: {.callout-caution collapse="true"}
-## Answer (click to open)
+### Answer (click to open)
 ```python
 # 1. Flag missingness
 df["egfr_missing"] = df["egfr"].isnull().astype(int)

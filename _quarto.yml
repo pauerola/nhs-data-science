@@ -6,7 +6,7 @@ jupyter: python3
 
 resources:
   - "data/*"
-  - "img/*"  
+  - "assets/*"  
 
 website:
   title: "Data Science in Python for Healthcare"
@@ -56,8 +56,8 @@ website:
 
   page-footer:
      left: "[Jean Golding Institute](https://www.bristol.ac.uk/golding/) © [CC-BY 4.0](http://creativecommons.org/licenses/by/4.0/)"  
-  repo-url: https://github.com/bristol-training/applied-data-analysis-in-python
-  repo-actions: [edit, issue]
+  repo-url: https://github.com/bristol-training/nhs-data-science
+
 
 format:
   html:

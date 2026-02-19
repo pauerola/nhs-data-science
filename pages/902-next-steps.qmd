@@ -2,7 +2,7 @@
 title: "What's Next?"
 ---
 
-## Continuing Your Learning
+### Continuing Your Learning
 
 ### Immediate next steps (this week)
 - Re-run today's notebooks on a real dataset from your own clinical area
@@ -34,7 +34,7 @@ Before sharing or deploying any model in a clinical setting, ensure you have add
 - [ ] **Clinical governance** — sign-off from Chief Clinical Information Officer or equivalent
 
 ::: {.callout-warning}
-## A note on AI in the NHS
+### A note on AI in the NHS
 Building a model that works on training data is the easy part. Deploying it safely — so that it improves outcomes rather than causing harm through automation bias, fairness failures, or poor calibration — requires multidisciplinary collaboration between clinicians, data scientists, information governance leads, and patients.
 
 The [NHS AI Ethics Initiative](https://www.nhsx.nhs.uk/ai-lab/) and [Alan Turing Institute's guidance](https://www.turing.ac.uk/research/research-projects/understanding-accountability-ai) are good starting points for understanding responsible deployment.
