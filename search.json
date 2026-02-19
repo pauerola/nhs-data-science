@@ -2,51 +2,101 @@
   {
     "objectID": "pages/001-setup.html",
     "href": "pages/001-setup.html",
-    "title": "Workspace Setup",
+    "title": "Python Environment Setup",
     "section": "",
     "text": "Before we start, let’s make sure everyone has a working Python environment with the right packages installed.",
     "crumbs": [
-      "Workspace Setup"
+      "Python Environment Setup"
     ]
   },
   {
-    "objectID": "pages/001-setup.html#option-a-anaconda-recommended-for-nhs-laptops",
-    "href": "pages/001-setup.html#option-a-anaconda-recommended-for-nhs-laptops",
-    "title": "Workspace Setup",
-    "section": "Option A — Anaconda (Recommended for NHS Laptops)",
-    "text": "Option A — Anaconda (Recommended for NHS Laptops)\n\nDownload Anaconda Individual Edition from anaconda.com/download (free).\nInstall it, accepting the default settings.\nOpen Anaconda Navigator → click Launch next to JupyterLab.\nIn a terminal (or Anaconda Prompt on Windows), install the extra packages:\n\nconda install -c conda-forge scikit-learn seaborn",
+    "objectID": "pages/001-setup.html#option-a-online",
+    "href": "pages/001-setup.html#option-a-online",
+    "title": "Python Environment Setup",
+    "section": "Option A — online",
+    "text": "Option A — online\nonline e.g. colab",
     "crumbs": [
-      "Workspace Setup"
+      "Python Environment Setup"
     ]
   },
   {
-    "objectID": "pages/001-setup.html#option-b-pip",
-    "href": "pages/001-setup.html#option-b-pip",
-    "title": "Workspace Setup",
-    "section": "Option B — pip",
-    "text": "Option B — pip\nIf you have Python 3.9+ already:\npip install pandas matplotlib seaborn scikit-learn jupyterlab",
+    "objectID": "pages/001-setup.html#option-b-pixi",
+    "href": "pages/001-setup.html#option-b-pixi",
+    "title": "Python Environment Setup",
+    "section": "Option B — pixi",
+    "text": "Option B — pixi\nIn the previous section, we showed you how to open a terminal, create a folder, and move “into” the folder. You will need to do this for every data science project.\nNow that you are in this folder, you will want to install all the tools you need for your code to run, and to do your research. Virtual environments, which we create here, are a great way to keep all the tools you need organized alongside your code and separate from other projects.\n\n\n\n\n\n\nWhat is a package manager?\n\n\n\n\n\nA package manager is a tool that helps you install, update, and manage software libraries (called “packages”) for a programming language. Packages essentially contain chunks of code that you might find useful, that you don’t want to write yourself!\nFor most python projects, uv will be a great choice of package manager. For notes on when you may want to use other package managers, see here",
     "crumbs": [
-      "Workspace Setup"
+      "Python Environment Setup"
     ]
   },
   {
-    "objectID": "pages/001-setup.html#option-c-binder-no-installation",
-    "href": "pages/001-setup.html#option-c-binder-no-installation",
-    "title": "Workspace Setup",
-    "section": "Option C — Binder (No Installation)",
-    "text": "Option C — Binder (No Installation)\nClick the badge below to launch a pre-configured environment in your browser — no installation needed:\n\n\n\nBinder\n\n\n\n\n\n\n\n\nRequired packages\n\n\n\n\n\n\nPackage\nVersion\nPurpose\n\n\n\n\npandas\n≥ 2.0\nData manipulation\n\n\nmatplotlib\n≥ 3.7\nPlotting\n\n\nseaborn\n≥ 0.13\nStatistical visualisation\n\n\nscikit-learn\n≥ 1.4\nMachine learning\n\n\nnumpy\n≥ 1.26\nNumerical operations",
+    "objectID": "pages/001-setup.html#install-package-manager",
+    "href": "pages/001-setup.html#install-package-manager",
+    "title": "Python Environment Setup",
+    "section": "Install Package Manager",
+    "text": "Install Package Manager\nPackage manager installation should only need to be done once on your computer.\nInstructions are included below. If you encounter any issues, see here for more installation methods to try. Or contact the JGI team.",
     "crumbs": [
-      "Workspace Setup"
+      "Python Environment Setup"
+    ]
+  },
+  {
+    "objectID": "pages/001-setup.html#install-uv",
+    "href": "pages/001-setup.html#install-uv",
+    "title": "Python Environment Setup",
+    "section": "Install UV",
+    "text": "Install UV\n\nWindowsMacLinux\n\n\nOpen your Command Prompt and run:\npowershell -ExecutionPolicy ByPass -c \"irm https://astral.sh/uv/install.ps1 | iex\"\nIf this still does not work, please see the UV installation instructions.\n\n\nOpen Terminal and run:\ncurl -Ls https://astral.sh/uv/install.sh | bash\n\n\nOpen Terminal and run:\ncurl -Ls https://astral.sh/uv/install.sh | bash\n\n\n\nAfter installation, check that uv is available by typing uv --version, then pressing enter. You may need to restart your terminal for the changes to take effect.",
+    "crumbs": [
+      "Python Environment Setup"
+    ]
+  },
+  {
+    "objectID": "pages/001-setup.html#move-into-project-directory",
+    "href": "pages/001-setup.html#move-into-project-directory",
+    "title": "Python Environment Setup",
+    "section": "Move into Project Directory",
+    "text": "Move into Project Directory\nTo set up your Python environment, you need to be in your project directory. Follow these steps:\n\nOpen your terminal.\nCreate or navigate to your project directory.\n\nIf it is not clear how to do so, please refer to the previous section.\nTo check you are in the correct directory, enter the following command:\n\nWindowsMacLinux\n\n\ncd\n\n\npwd\n\n\npwd\n\n\n\n\nCreate a Virtual Environment\nEnter the following command to create a minimal virtual environment:\nuv init --bare\nThis will create a pyproject.toml file, which will record information on all of the packages you install in your virtual environment.\n\n\nInstall Packages\nFor all projects we need jupyterlab, this is where we edit code. This can be added to your project with this command:\nuv add jupyterlab\nFor the Introduction to Data Analysis in Python course, you would need the pandas and seaborn package. You can add these with:\nuv add pandas seaborn\nGenerally speaking, to add a package to your environment, you can use the following command:\nuv add &lt;package-name&gt;\nReplace &lt;package-name&gt; with the name of the package you want to install.",
+    "crumbs": [
+      "Python Environment Setup"
+    ]
+  },
+  {
+    "objectID": "pages/001-setup.html#opening-jupyterlab",
+    "href": "pages/001-setup.html#opening-jupyterlab",
+    "title": "Python Environment Setup",
+    "section": "Opening JupyterLab",
+    "text": "Opening JupyterLab\nNow you can open JupyterLab with:\nuv run jupyter lab\nThis will take some time, and you will see text being printed in the terminal. Once JupyterLab is running, a browser window should pop open. This window should like similar to the image below.\n\n\n\nJupyterLab Window",
+    "crumbs": [
+      "Python Environment Setup"
+    ]
+  },
+  {
+    "objectID": "pages/001-setup.html#create-a-notebook",
+    "href": "pages/001-setup.html#create-a-notebook",
+    "title": "Python Environment Setup",
+    "section": "Create a Notebook",
+    "text": "Create a Notebook\nTo create a notebook, click the “Notebook” icon in the JupyterLab launcher. The window should now look like this:\n\n\n\nJupyterLab Notebook, with key features highlighted with arrows and blue boxes.\n\n\nIn each cell, python code can be entered. It can be run by clicking the “Run” button or by pressing Shift + Enter.",
+    "crumbs": [
+      "Python Environment Setup"
+    ]
+  },
+  {
+    "objectID": "pages/001-setup.html#summary",
+    "href": "pages/001-setup.html#summary",
+    "title": "Python Environment Setup",
+    "section": "Summary",
+    "text": "Summary\nWell done, you have created an interactive JupyterLab environment for your Python project! You should now be able to follow along with our Python courses.\nThe steps in this page are crucial for setting up your Python environment effectively, and we recommend you follow these for your own projects, as well as for our courses.\n\n\n\n\n\n\nRequired packages\n\n\n\n\n\n\nPackage\nVersion\nPurpose\n\n\n\n\npandas\n≥ 2.0\nData manipulation\n\n\nmatplotlib\n≥ 3.7\nPlotting\n\n\nseaborn\n≥ 0.13\nStatistical visualisation\n\n\nscikit-learn\n≥ 1.4\nMachine learning\n\n\nnumpy\n≥ 1.26\nNumerical operations",
+    "crumbs": [
+      "Python Environment Setup"
     ]
   },
   {
     "objectID": "pages/001-setup.html#download-the-course-data",
     "href": "pages/001-setup.html#download-the-course-data",
-    "title": "Workspace Setup",
+    "title": "Python Environment Setup",
     "section": "Download the Course Data",
-    "text": "Download the Course Data\nDownload nhs_readmission.csv from the course repository and place it in your working directory. You can verify everything is set up correctly by running this in a new notebook cell:\nimport pandas as pd\nimport matplotlib.pyplot as plt\nimport seaborn as sns\nfrom sklearn.ensemble import RandomForestClassifier\n\nprint(\"All packages loaded successfully!\")\ndf = pd.read_csv(\"nhs_readmission.csv\")\nprint(f\"Dataset loaded: {df.shape[0]} patients, {df.shape[1]} columns\")\nIf you see the success messages, you’re ready to go!",
+    "text": "Download the Course Data\nDownload nhs_readmission.csv from the course repository and place it in your working directory. You can verify everything is set up correctly by running this in a new notebook cell:\nhttps://raw.githubusercontent.com/pauerola/nhs-data-science/refs/heads/main/data/nhs_readmission.csv\nimport pandas as pd\nimport matplotlib.pyplot as plt\nimport seaborn as sns\nfrom sklearn.ensemble import RandomForestClassifier\n\nprint(\"All packages loaded successfully!\")\ndf = pd.read_csv(\"https://raw.githubusercontent.com/pauerola/nhs-data-science/refs/heads/main/data/nhs_readmission.csv\")\nprint(f\"Dataset loaded: {df.shape[0]} patients, {df.shape[1]} columns\")\nIf you see the success messages, you’re ready to go!",
     "crumbs": [
-      "Workspace Setup"
+      "Python Environment Setup"
     ]
   },
   {
@@ -314,7 +364,7 @@
     "href": "index.html",
     "title": "Introduction",
     "section": "",
-    "text": "Welcome to Data Science in Pythonfor Healthcare — a 3-hour intensive course adapted from the University of Bristol’s Introduction to Python and Data Analysis in Python series (Parts 1 & 2), personalised with NHS clinical datasets and examples.\nThis course is designed for healthcare professionals with no prior programming experience. By the end of today’s session, you will be able to load, clean, and visualise datasets, and fit machine learning models that are directly relevant to clinical practice.",
+    "text": "Welcome to Data Science in Python for Healthcare. This course is designed for healthcare professionals with no prior programming experience. By the end of today’s session, you will be able to load, clean, and visualise datasets, and fit machine learning models that are directly relevant to clinical practice.",
     "crumbs": [
       "Introduction"
     ]
@@ -334,7 +384,7 @@
     "href": "index.html#how-to-read-this-course",
     "title": "Introduction",
     "section": "How to Read This Course",
-    "text": "How to Read This Course\nCode is shown in grey boxes with a blue left border:\nprint(\"Hello, NHS!\")\nOutput appears below:\nHello, NHS!\n\n\n\n\n\n\nExercise\n\n\n\nThese blue boxes contain exercises. Try to solve them before opening the answer.\n\n\n\n\n\n\n\n\nAnswer (click to open)\n\n\n\n\n\nThe answer appears here.\n\n\n\n\n\n\n\n\n\nImportant points\n\n\n\nGreen boxes highlight key clinical or technical concepts.\n\n\n\n\n\n\n\n\nClinical caution\n\n\n\nOrange/red boxes flag important clinical interpretation caveats.\n\n\n\nAbout this course\nThese course materials have been designed and developed by Pau Erola, PhD (Jean Golding Institute, University of Bristol).\nWe used the enhancement of AI in alignment with our institutional guidance:\n\nMicrosoft Copilot (GPT-4 & GPT-5)– Generation of synthetic datasets, documents and examples\nClaude (Sonnet 4) – Writing assistance, examples generation\n\nFor queries related to this course please contact jgi-training@bristol.ac.uk.",
+    "text": "How to Read This Course\nCode is shown in grey boxes with a blue left border:\nprint(\"Hello, NHS!\")\nOutput appears below:\nHello, NHS!\n\n\n\n\n\n\nExercise\n\n\n\nThese blue boxes contain exercises. Try to solve them before opening the answer.\n\n\n\n\n\n\n\n\nAnswer (click to open)\n\n\n\n\n\nThe answer appears here.\n\n\n\n\n\n\n\n\n\nImportant points\n\n\n\nGreen boxes highlight key clinical or technical concepts.\n\n\n\n\n\n\n\n\nClinical caution\n\n\n\nOrange/red boxes flag important clinical interpretation caveats.\n\n\n\nAbout this course\nThese course materials have been designed and developed by Pau Erola, PhD (Jean Golding Institute, University of Bristol).\nWe used the enhancement of AI in alignment with our institutional guidance:\n\nMicrosoft Copilot (GPT-4 & GPT-5)– Writing assistance\nClaude (Sonnet 4.6) – Generation of synthetic datasets, documents and examples\n\nFor queries related to this course please contact jgi-training@bristol.ac.uk.",
     "crumbs": [
       "Introduction"
     ]

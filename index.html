@@ -157,7 +157,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./pages/001-setup.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Workspace Setup</span></a>
+ <span class="menu-text">Python Environment Setup</span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -248,7 +248,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#about-this-course" id="toc-about-this-course" class="nav-link" data-scroll-target="#about-this-course">About this course</a></li>
   </ul></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/bristol-training/applied-data-analysis-in-python/edit/main/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/bristol-training/applied-data-analysis-in-python/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -272,8 +272,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>Welcome to <strong>Data Science in Pythonfor Healthcare</strong> — a 3-hour intensive course adapted from the University of Bristol’s <em>Introduction to Python</em> and <em>Data Analysis in Python</em> series (Parts 1 &amp; 2), personalised with NHS clinical datasets and examples.</p>
-<p>This course is designed for healthcare professionals with <strong>no prior programming experience</strong>. By the end of today’s session, you will be able to load, clean, and visualise datasets, and fit machine learning models that are directly relevant to clinical practice.</p>
+<p>Welcome to <strong>Data Science in Python for Healthcare</strong>. This course is designed for healthcare professionals with <strong>no prior programming experience</strong>. By the end of today’s session, you will be able to load, clean, and visualise datasets, and fit machine learning models that are directly relevant to clinical practice.</p>
 <section id="intended-learning-outcomes" class="level2">
 <h2 class="anchored" data-anchor-id="intended-learning-outcomes">Intended Learning Outcomes</h2>
 <p>By the end of this course, you will:</p>
@@ -351,8 +350,8 @@ Clinical caution
 <p>These course materials have been designed and developed by <strong>Pau Erola, PhD</strong> (Jean Golding Institute, University of Bristol).</p>
 <p>We used the enhancement of AI in alignment with our institutional guidance:</p>
 <ul>
-<li><strong>Microsoft Copilot (GPT-4 &amp; GPT-5)</strong>– Generation of synthetic datasets, documents and examples</li>
-<li><strong>Claude (Sonnet 4)</strong> – Writing assistance, examples generation</li>
+<li><strong>Microsoft Copilot (GPT-4 &amp; GPT-5)</strong>– Writing assistance</li>
+<li><strong>Claude (Sonnet 4.6)</strong> – Generation of synthetic datasets, documents and examples</li>
 </ul>
 <p>For queries related to this course please contact <a href="mailto:jgi-training@bristol.ac.uk">jgi-training@bristol.ac.uk</a>.</p>
 
@@ -453,7 +452,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
-      var filterRegex = new RegExp('/' + window.location.host + '/');
+      var filterRegex = new RegExp("https:\/\/pauerola\.github\.io\/nhs-data-science\/");
     var isInternal = (href) => {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }
@@ -798,7 +797,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/bristol-training/applied-data-analysis-in-python/edit/main/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/bristol-training/applied-data-analysis-in-python/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    </div>
     <div class="nav-footer-right">
       &nbsp;
     </div>
