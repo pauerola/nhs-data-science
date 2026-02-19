@@ -64,7 +64,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../pages/033-model-comparison.html" rel="next">
+<link href="../pages/901-summary.html" rel="next">
 <link href="../pages/031-logistic-regression.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
@@ -158,13 +158,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../pages/001-setup.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Python Environment Setup</span></a>
+ <span class="menu-text">Workspace Setup</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../pages/010-python-basics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Python Crash Course</span></a>
+ <span class="menu-text">Python Basics</span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -187,13 +187,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../pages/023-missing-data.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Missing Data</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../pages/024-eda-visualisation.html" class="sidebar-item-text sidebar-link">
+  <a href="../pages/023-eda-visualisation.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Exploratory Data Analysis &amp; Visualisation</span></a>
   </div>
 </li>
@@ -217,14 +211,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../pages/033-model-comparison.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Model Comparison</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="../pages/901-summary.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Course Summary</span></a>
+ <span class="menu-text">Summary</span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -243,17 +231,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#from-decision-trees-to-random-forest" id="toc-from-decision-trees-to-random-forest" class="nav-link active" data-scroll-target="#from-decision-trees-to-random-forest">From Decision Trees to Random Forest</a>
-  <ul class="collapse">
+  <li><a href="#from-decision-trees-to-random-forest" id="toc-from-decision-trees-to-random-forest" class="nav-link active" data-scroll-target="#from-decision-trees-to-random-forest">From Decision Trees to Random Forest</a></li>
   <li><a href="#why-random-forest-over-logistic-regression" id="toc-why-random-forest-over-logistic-regression" class="nav-link" data-scroll-target="#why-random-forest-over-logistic-regression">Why Random Forest over Logistic Regression?</a></li>
-  </ul></li>
   <li><a href="#fitting-a-random-forest" id="toc-fitting-a-random-forest" class="nav-link" data-scroll-target="#fitting-a-random-forest">Fitting a Random Forest</a></li>
   <li><a href="#evaluating-the-random-forest" id="toc-evaluating-the-random-forest" class="nav-link" data-scroll-target="#evaluating-the-random-forest">Evaluating the Random Forest</a></li>
-  <li><a href="#feature-importance" id="toc-feature-importance" class="nav-link" data-scroll-target="#feature-importance">Feature Importance</a>
-  <ul class="collapse">
+  <li><a href="#feature-importance" id="toc-feature-importance" class="nav-link" data-scroll-target="#feature-importance">Feature Importance</a></li>
   <li><a href="#method-1-mean-decrease-in-impurity-mdi" id="toc-method-1-mean-decrease-in-impurity-mdi" class="nav-link" data-scroll-target="#method-1-mean-decrease-in-impurity-mdi">Method 1: Mean Decrease in Impurity (MDI)</a></li>
   <li><a href="#method-2-permutation-importance-recommended" id="toc-method-2-permutation-importance-recommended" class="nav-link" data-scroll-target="#method-2-permutation-importance-recommended">Method 2: Permutation Importance (recommended)</a></li>
-  </ul></li>
   <li><a href="#hyperparameter-tuning" id="toc-hyperparameter-tuning" class="nav-link" data-scroll-target="#hyperparameter-tuning">Hyperparameter Tuning</a></li>
   </ul>
 </nav>
@@ -280,13 +264,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p><span class="time-badge">⏱ 25 minutes</span></p>
-<p><em>Adapted from <a href="https://bristol-training.github.io/data-analysis-python-2/">Data Analysis in Python (Part 2)</a> — Fitting data: classification, Choosing hyperparameters, and Feature Importance Analysis.</em></p>
+<p><span class="time-badge">⏱ 30 minutes</span></p>
 <hr>
-<section id="from-decision-trees-to-random-forest" class="level2">
-<h2 class="anchored" data-anchor-id="from-decision-trees-to-random-forest">From Decision Trees to Random Forest</h2>
+<section id="from-decision-trees-to-random-forest" class="level3">
+<h3 class="anchored" data-anchor-id="from-decision-trees-to-random-forest">From Decision Trees to Random Forest</h3>
 <p>A <strong>decision tree</strong> splits data into branches based on feature values, creating a flowchart-like structure. They are intuitive — think of them as a structured clinical decision pathway — but they overfit easily: a sufficiently deep tree will memorise the training data perfectly and fail on new patients.</p>
 <p>A <strong>Random Forest</strong> solves this by training <strong>many trees in parallel</strong>, each on a random subset of data and a random subset of features. The final prediction is the majority vote across all trees. This process is called <strong>bootstrap aggregation</strong> (bagging).</p>
+</section>
 <section id="why-random-forest-over-logistic-regression" class="level3">
 <h3 class="anchored" data-anchor-id="why-random-forest-over-logistic-regression">Why Random Forest over Logistic Regression?</h3>
 <table class="caption-top table">
@@ -341,9 +325,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tbody>
 </table>
 </section>
-</section>
-<section id="fitting-a-random-forest" class="level2">
-<h2 class="anchored" data-anchor-id="fitting-a-random-forest">Fitting a Random Forest</h2>
+<section id="fitting-a-random-forest" class="level3">
+<h3 class="anchored" data-anchor-id="fitting-a-random-forest">Fitting a Random Forest</h3>
 <p>Random Forest does not require feature scaling. We use the same feature matrix <code>X</code> as before, but no <code>StandardScaler</code>:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.ensemble <span class="im">import</span> RandomForestClassifier</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
@@ -369,8 +352,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Random Forest fitted."</span>)</span>
 <span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Number of trees: </span><span class="sc">{</span>rf<span class="sc">.</span>n_estimators<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="evaluating-the-random-forest" class="level2">
-<h2 class="anchored" data-anchor-id="evaluating-the-random-forest">Evaluating the Random Forest</h2>
+<section id="evaluating-the-random-forest" class="level3">
+<h3 class="anchored" data-anchor-id="evaluating-the-random-forest">Evaluating the Random Forest</h3>
 <div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>y_pred_rf <span class="op">=</span> rf.predict(X_test_rf)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>y_prob_rf  <span class="op">=</span> rf.predict_proba(X_test_rf)[:, <span class="dv">1</span>]</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -393,9 +376,10 @@ Not readmitted       0.91      0.76      0.83       770
 Random Forest AUC-ROC: 0.793</code></pre>
 <p>The Random Forest achieves AUC 0.793 vs 0.741 for Logistic Regression — a meaningful improvement, particularly in recall (catching readmissions).</p>
 </section>
-<section id="feature-importance" class="level2">
-<h2 class="anchored" data-anchor-id="feature-importance">Feature Importance</h2>
+<section id="feature-importance" class="level3">
+<h3 class="anchored" data-anchor-id="feature-importance">Feature Importance</h3>
 <p>One of the key advantages of Random Forest over black-box models is its built-in <strong>feature importance</strong> scores.</p>
+</section>
 <section id="method-1-mean-decrease-in-impurity-mdi" class="level3">
 <h3 class="anchored" data-anchor-id="method-1-mean-decrease-in-impurity-mdi">Method 1: Mean Decrease in Impurity (MDI)</h3>
 <p>MDI measures how much each feature reduces impurity (Gini index) across all splits in all trees. It is fast but biased towards high-cardinality (many unique values) numeric features.</p>
@@ -481,9 +465,8 @@ Feature importance ≠ causation
 </div>
 </div>
 </section>
-</section>
-<section id="hyperparameter-tuning" class="level2">
-<h2 class="anchored" data-anchor-id="hyperparameter-tuning">Hyperparameter Tuning</h2>
+<section id="hyperparameter-tuning" class="level3">
+<h3 class="anchored" data-anchor-id="hyperparameter-tuning">Hyperparameter Tuning</h3>
 <p>The key hyperparameters for Random Forest are:</p>
 <table class="caption-top table">
 <colgroup>
@@ -1025,8 +1008,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../pages/033-model-comparison.html" class="pagination-link" aria-label="Model Comparison">
-        <span class="nav-page-text">Model Comparison</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../pages/901-summary.html" class="pagination-link" aria-label="Summary">
+        <span class="nav-page-text">Summary</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

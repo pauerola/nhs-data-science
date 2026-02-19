@@ -158,13 +158,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../pages/001-setup.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Python Environment Setup</span></a>
+ <span class="menu-text">Workspace Setup</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../pages/010-python-basics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Python Crash Course</span></a>
+ <span class="menu-text">Python Basics</span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -187,13 +187,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../pages/023-missing-data.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Missing Data</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../pages/024-eda-visualisation.html" class="sidebar-item-text sidebar-link">
+  <a href="../pages/023-eda-visualisation.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Exploratory Data Analysis &amp; Visualisation</span></a>
   </div>
 </li>
@@ -217,14 +211,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../pages/033-model-comparison.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Model Comparison</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="../pages/901-summary.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Course Summary</span></a>
+ <span class="menu-text">Summary</span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -274,11 +262,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <p><span class="time-badge">⏱ 15 minutes</span></p>
-<p><em>Adapted from <a href="https://bristol-training.github.io/data-analysis-python-1/">Data Analysis in Python (Part 1)</a> — Introduction to Pandas.</em></p>
-<hr>
-<p><a href="https://pandas.pydata.org/">pandas</a> is the most widely used Python library for working with tabular data. You can think of it as Excel in code form — but far more powerful, reproducible, and scriptable.</p>
-<section id="why-pandas" class="level2">
-<h2 class="anchored" data-anchor-id="why-pandas">Why pandas?</h2>
+<p><a href="https://pandas.pydata.org/"><code>Pandas</code></a> is the most widely used Python library for working with tabular data. You can think of it as Excel in code form — but far more powerful, reproducible, and <em>scriptable</em>.</p>
+<section id="why-pandas" class="level3">
+<h3 class="anchored" data-anchor-id="why-pandas">Why pandas?</h3>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -316,8 +302,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tbody>
 </table>
 </section>
-<section id="the-dataframe" class="level2">
-<h2 class="anchored" data-anchor-id="the-dataframe">The DataFrame</h2>
+<section id="the-dataframe" class="level3">
+<h3 class="anchored" data-anchor-id="the-dataframe">The DataFrame</h3>
 <p>The core pandas object is the <strong>DataFrame</strong> — a two-dimensional table with labelled rows and columns.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -326,8 +312,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"patient_id"</span>:  [<span class="st">"P001"</span>, <span class="st">"P002"</span>, <span class="st">"P003"</span>, <span class="st">"P004"</span>],</span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"age"</span>:         [<span class="dv">67</span>, <span class="dv">45</span>, <span class="dv">82</span>, <span class="dv">55</span>],</span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"sex"</span>:         [<span class="st">"M"</span>, <span class="st">"F"</span>, <span class="st">"F"</span>, <span class="st">"M"</span>],</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"diagnosis"</span>:   [<span class="st">"E11"</span>, <span class="st">"I10"</span>, <span class="st">"J44"</span>, <span class="st">"E11"</span>],   <span class="co"># ICD-10 codes</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"hba1c"</span>:       [<span class="dv">71</span>, <span class="va">None</span>, <span class="dv">58</span>, <span class="dv">84</span>],              <span class="co"># mmol/mol; None = missing</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"diagnosis"</span>:   [<span class="st">"E11"</span>, <span class="st">"I10"</span>, <span class="st">"J44"</span>, <span class="st">"E11"</span>],  <span class="co"># ICD-10 codes</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"hba1c"</span>:       [<span class="dv">71</span>, <span class="va">None</span>, <span class="dv">58</span>, <span class="dv">84</span>],            <span class="co"># mmol/mol; None = missing</span></span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"readmitted"</span>:  [<span class="va">True</span>, <span class="va">False</span>, <span class="va">True</span>, <span class="va">False</span>],</span>
 <span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
@@ -360,8 +346,8 @@ Key vocabulary
 </div>
 </div>
 </section>
-<section id="accessing-columns" class="level2">
-<h2 class="anchored" data-anchor-id="accessing-columns">Accessing Columns</h2>
+<section id="accessing-columns" class="level3">
+<h3 class="anchored" data-anchor-id="accessing-columns">Accessing Columns</h3>
 <p>Select a single column using square brackets — this returns a <strong>Series</strong>:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>ages <span class="op">=</span> df[<span class="st">"age"</span>]</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(ages)</span>
@@ -381,8 +367,8 @@ Name: age, dtype: int64
 2       P003   82   F
 3       P004   55   M</code></pre>
 </section>
-<section id="quick-inspection-methods" class="level2">
-<h2 class="anchored" data-anchor-id="quick-inspection-methods">Quick Inspection Methods</h2>
+<section id="quick-inspection-methods" class="level3">
+<h3 class="anchored" data-anchor-id="quick-inspection-methods">Quick Inspection Methods</h3>
 <p>When you first receive a dataset, always run these four commands:</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.shape)           <span class="co"># (rows, columns)</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.dtypes)          <span class="co"># data type of each column</span></span>
@@ -439,8 +425,8 @@ Answer (click to open)
 </div>
 </div>
 </section>
-<section id="series-operations" class="level2">
-<h2 class="anchored" data-anchor-id="series-operations">Series Operations</h2>
+<section id="series-operations" class="level3">
+<h3 class="anchored" data-anchor-id="series-operations">Series Operations</h3>
 <p>A Series supports vectorised operations — you apply a function to every element at once, without a loop:</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Classify each patient's age in a single line</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>age_over_65 <span class="op">=</span> df[<span class="st">"age"</span>] <span class="op">&gt;</span> <span class="dv">65</span></span>
@@ -468,7 +454,7 @@ Important points
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Series operations are <strong>vectorised</strong> — they are applied to all elements simultaneously using optimised C code under the hood, making them much faster than Python <code>for</code> loops. For large NHS datasets with hundreds of thousands of rows, this matters.</p>
+<p>Series operations are <strong>vectorised</strong> — they are applied to all elements simultaneously using optimised C code under the hood, making them much faster than Python <code>for</code> loops. For large datasets with hundreds of thousands of rows, this matters.</p>
 </div>
 </div>
 
@@ -898,8 +884,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../pages/010-python-basics.html" class="pagination-link" aria-label="Python Crash Course">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Python Crash Course</span>
+      <a href="../pages/010-python-basics.html" class="pagination-link" aria-label="Python Basics">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Python Basics</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">

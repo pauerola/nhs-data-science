@@ -158,13 +158,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../pages/001-setup.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Python Environment Setup</span></a>
+ <span class="menu-text">Workspace Setup</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../pages/010-python-basics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Python Crash Course</span></a>
+ <span class="menu-text">Python Basics</span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -187,13 +187,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../pages/023-missing-data.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Missing Data</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../pages/024-eda-visualisation.html" class="sidebar-item-text sidebar-link">
+  <a href="../pages/023-eda-visualisation.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Exploratory Data Analysis &amp; Visualisation</span></a>
   </div>
 </li>
@@ -217,14 +211,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../pages/033-model-comparison.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Model Comparison</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="../pages/901-summary.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Course Summary</span></a>
+ <span class="menu-text">Summary</span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -243,20 +231,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#filtering-rows" id="toc-filtering-rows" class="nav-link active" data-scroll-target="#filtering-rows">Filtering Rows</a>
-  <ul class="collapse">
+  <li><a href="#filtering-rows" id="toc-filtering-rows" class="nav-link active" data-scroll-target="#filtering-rows">Filtering Rows</a></li>
   <li><a href="#single-condition" id="toc-single-condition" class="nav-link" data-scroll-target="#single-condition">Single condition</a></li>
   <li><a href="#multiple-conditions" id="toc-multiple-conditions" class="nav-link" data-scroll-target="#multiple-conditions">Multiple conditions</a></li>
   <li><a href="#filtering-on-missing-values" id="toc-filtering-on-missing-values" class="nav-link" data-scroll-target="#filtering-on-missing-values">Filtering on missing values</a></li>
-  </ul></li>
-  <li><a href="#handling-missing-data" id="toc-handling-missing-data" class="nav-link" data-scroll-target="#handling-missing-data">Handling Missing Data</a>
-  <ul class="collapse">
+  <li><a href="#handling-missing-data" id="toc-handling-missing-data" class="nav-link" data-scroll-target="#handling-missing-data">Handling Missing Data</a></li>
   <li><a href="#the-three-types-of-missingness" id="toc-the-three-types-of-missingness" class="nav-link" data-scroll-target="#the-three-types-of-missingness">The three types of missingness</a></li>
   <li><a href="#strategy-1-drop-rows-with-missing-values" id="toc-strategy-1-drop-rows-with-missing-values" class="nav-link" data-scroll-target="#strategy-1-drop-rows-with-missing-values">Strategy 1: Drop rows with missing values</a></li>
   <li><a href="#strategy-2-impute-with-the-median" id="toc-strategy-2-impute-with-the-median" class="nav-link" data-scroll-target="#strategy-2-impute-with-the-median">Strategy 2: Impute with the median</a></li>
   <li><a href="#strategy-3-indicator-column-recommended-for-mnar" id="toc-strategy-3-indicator-column-recommended-for-mnar" class="nav-link" data-scroll-target="#strategy-3-indicator-column-recommended-for-mnar">Strategy 3: Indicator column (recommended for MNAR)</a></li>
   <li><a href="#verify-the-data-is-clean" id="toc-verify-the-data-is-clean" class="nav-link" data-scroll-target="#verify-the-data-is-clean">Verify the data is clean</a></li>
-  </ul></li>
   </ul>
 </nav>
     </div>
@@ -283,11 +267,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <p><span class="time-badge">⏱ 15 minutes</span></p>
-<p><em>Adapted from <a href="https://bristol-training.github.io/data-analysis-python-1/">Data Analysis in Python (Part 1)</a> — Filtering data.</em></p>
-<hr>
-<section id="filtering-rows" class="level2">
-<h2 class="anchored" data-anchor-id="filtering-rows">Filtering Rows</h2>
+<section id="filtering-rows" class="level3">
+<h3 class="anchored" data-anchor-id="filtering-rows">Filtering Rows</h3>
 <p>Filtering in pandas works by passing a <strong>boolean condition</strong> inside square brackets. The condition produces a Series of <code>True</code>/<code>False</code> values — one per row — and pandas keeps only the <code>True</code> rows.</p>
+</section>
 <section id="single-condition" class="level3">
 <h3 class="anchored" data-anchor-id="single-condition">Single condition</h3>
 <div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># All patients aged over 65</span></span>
@@ -309,6 +292,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 12       1013   71   84.0               4
 18       1019   69    NaN               2
 ...</code></pre>
+<p>w</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Heart failure (I50) OR COPD (J44) patients with long stays</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>complex_patients <span class="op">=</span> df[</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    (df[<span class="st">"primary_diagnosis"</span>].isin([<span class="st">"I50"</span>, <span class="st">"J44"</span>])) <span class="op">&amp;</span> </span>
@@ -385,10 +369,10 @@ Answer (click to open)
 </div>
 </div>
 </section>
+<section id="handling-missing-data" class="level3">
+<h3 class="anchored" data-anchor-id="handling-missing-data">Handling Missing Data</h3>
+<p>Missing data is endemic in medical records. Understanding <em>why</em> data is missing matters as much as knowing <em>how</em> to handle it technically.</p>
 </section>
-<section id="handling-missing-data" class="level2">
-<h2 class="anchored" data-anchor-id="handling-missing-data">Handling Missing Data</h2>
-<p>Missing data is endemic in NHS records. Understanding <em>why</em> data is missing matters as much as knowing <em>how</em> to handle it technically.</p>
 <section id="the-three-types-of-missingness" class="level3">
 <h3 class="anchored" data-anchor-id="the-three-types-of-missingness">The three types of missingness</h3>
 <table class="caption-top table">
@@ -549,7 +533,6 @@ Answer (click to open)
 </div>
 
 
-</section>
 </section>
 
 </main> <!-- /main -->

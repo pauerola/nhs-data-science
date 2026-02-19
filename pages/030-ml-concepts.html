@@ -65,7 +65,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
 <link href="../pages/031-logistic-regression.html" rel="next">
-<link href="../pages/024-eda-visualisation.html" rel="prev">
+<link href="../pages/023-eda-visualisation.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -158,13 +158,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../pages/001-setup.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Python Environment Setup</span></a>
+ <span class="menu-text">Workspace Setup</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../pages/010-python-basics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Python Crash Course</span></a>
+ <span class="menu-text">Python Basics</span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -187,13 +187,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../pages/023-missing-data.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Missing Data</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../pages/024-eda-visualisation.html" class="sidebar-item-text sidebar-link">
+  <a href="../pages/023-eda-visualisation.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Exploratory Data Analysis &amp; Visualisation</span></a>
   </div>
 </li>
@@ -217,14 +211,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../pages/033-model-comparison.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Model Comparison</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="../pages/901-summary.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Course Summary</span></a>
+ <span class="menu-text">Summary</span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -243,22 +231,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#what-is-machine-learning" id="toc-what-is-machine-learning" class="nav-link active" data-scroll-target="#what-is-machine-learning">What is Machine Learning?</a></li>
-  <li><a href="#classification-vs-regression" id="toc-classification-vs-regression" class="nav-link" data-scroll-target="#classification-vs-regression">Classification vs Regression</a></li>
-  <li><a href="#the-machine-learning-pipeline" id="toc-the-machine-learning-pipeline" class="nav-link" data-scroll-target="#the-machine-learning-pipeline">The Machine Learning Pipeline</a>
-  <ul class="collapse">
+  <li><a href="#classification-vs-regression" id="toc-classification-vs-regression" class="nav-link active" data-scroll-target="#classification-vs-regression">Classification vs Regression</a></li>
+  <li><a href="#the-machine-learning-pipeline" id="toc-the-machine-learning-pipeline" class="nav-link" data-scroll-target="#the-machine-learning-pipeline">The Machine Learning Pipeline</a></li>
   <li><a href="#features-and-labels" id="toc-features-and-labels" class="nav-link" data-scroll-target="#features-and-labels">Features and labels</a></li>
   <li><a href="#train-test-split" id="toc-train-test-split" class="nav-link" data-scroll-target="#train-test-split">Train / Test split</a></li>
-  </ul></li>
-  <li><a href="#evaluating-classification-models" id="toc-evaluating-classification-models" class="nav-link" data-scroll-target="#evaluating-classification-models">Evaluating Classification Models</a>
-  <ul class="collapse">
+  <li><a href="#evaluating-classification-models" id="toc-evaluating-classification-models" class="nav-link" data-scroll-target="#evaluating-classification-models">Evaluating Classification Models</a></li>
   <li><a href="#the-confusion-matrix" id="toc-the-confusion-matrix" class="nav-link" data-scroll-target="#the-confusion-matrix">The confusion matrix</a></li>
-  </ul></li>
-  <li><a href="#feature-preparation" id="toc-feature-preparation" class="nav-link" data-scroll-target="#feature-preparation">Feature Preparation</a>
-  <ul class="collapse">
+  <li><a href="#feature-preparation" id="toc-feature-preparation" class="nav-link" data-scroll-target="#feature-preparation">Feature Preparation</a></li>
   <li><a href="#encode-categorical-variables" id="toc-encode-categorical-variables" class="nav-link" data-scroll-target="#encode-categorical-variables">1. Encode categorical variables</a></li>
   <li><a href="#scale-numeric-features-for-logistic-regression" id="toc-scale-numeric-features-for-logistic-regression" class="nav-link" data-scroll-target="#scale-numeric-features-for-logistic-regression">2. Scale numeric features (for logistic regression)</a></li>
-  </ul></li>
   </ul>
 </nav>
     </div>
@@ -285,19 +266,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <p><span class="time-badge">⏱ 10 minutes</span></p>
-<p>Before we fit any models, it’s essential to understand the conceptual framework. This section gives you the mental model you need to follow the next section.</p>
-<section id="what-is-machine-learning" class="level2">
-<h2 class="anchored" data-anchor-id="what-is-machine-learning">What is Machine Learning?</h2>
 <p>Machine learning (ML) is a set of techniques for building <strong>algorithms that learn from data</strong> — rather than algorithms that follow explicit rules written by a programmer.</p>
-<p>In clinical practice, you already use the output of ML models without knowing it:</p>
+<p>In clinical practice, you may be already using the output of ML models without knowing it:</p>
 <ul>
 <li><strong>QRISK3</strong> uses a statistical model (Cox regression) fitted on primary care data</li>
 <li><strong>Sepsis-3</strong> criteria were validated against survival data in ICU cohorts</li>
 </ul>
-<p>The difference today is that we are building the model ourselves, end to end.</p>
-</section>
-<section id="classification-vs-regression" class="level2">
-<h2 class="anchored" data-anchor-id="classification-vs-regression">Classification vs Regression</h2>
+<section id="classification-vs-regression" class="level3">
+<h3 class="anchored" data-anchor-id="classification-vs-regression">Classification vs Regression</h3>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 34%">
@@ -326,9 +302,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </table>
 <p>Today we focus on <strong>binary classification</strong> — predicting a Yes/No outcome.</p>
 </section>
-<section id="the-machine-learning-pipeline" class="level2">
-<h2 class="anchored" data-anchor-id="the-machine-learning-pipeline">The Machine Learning Pipeline</h2>
+<section id="the-machine-learning-pipeline" class="level3">
+<h3 class="anchored" data-anchor-id="the-machine-learning-pipeline">The Machine Learning Pipeline</h3>
 <pre><code>Raw data → Feature engineering → Train/Test split → Fit model → Evaluate → (optionally) Deploy</code></pre>
+</section>
 <section id="features-and-labels" class="level3">
 <h3 class="anchored" data-anchor-id="features-and-labels">Features and labels</h3>
 <ul>
@@ -367,9 +344,8 @@ Data leakage
 </div>
 </div>
 </section>
-</section>
-<section id="evaluating-classification-models" class="level2">
-<h2 class="anchored" data-anchor-id="evaluating-classification-models">Evaluating Classification Models</h2>
+<section id="evaluating-classification-models" class="level3">
+<h3 class="anchored" data-anchor-id="evaluating-classification-models">Evaluating Classification Models</h3>
 <p>Accuracy alone is misleading when classes are imbalanced (77% No, 23% Yes). A model that always predicts “No” achieves 77% accuracy but is clinically useless.</p>
 <p>The key metrics are:</p>
 <table class="caption-top table">
@@ -426,6 +402,7 @@ AUC-ROC in clinical context
 <p>An AUC of 0.70–0.80 is considered “acceptable” for clinical prediction models. QRISK3 achieves ~0.88 for cardiovascular events. Most published NHS readmission models achieve 0.65–0.75 AUC — moderate discrimination but clinically useful at scale.</p>
 </div>
 </div>
+</section>
 <section id="the-confusion-matrix" class="level3">
 <h3 class="anchored" data-anchor-id="the-confusion-matrix">The confusion matrix</h3>
 <p>The confusion matrix visualises all four possible outcomes (True/False Positive/Negative):</p>
@@ -436,10 +413,10 @@ Actual: Yes             FN                TP        ← Correctly caught readmis
                                  Miss (patient readmitted but not flagged)</code></pre>
 <p>In most NHS readmission models, we accept some false positives (over-referral) in exchange for higher sensitivity (catching more readmissions). The right trade-off depends on the cost of the intervention.</p>
 </section>
-</section>
-<section id="feature-preparation" class="level2">
-<h2 class="anchored" data-anchor-id="feature-preparation">Feature Preparation</h2>
+<section id="feature-preparation" class="level3">
+<h3 class="anchored" data-anchor-id="feature-preparation">Feature Preparation</h3>
 <p>Before fitting models, features need to be in a numeric format. Two steps are required:</p>
+</section>
 <section id="encode-categorical-variables" class="level3">
 <h3 class="anchored" data-anchor-id="encode-categorical-variables">1. Encode categorical variables</h3>
 <div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert sex (M/F) and diagnosis to numbers</span></span>
@@ -468,7 +445,6 @@ Always fit the scaler on training data only
 </div>
 
 
-</section>
 </section>
 
 </main> <!-- /main -->
@@ -894,7 +870,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../pages/024-eda-visualisation.html" class="pagination-link" aria-label="Exploratory Data Analysis &amp; Visualisation">
+      <a href="../pages/023-eda-visualisation.html" class="pagination-link" aria-label="Exploratory Data Analysis &amp; Visualisation">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Exploratory Data Analysis &amp; Visualisation</span>
       </a>          
   </div>

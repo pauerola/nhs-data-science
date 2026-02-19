@@ -187,13 +187,13 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../pages/001-setup.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Python Environment Setup</span></a>
+ <span class="menu-text">Workspace Setup</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../pages/010-python-basics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Python Crash Course</span></a>
+ <span class="menu-text">Python Basics</span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -216,13 +216,7 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../pages/023-missing-data.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Missing Data</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../pages/024-eda-visualisation.html" class="sidebar-item-text sidebar-link">
+  <a href="../pages/023-eda-visualisation.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Exploratory Data Analysis &amp; Visualisation</span></a>
   </div>
 </li>
@@ -246,14 +240,8 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../pages/033-model-comparison.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Model Comparison</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="../pages/901-summary.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Course Summary</span></a>
+ <span class="menu-text">Summary</span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -272,19 +260,15 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#why-logistic-regression" id="toc-why-logistic-regression" class="nav-link active" data-scroll-target="#why-logistic-regression">Why Logistic Regression?</a>
-  <ul class="collapse">
+  <li><a href="#why-logistic-regression" id="toc-why-logistic-regression" class="nav-link active" data-scroll-target="#why-logistic-regression">Why Logistic Regression?</a></li>
   <li><a href="#how-it-works" id="toc-how-it-works" class="nav-link" data-scroll-target="#how-it-works">How it works</a></li>
-  </ul></li>
   <li><a href="#preparing-the-features" id="toc-preparing-the-features" class="nav-link" data-scroll-target="#preparing-the-features">Preparing the Features</a></li>
   <li><a href="#fitting-the-model" id="toc-fitting-the-model" class="nav-link" data-scroll-target="#fitting-the-model">Fitting the Model</a></li>
-  <li><a href="#evaluating-the-model" id="toc-evaluating-the-model" class="nav-link" data-scroll-target="#evaluating-the-model">Evaluating the Model</a>
-  <ul class="collapse">
+  <li><a href="#evaluating-the-model" id="toc-evaluating-the-model" class="nav-link" data-scroll-target="#evaluating-the-model">Evaluating the Model</a></li>
   <li><a href="#predictions" id="toc-predictions" class="nav-link" data-scroll-target="#predictions">Predictions</a></li>
   <li><a href="#classification-report" id="toc-classification-report" class="nav-link" data-scroll-target="#classification-report">Classification report</a></li>
   <li><a href="#confusion-matrix" id="toc-confusion-matrix" class="nav-link" data-scroll-target="#confusion-matrix">Confusion matrix</a></li>
   <li><a href="#auc-roc-curve" id="toc-auc-roc-curve" class="nav-link" data-scroll-target="#auc-roc-curve">AUC-ROC curve</a></li>
-  </ul></li>
   <li><a href="#interpreting-coefficients-as-odds-ratios" id="toc-interpreting-coefficients-as-odds-ratios" class="nav-link" data-scroll-target="#interpreting-coefficients-as-odds-ratios">Interpreting Coefficients as Odds Ratios</a></li>
   </ul>
 </nav>
@@ -311,22 +295,23 @@ window.Quarto = {
 </header>
 
 
-<p><span class="time-badge">⏱ 25 minutes</span></p>
+<p><span class="time-badge">⏱ 30 minutes</span></p>
 <p><em>Adapted from <a href="https://bristol-training.github.io/data-analysis-python-2/">Data Analysis in Python (Part 2)</a> — Fitting data: regression, Testing your model, and the extra module Logistic regression - breast cancer classification.</em></p>
 <hr>
-<section id="why-logistic-regression" class="level2">
-<h2 class="anchored" data-anchor-id="why-logistic-regression">Why Logistic Regression?</h2>
+<section id="why-logistic-regression" class="level3">
+<h3 class="anchored" data-anchor-id="why-logistic-regression">Why Logistic Regression?</h3>
 <p>Logistic regression is the <strong>workhorse of clinical prediction modelling</strong>. It underpins QRISK3, the Framingham risk score, and hundreds of published clinical risk tools. Before reaching for complex models, logistic regression should always be your first attempt — it is interpretable, fast, and often surprisingly competitive.</p>
+</section>
 <section id="how-it-works" class="level3">
 <h3 class="anchored" data-anchor-id="how-it-works">How it works</h3>
 <p>Logistic regression models the <strong>log-odds</strong> of the outcome as a linear combination of features:</p>
 <p><span class="math display">\[\log\left(\frac{P(\text{readmitted})}{1 - P(\text{readmitted})}\right) = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \ldots\]</span></p>
 <p>Applying the inverse logistic (sigmoid) function gives a <strong>probability between 0 and 1</strong> for each patient.</p>
 </section>
-</section>
-<section id="preparing-the-features" class="level2">
-<h2 class="anchored" data-anchor-id="preparing-the-features">Preparing the Features</h2>
-<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<section id="preparing-the-features" class="level3">
+<h3 class="anchored" data-anchor-id="preparing-the-features">Preparing the Features</h3>
+<div id="a7a228d0" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
@@ -338,67 +323,258 @@ window.Quarto = {
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    roc_auc_score, RocCurveDisplay, ConfusionMatrixDisplay</span>
 <span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Select features</span></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>feature_cols <span class="op">=</span> [</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">"age"</span>, <span class="st">"charlson_index"</span>, <span class="st">"hba1c"</span>, <span class="st">"egfr"</span>, <span class="st">"bmi"</span>,</span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">"los_days"</span>, <span class="st">"ed_prior_year"</span>, <span class="st">"imd_decile"</span>,</span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">"hba1c_missing"</span>, <span class="st">"egfr_missing"</span>,   <span class="co"># missingness indicators</span></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">"sex"</span>, <span class="st">"primary_diagnosis"</span></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"https://raw.githubusercontent.com/pauerola/nhs-data-science/refs/heads/main/data/nhs_readmission.csv"</span>)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"hba1c_missing"</span>] <span class="op">=</span> df[<span class="st">"hba1c"</span>].isnull().astype(<span class="bu">int</span>)</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"hba1c"</span>] <span class="op">=</span> df[<span class="st">"hba1c"</span>].fillna(df[<span class="st">"hba1c"</span>].median())</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"egfr_missing"</span>] <span class="op">=</span> df[<span class="st">"egfr"</span>].isnull().astype(<span class="bu">int</span>)</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"egfr"</span>] <span class="op">=</span> df[<span class="st">"egfr"</span>].fillna(df[<span class="st">"egfr"</span>].median())</span>
 <span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Encode categoricals and create feature matrix</span></span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> pd.get_dummies(</span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>    df[feature_cols],</span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>    columns<span class="op">=</span>[<span class="st">"sex"</span>, <span class="st">"primary_diagnosis"</span>],</span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>    drop_first<span class="op">=</span><span class="va">True</span></span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="co"># Encode outcome as binary integer</span></span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> (df[<span class="st">"readmitted_30d"</span>] <span class="op">==</span> <span class="st">"Yes"</span>).astype(<span class="bu">int</span>)</span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Feature matrix shape: </span><span class="sc">{</span>X<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Positive class (readmitted): </span><span class="sc">{</span>y<span class="sc">.</span><span class="bu">sum</span>()<span class="sc">}</span><span class="ss"> / </span><span class="sc">{</span><span class="bu">len</span>(y)<span class="sc">}</span><span class="ss"> (</span><span class="sc">{</span>y<span class="sc">.</span>mean()<span class="sc">:.1%}</span><span class="ss">)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Select features</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>feature_cols <span class="op">=</span> [</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>    <span class="st">"age"</span>, <span class="st">"charlson_index"</span>, <span class="st">"hba1c"</span>, <span class="st">"egfr"</span>, <span class="st">"bmi"</span>,</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>    <span class="st">"los_days"</span>, <span class="st">"ed_prior_year"</span>, <span class="st">"imd_decile"</span>,</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>    <span class="st">"hba1c_missing"</span>, <span class="st">"egfr_missing"</span>,   <span class="co"># missingness indicators</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>    <span class="st">"sex"</span>, <span class="st">"primary_diagnosis"</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="co"># Encode categoricals and create feature matrix</span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> pd.get_dummies(</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>    df[feature_cols],</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>    columns<span class="op">=</span>[<span class="st">"sex"</span>, <span class="st">"primary_diagnosis"</span>],</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>    drop_first<span class="op">=</span><span class="va">True</span></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="co"># Encode outcome as binary integer</span></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> (df[<span class="st">"readmitted_30d"</span>] <span class="op">==</span> <span class="st">"Yes"</span>).astype(<span class="bu">int</span>)</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Feature matrix shape: </span><span class="sc">{</span>X<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Positive class (readmitted): </span><span class="sc">{</span>y<span class="sc">.</span><span class="bu">sum</span>()<span class="sc">}</span><span class="ss"> / </span><span class="sc">{</span><span class="bu">len</span>(y)<span class="sc">}</span><span class="ss"> (</span><span class="sc">{</span>y<span class="sc">.</span>mean()<span class="sc">:.1%}</span><span class="ss">)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Feature matrix shape: (5000, 20)
+Positive class (readmitted): 925 / 5000 (18.5%)</code></pre>
+</div>
+</div>
 <pre><code>Feature matrix shape: (5000, 28)
 Positive class (readmitted): 1150 / 5000 (23.0%)</code></pre>
-<div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Train / test split — stratified to preserve class balance</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    X, y, test_size<span class="op">=</span><span class="fl">0.2</span>, random_state<span class="op">=</span><span class="dv">42</span>, stratify<span class="op">=</span>y</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Training: </span><span class="sc">{</span><span class="bu">len</span>(X_train)<span class="sc">}</span><span class="ss"> patients (</span><span class="sc">{</span>y_train<span class="sc">.</span>mean()<span class="sc">:.1%}</span><span class="ss"> readmitted)"</span>)</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Test:     </span><span class="sc">{</span><span class="bu">len</span>(X_test)<span class="sc">}</span><span class="ss"> patients (</span><span class="sc">{</span>y_test<span class="sc">.</span>mean()<span class="sc">:.1%}</span><span class="ss"> readmitted)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="9d1aaeb4" class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Train / test split — stratified to preserve class balance</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    X, y, test_size<span class="op">=</span><span class="fl">0.2</span>, random_state<span class="op">=</span><span class="dv">42</span>, stratify<span class="op">=</span>y</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Training: </span><span class="sc">{</span><span class="bu">len</span>(X_train)<span class="sc">}</span><span class="ss"> patients (</span><span class="sc">{</span>y_train<span class="sc">.</span>mean()<span class="sc">:.1%}</span><span class="ss"> readmitted)"</span>)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Test:     </span><span class="sc">{</span><span class="bu">len</span>(X_test)<span class="sc">}</span><span class="ss"> patients (</span><span class="sc">{</span>y_test<span class="sc">.</span>mean()<span class="sc">:.1%}</span><span class="ss"> readmitted)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Training: 4000 patients (18.5% readmitted)
+Test:     1000 patients (18.5% readmitted)</code></pre>
+</div>
+</div>
 <pre><code>Training: 4000 patients (23.0% readmitted)
 Test:     1000 patients (23.0% readmitted)</code></pre>
-<div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Scale numeric features (required for logistic regression)</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>scaler <span class="op">=</span> StandardScaler()</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>X_train_s <span class="op">=</span> scaler.fit_transform(X_train)</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>X_test_s  <span class="op">=</span> scaler.transform(X_test)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="6fda3f02" class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Scale numeric features (required for logistic regression)</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>scaler <span class="op">=</span> StandardScaler()</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>X_train_s <span class="op">=</span> scaler.fit_transform(X_train)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>X_test_s  <span class="op">=</span> scaler.transform(X_test)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
-<section id="fitting-the-model" class="level2">
-<h2 class="anchored" data-anchor-id="fitting-the-model">Fitting the Model</h2>
-<div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>lr <span class="op">=</span> LogisticRegression(</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    max_iter<span class="op">=</span><span class="dv">1000</span>,          <span class="co"># enough iterations to converge</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    class_weight<span class="op">=</span><span class="st">"balanced"</span>, <span class="co"># upweight minority class (readmitted)</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    random_state<span class="op">=</span><span class="dv">42</span>,</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    C<span class="op">=</span><span class="fl">1.0</span>                   <span class="co"># regularisation strength (default)</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>lr.fit(X_train_s, y_train)</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Model fitted successfully."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="fitting-the-model" class="level3">
+<h3 class="anchored" data-anchor-id="fitting-the-model">Fitting the Model</h3>
+<div id="42254d18" class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>lr <span class="op">=</span> LogisticRegression(</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    max_iter<span class="op">=</span><span class="dv">1000</span>,          <span class="co"># enough iterations to converge</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    class_weight<span class="op">=</span><span class="st">"balanced"</span>, <span class="co"># upweight minority class (readmitted)</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    random_state<span class="op">=</span><span class="dv">42</span>,</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    C<span class="op">=</span><span class="fl">1.0</span>                   <span class="co"># regularisation strength (default)</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>lr.fit(X_train_s, y_train)</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Model fitted successfully."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<div class="ansi-escaped-output">
+<pre><span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">ValueError</span>                                Traceback (most recent call last)
+<span class="ansi-cyan-fg">Cell</span><span class="ansi-cyan-fg"> </span><span class="ansi-green-fg">In[4]</span><span class="ansi-green-fg">, line 8</span>
+<span class="ansi-green-fg">      1</span> lr = LogisticRegression(
+<span class="ansi-green-fg">      2</span>     max_iter=<span class="ansi-green-fg">1000</span>,          <span style="font-style:italic;color:rgb(95,135,135)"># enough iterations to converge</span>
+<span class="ansi-green-fg">      3</span>     class_weight=<span class="ansi-yellow-fg">"</span><span class="ansi-yellow-fg">balanced</span><span class="ansi-yellow-fg">"</span>, <span style="font-style:italic;color:rgb(95,135,135)"># upweight minority class (readmitted)</span>
+<span class="ansi-green-fg">      4</span>     random_state=<span class="ansi-green-fg">42</span>,
+<span class="ansi-green-fg">      5</span>     C=<span class="ansi-green-fg">1.0</span>                   <span style="font-style:italic;color:rgb(95,135,135)"># regularisation strength (default)</span>
+<span class="ansi-green-fg">      6</span> )
+<span class="ansi-green-fg">----&gt; </span><span class="ansi-green-fg">8</span> lr.fit(X_train_s, y_train)
+<span class="ansi-green-fg">      9</span> <span style="color:rgb(0,135,0)">print</span>(<span class="ansi-yellow-fg">"</span><span class="ansi-yellow-fg">Model fitted successfully.</span><span class="ansi-yellow-fg">"</span>)
+
+<span class="ansi-cyan-fg">File </span><span class="ansi-green-fg">~/miniforge3/lib/python3.12/site-packages/sklearn/base.py:1389</span>, in <span class="ansi-cyan-fg">_fit_context.&lt;locals&gt;.decorator.&lt;locals&gt;.wrapper</span><span class="ansi-blue-fg">(estimator, *args, **kwargs)</span>
+<span class="ansi-green-fg">   1382</span>     estimator._validate_params()
+<span class="ansi-green-fg">   1384</span> <span style="font-weight:bold;color:rgb(0,135,0)">with</span> config_context(
+<span class="ansi-green-fg">   1385</span>     skip_parameter_validation=(
+<span class="ansi-green-fg">   1386</span>         prefer_skip_nested_validation <span style="font-weight:bold;color:rgb(175,0,255)">or</span> global_skip_validation
+<span class="ansi-green-fg">   1387</span>     )
+<span class="ansi-green-fg">   1388</span> ):
+<span class="ansi-green-fg">-&gt; </span><span class="ansi-green-fg">1389</span>     <span style="font-weight:bold;color:rgb(0,135,0)">return</span> fit_method(estimator, *args, **kwargs)
+
+<span class="ansi-cyan-fg">File </span><span class="ansi-green-fg">~/miniforge3/lib/python3.12/site-packages/sklearn/linear_model/_logistic.py:1222</span>, in <span class="ansi-cyan-fg">LogisticRegression.fit</span><span class="ansi-blue-fg">(self, X, y, sample_weight)</span>
+<span class="ansi-green-fg">   1219</span> <span style="font-weight:bold;color:rgb(0,135,0)">else</span>:
+<span class="ansi-green-fg">   1220</span>     _dtype = [np.float64, np.float32]
+<span class="ansi-green-fg">-&gt; </span><span class="ansi-green-fg">1222</span> X, y = validate_data(
+<span class="ansi-green-fg">   1223</span>     <span style="color:rgb(0,135,0)">self</span>,
+<span class="ansi-green-fg">   1224</span>     X,
+<span class="ansi-green-fg">   1225</span>     y,
+<span class="ansi-green-fg">   1226</span>     accept_sparse=<span class="ansi-yellow-fg">"</span><span class="ansi-yellow-fg">csr</span><span class="ansi-yellow-fg">"</span>,
+<span class="ansi-green-fg">   1227</span>     dtype=_dtype,
+<span class="ansi-green-fg">   1228</span>     order=<span class="ansi-yellow-fg">"</span><span class="ansi-yellow-fg">C</span><span class="ansi-yellow-fg">"</span>,
+<span class="ansi-green-fg">   1229</span>     accept_large_sparse=solver <span style="font-weight:bold;color:rgb(175,0,255)">not</span> <span style="font-weight:bold;color:rgb(175,0,255)">in</span> [<span class="ansi-yellow-fg">"</span><span class="ansi-yellow-fg">liblinear</span><span class="ansi-yellow-fg">"</span>, <span class="ansi-yellow-fg">"</span><span class="ansi-yellow-fg">sag</span><span class="ansi-yellow-fg">"</span>, <span class="ansi-yellow-fg">"</span><span class="ansi-yellow-fg">saga</span><span class="ansi-yellow-fg">"</span>],
+<span class="ansi-green-fg">   1230</span> )
+<span class="ansi-green-fg">   1231</span> check_classification_targets(y)
+<span class="ansi-green-fg">   1232</span> <span style="color:rgb(0,135,0)">self</span>.classes_ = np.unique(y)
+
+<span class="ansi-cyan-fg">File </span><span class="ansi-green-fg">~/miniforge3/lib/python3.12/site-packages/sklearn/utils/validation.py:2961</span>, in <span class="ansi-cyan-fg">validate_data</span><span class="ansi-blue-fg">(_estimator, X, y, reset, validate_separately, skip_check_array, **check_params)</span>
+<span class="ansi-green-fg">   2959</span>         y = check_array(y, input_name=<span class="ansi-yellow-fg">"</span><span class="ansi-yellow-fg">y</span><span class="ansi-yellow-fg">"</span>, **check_y_params)
+<span class="ansi-green-fg">   2960</span>     <span style="font-weight:bold;color:rgb(0,135,0)">else</span>:
+<span class="ansi-green-fg">-&gt; </span><span class="ansi-green-fg">2961</span>         X, y = check_X_y(X, y, **check_params)
+<span class="ansi-green-fg">   2962</span>     out = X, y
+<span class="ansi-green-fg">   2964</span> <span style="font-weight:bold;color:rgb(0,135,0)">if</span> <span style="font-weight:bold;color:rgb(175,0,255)">not</span> no_val_X <span style="font-weight:bold;color:rgb(175,0,255)">and</span> check_params.get(<span class="ansi-yellow-fg">"</span><span class="ansi-yellow-fg">ensure_2d</span><span class="ansi-yellow-fg">"</span>, <span style="font-weight:bold;color:rgb(0,135,0)">True</span>):
+
+<span class="ansi-cyan-fg">File </span><span class="ansi-green-fg">~/miniforge3/lib/python3.12/site-packages/sklearn/utils/validation.py:1370</span>, in <span class="ansi-cyan-fg">check_X_y</span><span class="ansi-blue-fg">(X, y, accept_sparse, accept_large_sparse, dtype, order, copy, force_writeable, force_all_finite, ensure_all_finite, ensure_2d, allow_nd, multi_output, ensure_min_samples, ensure_min_features, y_numeric, estimator)</span>
+<span class="ansi-green-fg">   1364</span>     <span style="font-weight:bold;color:rgb(0,135,0)">raise</span> <span style="font-weight:bold;color:rgb(215,95,95)">ValueError</span>(
+<span class="ansi-green-fg">   1365</span>         <span class="ansi-yellow-fg">f</span><span class="ansi-yellow-fg">"</span><span style="font-weight:bold;color:rgb(175,95,135)">{</span>estimator_name<span style="font-weight:bold;color:rgb(175,95,135)">}</span><span class="ansi-yellow-fg"> requires y to be passed, but the target y is None</span><span class="ansi-yellow-fg">"</span>
+<span class="ansi-green-fg">   1366</span>     )
+<span class="ansi-green-fg">   1368</span> ensure_all_finite = _deprecate_force_all_finite(force_all_finite, ensure_all_finite)
+<span class="ansi-green-fg">-&gt; </span><span class="ansi-green-fg">1370</span> X = check_array(
+<span class="ansi-green-fg">   1371</span>     X,
+<span class="ansi-green-fg">   1372</span>     accept_sparse=accept_sparse,
+<span class="ansi-green-fg">   1373</span>     accept_large_sparse=accept_large_sparse,
+<span class="ansi-green-fg">   1374</span>     dtype=dtype,
+<span class="ansi-green-fg">   1375</span>     order=order,
+<span class="ansi-green-fg">   1376</span>     copy=copy,
+<span class="ansi-green-fg">   1377</span>     force_writeable=force_writeable,
+<span class="ansi-green-fg">   1378</span>     ensure_all_finite=ensure_all_finite,
+<span class="ansi-green-fg">   1379</span>     ensure_2d=ensure_2d,
+<span class="ansi-green-fg">   1380</span>     allow_nd=allow_nd,
+<span class="ansi-green-fg">   1381</span>     ensure_min_samples=ensure_min_samples,
+<span class="ansi-green-fg">   1382</span>     ensure_min_features=ensure_min_features,
+<span class="ansi-green-fg">   1383</span>     estimator=estimator,
+<span class="ansi-green-fg">   1384</span>     input_name=<span class="ansi-yellow-fg">"</span><span class="ansi-yellow-fg">X</span><span class="ansi-yellow-fg">"</span>,
+<span class="ansi-green-fg">   1385</span> )
+<span class="ansi-green-fg">   1387</span> y = _check_y(y, multi_output=multi_output, y_numeric=y_numeric, estimator=estimator)
+<span class="ansi-green-fg">   1389</span> check_consistent_length(X, y)
+
+<span class="ansi-cyan-fg">File </span><span class="ansi-green-fg">~/miniforge3/lib/python3.12/site-packages/sklearn/utils/validation.py:1107</span>, in <span class="ansi-cyan-fg">check_array</span><span class="ansi-blue-fg">(array, accept_sparse, accept_large_sparse, dtype, order, copy, force_writeable, force_all_finite, ensure_all_finite, ensure_non_negative, ensure_2d, allow_nd, ensure_min_samples, ensure_min_features, estimator, input_name)</span>
+<span class="ansi-green-fg">   1101</span>     <span style="font-weight:bold;color:rgb(0,135,0)">raise</span> <span style="font-weight:bold;color:rgb(215,95,95)">ValueError</span>(
+<span class="ansi-green-fg">   1102</span>         <span class="ansi-yellow-fg">"</span><span class="ansi-yellow-fg">Found array with dim </span><span style="font-weight:bold;color:rgb(175,95,135)">%d</span><span class="ansi-yellow-fg">. </span><span style="font-weight:bold;color:rgb(175,95,135)">%s</span><span class="ansi-yellow-fg"> expected &lt;= 2.</span><span class="ansi-yellow-fg">"</span>
+<span class="ansi-green-fg">   1103</span>         % (array.ndim, estimator_name)
+<span class="ansi-green-fg">   1104</span>     )
+<span class="ansi-green-fg">   1106</span> <span style="font-weight:bold;color:rgb(0,135,0)">if</span> ensure_all_finite:
+<span class="ansi-green-fg">-&gt; </span><span class="ansi-green-fg">1107</span>     _assert_all_finite(
+<span class="ansi-green-fg">   1108</span>         array,
+<span class="ansi-green-fg">   1109</span>         input_name=input_name,
+<span class="ansi-green-fg">   1110</span>         estimator_name=estimator_name,
+<span class="ansi-green-fg">   1111</span>         allow_nan=ensure_all_finite == <span class="ansi-yellow-fg">"</span><span class="ansi-yellow-fg">allow-nan</span><span class="ansi-yellow-fg">"</span>,
+<span class="ansi-green-fg">   1112</span>     )
+<span class="ansi-green-fg">   1114</span> <span style="font-weight:bold;color:rgb(0,135,0)">if</span> copy:
+<span class="ansi-green-fg">   1115</span>     <span style="font-weight:bold;color:rgb(0,135,0)">if</span> _is_numpy_namespace(xp):
+<span class="ansi-green-fg">   1116</span>         <span style="font-style:italic;color:rgb(95,135,135)"># only make a copy if `array` and `array_orig` may share memory`</span>
+
+<span class="ansi-cyan-fg">File </span><span class="ansi-green-fg">~/miniforge3/lib/python3.12/site-packages/sklearn/utils/validation.py:120</span>, in <span class="ansi-cyan-fg">_assert_all_finite</span><span class="ansi-blue-fg">(X, allow_nan, msg_dtype, estimator_name, input_name)</span>
+<span class="ansi-green-fg">    117</span> <span style="font-weight:bold;color:rgb(0,135,0)">if</span> first_pass_isfinite:
+<span class="ansi-green-fg">    118</span>     <span style="font-weight:bold;color:rgb(0,135,0)">return</span>
+<span class="ansi-green-fg">--&gt; </span><span class="ansi-green-fg">120</span> _assert_all_finite_element_wise(
+<span class="ansi-green-fg">    121</span>     X,
+<span class="ansi-green-fg">    122</span>     xp=xp,
+<span class="ansi-green-fg">    123</span>     allow_nan=allow_nan,
+<span class="ansi-green-fg">    124</span>     msg_dtype=msg_dtype,
+<span class="ansi-green-fg">    125</span>     estimator_name=estimator_name,
+<span class="ansi-green-fg">    126</span>     input_name=input_name,
+<span class="ansi-green-fg">    127</span> )
+
+<span class="ansi-cyan-fg">File </span><span class="ansi-green-fg">~/miniforge3/lib/python3.12/site-packages/sklearn/utils/validation.py:169</span>, in <span class="ansi-cyan-fg">_assert_all_finite_element_wise</span><span class="ansi-blue-fg">(X, xp, allow_nan, msg_dtype, estimator_name, input_name)</span>
+<span class="ansi-green-fg">    152</span> <span style="font-weight:bold;color:rgb(0,135,0)">if</span> estimator_name <span style="font-weight:bold;color:rgb(175,0,255)">and</span> input_name == <span class="ansi-yellow-fg">"</span><span class="ansi-yellow-fg">X</span><span class="ansi-yellow-fg">"</span> <span style="font-weight:bold;color:rgb(175,0,255)">and</span> has_nan_error:
+<span class="ansi-green-fg">    153</span>     <span style="font-style:italic;color:rgb(95,135,135)"># Improve the error message on how to handle missing values in</span>
+<span class="ansi-green-fg">    154</span>     <span style="font-style:italic;color:rgb(95,135,135)"># scikit-learn.</span>
+<span class="ansi-green-fg">    155</span>     msg_err += (
+<span class="ansi-green-fg">    156</span>         <span class="ansi-yellow-fg">f</span><span class="ansi-yellow-fg">"</span><span style="font-weight:bold;color:rgb(175,95,0)">\n</span><span style="font-weight:bold;color:rgb(175,95,135)">{</span>estimator_name<span style="font-weight:bold;color:rgb(175,95,135)">}</span><span class="ansi-yellow-fg"> does not accept missing values</span><span class="ansi-yellow-fg">"</span>
+<span class="ansi-green-fg">    157</span>         <span class="ansi-yellow-fg">"</span><span class="ansi-yellow-fg"> encoded as NaN natively. For supervised learning, you might want</span><span class="ansi-yellow-fg">"</span>
+<span class="ansi-green-fg">   (...)</span><span class="ansi-green-fg">    167</span>         <span class="ansi-yellow-fg">"</span><span class="ansi-yellow-fg">#estimators-that-handle-nan-values</span><span class="ansi-yellow-fg">"</span>
+<span class="ansi-green-fg">    168</span>     )
+<span class="ansi-green-fg">--&gt; </span><span class="ansi-green-fg">169</span> <span style="font-weight:bold;color:rgb(0,135,0)">raise</span> <span style="font-weight:bold;color:rgb(215,95,95)">ValueError</span>(msg_err)
+
+<span class="ansi-red-fg">ValueError</span>: Input X contains NaN.
+LogisticRegression does not accept missing values encoded as NaN natively. For supervised learning, you might want to consider sklearn.ensemble.HistGradientBoostingClassifier and Regressor which accept missing values encoded as NaNs natively. Alternatively, it is possible to preprocess the data, for instance by using an imputer transformer in a pipeline or drop samples with missing values. See https://scikit-learn.org/stable/modules/impute.html You can find a list of all estimators that handle NaN values at the following page: https://scikit-learn.org/stable/modules/impute.html#estimators-that-handle-nan-values</pre>
+</div>
+</div>
+</div>
 </section>
-<section id="evaluating-the-model" class="level2">
-<h2 class="anchored" data-anchor-id="evaluating-the-model">Evaluating the Model</h2>
+<section id="evaluating-the-model" class="level3">
+<h3 class="anchored" data-anchor-id="evaluating-the-model">Evaluating the Model</h3>
+</section>
 <section id="predictions" class="level3">
 <h3 class="anchored" data-anchor-id="predictions">Predictions</h3>
-<div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>y_pred <span class="op">=</span> lr.predict(X_test_s)           <span class="co"># class predictions (0 or 1)</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>y_prob <span class="op">=</span> lr.predict_proba(X_test_s)[:, <span class="dv">1</span>]  <span class="co"># probability of readmission</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="c08c8588" class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>y_pred <span class="op">=</span> lr.predict(X_test_s)           <span class="co"># class predictions (0 or 1)</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>y_prob <span class="op">=</span> lr.predict_proba(X_test_s)[:, <span class="dv">1</span>]  <span class="co"># probability of readmission</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<div class="ansi-escaped-output">
+<pre><span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">NotFittedError</span>                            Traceback (most recent call last)
+<span class="ansi-cyan-fg">Cell</span><span class="ansi-cyan-fg"> </span><span class="ansi-green-fg">In[5]</span><span class="ansi-green-fg">, line 1</span>
+<span class="ansi-green-fg">----&gt; </span><span class="ansi-green-fg">1</span> y_pred = lr.predict(X_test_s)           <span style="font-style:italic;color:rgb(95,135,135)"># class predictions (0 or 1)</span>
+<span class="ansi-green-fg">      2</span> y_prob = lr.predict_proba(X_test_s)[:, <span class="ansi-green-fg">1</span>]
+
+<span class="ansi-cyan-fg">File </span><span class="ansi-green-fg">~/miniforge3/lib/python3.12/site-packages/sklearn/linear_model/_base.py:374</span>, in <span class="ansi-cyan-fg">LinearClassifierMixin.predict</span><span class="ansi-blue-fg">(self, X)</span>
+<span class="ansi-green-fg">    360</span> <span style="font-style:italic" class="ansi-yellow-fg">"""</span>
+<span class="ansi-green-fg">    361</span> <span style="font-style:italic" class="ansi-yellow-fg">Predict class labels for samples in X.</span>
+<span class="ansi-green-fg">    362</span> 
+<span class="ansi-green-fg">   (...)</span><span class="ansi-green-fg">    371</span> <span style="font-style:italic" class="ansi-yellow-fg">    Vector containing the class labels for each sample.</span>
+<span class="ansi-green-fg">    372</span> <span style="font-style:italic" class="ansi-yellow-fg">"""</span>
+<span class="ansi-green-fg">    373</span> xp, _ = get_namespace(X)
+<span class="ansi-green-fg">--&gt; </span><span class="ansi-green-fg">374</span> scores = <span style="color:rgb(0,135,0)">self</span>.decision_function(X)
+<span class="ansi-green-fg">    375</span> <span style="font-weight:bold;color:rgb(0,135,0)">if</span> <span style="color:rgb(0,135,0)">len</span>(scores.shape) == <span class="ansi-green-fg">1</span>:
+<span class="ansi-green-fg">    376</span>     indices = xp.astype(scores &gt; <span class="ansi-green-fg">0</span>, indexing_dtype(xp))
+
+<span class="ansi-cyan-fg">File </span><span class="ansi-green-fg">~/miniforge3/lib/python3.12/site-packages/sklearn/linear_model/_base.py:348</span>, in <span class="ansi-cyan-fg">LinearClassifierMixin.decision_function</span><span class="ansi-blue-fg">(self, X)</span>
+<span class="ansi-green-fg">    329</span> <span style="font-weight:bold;color:rgb(0,135,0)">def</span><span style="color:rgb(188,188,188)"> </span><span class="ansi-blue-fg">decision_function</span>(<span style="color:rgb(0,135,0)">self</span>, X):
+<span class="ansi-green-fg">    330</span> <span style="color:rgb(188,188,188)">    </span><span style="font-style:italic" class="ansi-yellow-fg">"""</span>
+<span class="ansi-green-fg">    331</span> <span style="font-style:italic" class="ansi-yellow-fg">    Predict confidence scores for samples.</span>
+<span class="ansi-green-fg">    332</span> 
+<span class="ansi-green-fg">   (...)</span><span class="ansi-green-fg">    346</span> <span style="font-style:italic" class="ansi-yellow-fg">        this class would be predicted.</span>
+<span class="ansi-green-fg">    347</span> <span style="font-style:italic" class="ansi-yellow-fg">    """</span>
+<span class="ansi-green-fg">--&gt; </span><span class="ansi-green-fg">348</span>     check_is_fitted(<span style="color:rgb(0,135,0)">self</span>)
+<span class="ansi-green-fg">    349</span>     xp, _ = get_namespace(X)
+<span class="ansi-green-fg">    351</span>     X = validate_data(<span style="color:rgb(0,135,0)">self</span>, X, accept_sparse=<span class="ansi-yellow-fg">"</span><span class="ansi-yellow-fg">csr</span><span class="ansi-yellow-fg">"</span>, reset=<span style="font-weight:bold;color:rgb(0,135,0)">False</span>)
+
+<span class="ansi-cyan-fg">File </span><span class="ansi-green-fg">~/miniforge3/lib/python3.12/site-packages/sklearn/utils/validation.py:1757</span>, in <span class="ansi-cyan-fg">check_is_fitted</span><span class="ansi-blue-fg">(estimator, attributes, msg, all_or_any)</span>
+<span class="ansi-green-fg">   1754</span>     <span style="font-weight:bold;color:rgb(0,135,0)">return</span>
+<span class="ansi-green-fg">   1756</span> <span style="font-weight:bold;color:rgb(0,135,0)">if</span> <span style="font-weight:bold;color:rgb(175,0,255)">not</span> _is_fitted(estimator, attributes, all_or_any):
+<span class="ansi-green-fg">-&gt; </span><span class="ansi-green-fg">1757</span>     <span style="font-weight:bold;color:rgb(0,135,0)">raise</span> NotFittedError(msg % {<span class="ansi-yellow-fg">"</span><span class="ansi-yellow-fg">name</span><span class="ansi-yellow-fg">"</span>: <span style="color:rgb(0,135,0)">type</span>(estimator).<span class="ansi-blue-fg">__name__</span>})
+
+<span class="ansi-red-fg">NotFittedError</span>: This LogisticRegression instance is not fitted yet. Call 'fit' with appropriate arguments before using this estimator.</pre>
+</div>
+</div>
+</div>
 </section>
 <section id="classification-report" class="level3">
 <h3 class="anchored" data-anchor-id="classification-report">Classification report</h3>
-<div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(classification_report(</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    y_test, y_pred,</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    target_names<span class="op">=</span>[<span class="st">"Not readmitted"</span>, <span class="st">"Readmitted"</span>]</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="2c405788" class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(classification_report(</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    y_test, y_pred,</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    target_names<span class="op">=</span>[<span class="st">"Not readmitted"</span>, <span class="st">"Readmitted"</span>]</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<div class="ansi-escaped-output">
+<pre><span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
+<span class="ansi-cyan-fg">Cell</span><span class="ansi-cyan-fg"> </span><span class="ansi-green-fg">In[6]</span><span class="ansi-green-fg">, line 2</span>
+<span class="ansi-green-fg">      1</span> <span style="color:rgb(0,135,0)">print</span>(classification_report(
+<span class="ansi-green-fg">----&gt; </span><span class="ansi-green-fg">2</span>     y_test, y_pred,
+<span class="ansi-green-fg">      3</span>     target_names=[<span class="ansi-yellow-fg">"</span><span class="ansi-yellow-fg">Not readmitted</span><span class="ansi-yellow-fg">"</span>, <span class="ansi-yellow-fg">"</span><span class="ansi-yellow-fg">Readmitted</span><span class="ansi-yellow-fg">"</span>]
+<span class="ansi-green-fg">      4</span> ))
+
+<span class="ansi-red-fg">NameError</span>: name 'y_pred' is not defined</pre>
+</div>
+</div>
+</div>
 <pre><code>                precision    recall  f1-score   support
 
 Not readmitted       0.89      0.72      0.80       770
@@ -427,30 +603,70 @@ Reading the classification report
 </section>
 <section id="confusion-matrix" class="level3">
 <h3 class="anchored" data-anchor-id="confusion-matrix">Confusion matrix</h3>
-<div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">5</span>, <span class="dv">4</span>))</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>ConfusionMatrixDisplay.from_predictions(</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    y_test, y_pred,</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    display_labels<span class="op">=</span>[<span class="st">"Not readmitted"</span>, <span class="st">"Readmitted"</span>],</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    cmap<span class="op">=</span><span class="st">"Blues"</span>, ax<span class="op">=</span>ax</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"Confusion Matrix — Logistic Regression"</span>)</span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="ce4ac247" class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">5</span>, <span class="dv">4</span>))</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>ConfusionMatrixDisplay.from_predictions(</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    y_test, y_pred,</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    display_labels<span class="op">=</span>[<span class="st">"Not readmitted"</span>, <span class="st">"Readmitted"</span>],</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    cmap<span class="op">=</span><span class="st">"Blues"</span>, ax<span class="op">=</span>ax</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"Confusion Matrix — Logistic Regression"</span>)</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<div class="ansi-escaped-output">
+<pre><span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
+<span class="ansi-cyan-fg">Cell</span><span class="ansi-cyan-fg"> </span><span class="ansi-green-fg">In[7]</span><span class="ansi-green-fg">, line 3</span>
+<span class="ansi-green-fg">      1</span> fig, ax = plt.subplots(figsize=(<span class="ansi-green-fg">5</span>, <span class="ansi-green-fg">4</span>))
+<span class="ansi-green-fg">      2</span> ConfusionMatrixDisplay.from_predictions(
+<span class="ansi-green-fg">----&gt; </span><span class="ansi-green-fg">3</span>     y_test, y_pred,
+<span class="ansi-green-fg">      4</span>     display_labels=[<span class="ansi-yellow-fg">"</span><span class="ansi-yellow-fg">Not readmitted</span><span class="ansi-yellow-fg">"</span>, <span class="ansi-yellow-fg">"</span><span class="ansi-yellow-fg">Readmitted</span><span class="ansi-yellow-fg">"</span>],
+<span class="ansi-green-fg">      5</span>     cmap=<span class="ansi-yellow-fg">"</span><span class="ansi-yellow-fg">Blues</span><span class="ansi-yellow-fg">"</span>, ax=ax
+<span class="ansi-green-fg">      6</span> )
+<span class="ansi-green-fg">      7</span> ax.set_title(<span class="ansi-yellow-fg">"</span><span class="ansi-yellow-fg">Confusion Matrix — Logistic Regression</span><span class="ansi-yellow-fg">"</span>)
+<span class="ansi-green-fg">      8</span> plt.tight_layout()
+
+<span class="ansi-red-fg">NameError</span>: name 'y_pred' is not defined</pre>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="031-logistic-regression_files/figure-html/cell-8-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
 </section>
 <section id="auc-roc-curve" class="level3">
 <h3 class="anchored" data-anchor-id="auc-roc-curve">AUC-ROC curve</h3>
-<div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>auc <span class="op">=</span> roc_auc_score(y_test, y_prob)</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"AUC-ROC: </span><span class="sc">{</span>auc<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">5</span>))</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>RocCurveDisplay.from_predictions(</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    y_test, y_prob, name<span class="op">=</span><span class="ss">f"Logistic Regression (AUC = </span><span class="sc">{</span>auc<span class="sc">:.2f}</span><span class="ss">)"</span>, ax<span class="op">=</span>ax</span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>ax.plot([<span class="dv">0</span>, <span class="dv">1</span>], [<span class="dv">0</span>, <span class="dv">1</span>], <span class="st">"k--"</span>, label<span class="op">=</span><span class="st">"Random classifier (AUC = 0.50)"</span>)</span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"ROC Curve — 30-Day Readmission Prediction"</span>)</span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>ax.legend()</span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="27cf4288" class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>auc <span class="op">=</span> roc_auc_score(y_test, y_prob)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"AUC-ROC: </span><span class="sc">{</span>auc<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">5</span>))</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>RocCurveDisplay.from_predictions(</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    y_test, y_prob, name<span class="op">=</span><span class="ss">f"Logistic Regression (AUC = </span><span class="sc">{</span>auc<span class="sc">:.2f}</span><span class="ss">)"</span>, ax<span class="op">=</span>ax</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>ax.plot([<span class="dv">0</span>, <span class="dv">1</span>], [<span class="dv">0</span>, <span class="dv">1</span>], <span class="st">"k--"</span>, label<span class="op">=</span><span class="st">"Random classifier (AUC = 0.50)"</span>)</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"ROC Curve — 30-Day Readmission Prediction"</span>)</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>ax.legend()</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<div class="ansi-escaped-output">
+<pre><span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
+<span class="ansi-cyan-fg">Cell</span><span class="ansi-cyan-fg"> </span><span class="ansi-green-fg">In[8]</span><span class="ansi-green-fg">, line 1</span>
+<span class="ansi-green-fg">----&gt; </span><span class="ansi-green-fg">1</span> auc = roc_auc_score(y_test, y_prob)
+<span class="ansi-green-fg">      2</span> <span style="color:rgb(0,135,0)">print</span>(<span class="ansi-yellow-fg">f</span><span class="ansi-yellow-fg">"</span><span class="ansi-yellow-fg">AUC-ROC: </span><span style="font-weight:bold;color:rgb(175,95,135)">{</span>auc<span style="font-weight:bold;color:rgb(175,95,135)">:</span><span class="ansi-yellow-fg">.3f</span><span style="font-weight:bold;color:rgb(175,95,135)">}</span><span class="ansi-yellow-fg">"</span>)
+<span class="ansi-green-fg">      4</span> fig, ax = plt.subplots(figsize=(<span class="ansi-green-fg">6</span>, <span class="ansi-green-fg">5</span>))
+
+<span class="ansi-red-fg">NameError</span>: name 'y_prob' is not defined</pre>
+</div>
+</div>
+</div>
 <pre><code>AUC-ROC: 0.741</code></pre>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -466,20 +682,37 @@ Important points
 </div>
 </div>
 </section>
-</section>
-<section id="interpreting-coefficients-as-odds-ratios" class="level2">
-<h2 class="anchored" data-anchor-id="interpreting-coefficients-as-odds-ratios">Interpreting Coefficients as Odds Ratios</h2>
+<section id="interpreting-coefficients-as-odds-ratios" class="level3">
+<h3 class="anchored" data-anchor-id="interpreting-coefficients-as-odds-ratios">Interpreting Coefficients as Odds Ratios</h3>
 <p>The most powerful feature of logistic regression is interpretability. Each coefficient converts directly to an <strong>odds ratio</strong>:</p>
 <p><span class="math display">\[OR = e^{\beta_i}\]</span></p>
 <p>An OR of 1.5 means that for a one-unit increase in that feature (after scaling), the odds of readmission are 1.5× higher — holding all other features constant.</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Build odds ratio table</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>coef_df <span class="op">=</span> pd.DataFrame({</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Feature"</span>: X.columns,</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Coefficient"</span>: lr.coef_[<span class="dv">0</span>],</span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Odds_Ratio"</span>: np.exp(lr.coef_[<span class="dv">0</span>])</span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>}).sort_values(<span class="st">"Odds_Ratio"</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(coef_df.to_string(index<span class="op">=</span><span class="va">False</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="f1706160" class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Build odds ratio table</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>coef_df <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Feature"</span>: X.columns,</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Coefficient"</span>: lr.coef_[<span class="dv">0</span>],</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Odds_Ratio"</span>: np.exp(lr.coef_[<span class="dv">0</span>])</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>}).sort_values(<span class="st">"Odds_Ratio"</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(coef_df.to_string(index<span class="op">=</span><span class="va">False</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<div class="ansi-escaped-output">
+<pre><span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">AttributeError</span>                            Traceback (most recent call last)
+<span class="ansi-cyan-fg">Cell</span><span class="ansi-cyan-fg"> </span><span class="ansi-green-fg">In[9]</span><span class="ansi-green-fg">, line 4</span>
+<span class="ansi-green-fg">      1</span> <span style="font-style:italic;color:rgb(95,135,135)"># Build odds ratio table</span>
+<span class="ansi-green-fg">      2</span> coef_df = pd.DataFrame({
+<span class="ansi-green-fg">      3</span>     <span class="ansi-yellow-fg">"</span><span class="ansi-yellow-fg">Feature</span><span class="ansi-yellow-fg">"</span>: X.columns,
+<span class="ansi-green-fg">----&gt; </span><span class="ansi-green-fg">4</span>     <span class="ansi-yellow-fg">"</span><span class="ansi-yellow-fg">Coefficient</span><span class="ansi-yellow-fg">"</span>: lr.coef_[<span class="ansi-green-fg">0</span>],
+<span class="ansi-green-fg">      5</span>     <span class="ansi-yellow-fg">"</span><span class="ansi-yellow-fg">Odds_Ratio</span><span class="ansi-yellow-fg">"</span>: np.exp(lr.coef_[<span class="ansi-green-fg">0</span>])
+<span class="ansi-green-fg">      6</span> }).sort_values(<span class="ansi-yellow-fg">"</span><span class="ansi-yellow-fg">Odds_Ratio</span><span class="ansi-yellow-fg">"</span>, ascending=<span style="font-weight:bold;color:rgb(0,135,0)">False</span>)
+<span class="ansi-green-fg">      8</span> <span style="color:rgb(0,135,0)">print</span>(coef_df.to_string(index=<span style="font-weight:bold;color:rgb(0,135,0)">False</span>))
+
+<span class="ansi-red-fg">AttributeError</span>: 'LogisticRegression' object has no attribute 'coef_'</pre>
+</div>
+</div>
+</div>
 <pre><code>                         Feature  Coefficient  Odds_Ratio
                      los_days        0.61        1.84
                ed_prior_year        0.55        1.73
@@ -491,17 +724,32 @@ Important points
                           egfr       -0.31        0.73
                   egfr_missing        0.26        1.30
 ...</code></pre>
-<div class="sourceCode" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualise top 15 features</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>top_feats <span class="op">=</span> coef_df.head(<span class="dv">15</span>).sort_values(<span class="st">"Coefficient"</span>)</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">6</span>))</span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>colors <span class="op">=</span> [<span class="st">"#E74C3C"</span> <span class="cf">if</span> v <span class="op">&gt;</span> <span class="dv">0</span> <span class="cf">else</span> <span class="st">"#4A90D9"</span> <span class="cf">for</span> v <span class="kw">in</span> top_feats[<span class="st">"Coefficient"</span>]]</span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>plt.barh(top_feats[<span class="st">"Feature"</span>], top_feats[<span class="st">"Coefficient"</span>], color<span class="op">=</span>colors)</span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>plt.axvline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">"black"</span>, linewidth<span class="op">=</span><span class="fl">0.8</span>)</span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Logistic Regression Coefficients</span><span class="ch">\n</span><span class="st">(red = increases readmission risk, blue = decreases)"</span>)</span>
-<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Coefficient (log-odds scale)"</span>)</span>
-<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="dd43d23f" class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualise top 15 features</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>top_feats <span class="op">=</span> coef_df.head(<span class="dv">15</span>).sort_values(<span class="st">"Coefficient"</span>)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">6</span>))</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>colors <span class="op">=</span> [<span class="st">"#E74C3C"</span> <span class="cf">if</span> v <span class="op">&gt;</span> <span class="dv">0</span> <span class="cf">else</span> <span class="st">"#4A90D9"</span> <span class="cf">for</span> v <span class="kw">in</span> top_feats[<span class="st">"Coefficient"</span>]]</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>plt.barh(top_feats[<span class="st">"Feature"</span>], top_feats[<span class="st">"Coefficient"</span>], color<span class="op">=</span>colors)</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>plt.axvline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">"black"</span>, linewidth<span class="op">=</span><span class="fl">0.8</span>)</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Logistic Regression Coefficients</span><span class="ch">\n</span><span class="st">(red = increases readmission risk, blue = decreases)"</span>)</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Coefficient (log-odds scale)"</span>)</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<div class="ansi-escaped-output">
+<pre><span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
+<span class="ansi-cyan-fg">Cell</span><span class="ansi-cyan-fg"> </span><span class="ansi-green-fg">In[10]</span><span class="ansi-green-fg">, line 2</span>
+<span class="ansi-green-fg">      1</span> <span style="font-style:italic;color:rgb(95,135,135)"># Visualise top 15 features</span>
+<span class="ansi-green-fg">----&gt; </span><span class="ansi-green-fg">2</span> top_feats = coef_df.head(<span class="ansi-green-fg">15</span>).sort_values(<span class="ansi-yellow-fg">"</span><span class="ansi-yellow-fg">Coefficient</span><span class="ansi-yellow-fg">"</span>)
+<span class="ansi-green-fg">      4</span> plt.figure(figsize=(<span class="ansi-green-fg">8</span>, <span class="ansi-green-fg">6</span>))
+<span class="ansi-green-fg">      5</span> colors = [<span class="ansi-yellow-fg">"</span><span class="ansi-yellow-fg">#E74C3C</span><span class="ansi-yellow-fg">"</span> <span style="font-weight:bold;color:rgb(0,135,0)">if</span> v &gt; <span class="ansi-green-fg">0</span> <span style="font-weight:bold;color:rgb(0,135,0)">else</span> <span class="ansi-yellow-fg">"</span><span class="ansi-yellow-fg">#4A90D9</span><span class="ansi-yellow-fg">"</span> <span style="font-weight:bold;color:rgb(0,135,0)">for</span> v <span style="font-weight:bold;color:rgb(175,0,255)">in</span> top_feats[<span class="ansi-yellow-fg">"</span><span class="ansi-yellow-fg">Coefficient</span><span class="ansi-yellow-fg">"</span>]]
+
+<span class="ansi-red-fg">NameError</span>: name 'coef_df' is not defined</pre>
+</div>
+</div>
+</div>
 <div class="callout callout-style-default callout-warning callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -545,14 +793,31 @@ Answer (click to open)
 </div>
 <div id="callout-5" class="callout-5-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<div class="sourceCode" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> threshold <span class="kw">in</span> [<span class="fl">0.3</span>, <span class="fl">0.4</span>, <span class="fl">0.5</span>]:</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    y_pred_t <span class="op">=</span> (y_prob <span class="op">&gt;=</span> threshold).astype(<span class="bu">int</span>)</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    report <span class="op">=</span> classification_report(y_test, y_pred_t,</span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>                                   target_names<span class="op">=</span>[<span class="st">"Not readmitted"</span>, <span class="st">"Readmitted"</span>],</span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>                                   output_dict<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>    recall <span class="op">=</span> report[<span class="st">"Readmitted"</span>][<span class="st">"recall"</span>]</span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>    precision <span class="op">=</span> report[<span class="st">"Readmitted"</span>][<span class="st">"precision"</span>]</span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Threshold </span><span class="sc">{</span>threshold<span class="sc">:.1f}</span><span class="ss">: Recall=</span><span class="sc">{</span>recall<span class="sc">:.2f}</span><span class="ss">, Precision=</span><span class="sc">{</span>precision<span class="sc">:.2f}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="13aca522" class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> threshold <span class="kw">in</span> [<span class="fl">0.3</span>, <span class="fl">0.4</span>, <span class="fl">0.5</span>]:</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>    y_pred_t <span class="op">=</span> (y_prob <span class="op">&gt;=</span> threshold).astype(<span class="bu">int</span>)</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    report <span class="op">=</span> classification_report(y_test, y_pred_t,</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>                                   target_names<span class="op">=</span>[<span class="st">"Not readmitted"</span>, <span class="st">"Readmitted"</span>],</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>                                   output_dict<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>    recall <span class="op">=</span> report[<span class="st">"Readmitted"</span>][<span class="st">"recall"</span>]</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>    precision <span class="op">=</span> report[<span class="st">"Readmitted"</span>][<span class="st">"precision"</span>]</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Threshold </span><span class="sc">{</span>threshold<span class="sc">:.1f}</span><span class="ss">: Recall=</span><span class="sc">{</span>recall<span class="sc">:.2f}</span><span class="ss">, Precision=</span><span class="sc">{</span>precision<span class="sc">:.2f}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<div class="ansi-escaped-output">
+<pre><span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
+<span class="ansi-cyan-fg">Cell</span><span class="ansi-cyan-fg"> </span><span class="ansi-green-fg">In[11]</span><span class="ansi-green-fg">, line 2</span>
+<span class="ansi-green-fg">      1</span> <span style="font-weight:bold;color:rgb(0,135,0)">for</span> threshold <span style="font-weight:bold;color:rgb(175,0,255)">in</span> [<span class="ansi-green-fg">0.3</span>, <span class="ansi-green-fg">0.4</span>, <span class="ansi-green-fg">0.5</span>]:
+<span class="ansi-green-fg">----&gt; </span><span class="ansi-green-fg">2</span>     y_pred_t = (y_prob &gt;= threshold).astype(<span style="color:rgb(0,135,0)">int</span>)
+<span class="ansi-green-fg">      3</span>     report = classification_report(y_test, y_pred_t,
+<span class="ansi-green-fg">      4</span>                                    target_names=[<span class="ansi-yellow-fg">"</span><span class="ansi-yellow-fg">Not readmitted</span><span class="ansi-yellow-fg">"</span>, <span class="ansi-yellow-fg">"</span><span class="ansi-yellow-fg">Readmitted</span><span class="ansi-yellow-fg">"</span>],
+<span class="ansi-green-fg">      5</span>                                    output_dict=<span style="font-weight:bold;color:rgb(0,135,0)">True</span>)
+<span class="ansi-green-fg">      6</span>     recall = report[<span class="ansi-yellow-fg">"</span><span class="ansi-yellow-fg">Readmitted</span><span class="ansi-yellow-fg">"</span>][<span class="ansi-yellow-fg">"</span><span class="ansi-yellow-fg">recall</span><span class="ansi-yellow-fg">"</span>]
+
+<span class="ansi-red-fg">NameError</span>: name 'y_prob' is not defined</pre>
+</div>
+</div>
+</div>
 <pre><code>Threshold 0.3: Recall=0.87, Precision=0.36
 Threshold 0.4: Recall=0.80, Precision=0.42
 Threshold 0.5: Recall=0.74, Precision=0.48</code></pre>

@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Course Summary – Data Science in Python for Healthcare</title>
+<title>Summary – Data Science in Python for Healthcare</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -65,7 +65,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
 <link href="../pages/902-next-steps.html" rel="next">
-<link href="../pages/033-model-comparison.html" rel="prev">
+<link href="../pages/032-random-forest.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -115,7 +115,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../pages/901-summary.html">Course Summary</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../pages/901-summary.html">Summary</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -158,13 +158,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../pages/001-setup.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Python Environment Setup</span></a>
+ <span class="menu-text">Workspace Setup</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../pages/010-python-basics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Python Crash Course</span></a>
+ <span class="menu-text">Python Basics</span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -187,13 +187,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../pages/023-missing-data.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Missing Data</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../pages/024-eda-visualisation.html" class="sidebar-item-text sidebar-link">
+  <a href="../pages/023-eda-visualisation.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Exploratory Data Analysis &amp; Visualisation</span></a>
   </div>
 </li>
@@ -217,14 +211,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../pages/033-model-comparison.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Model Comparison</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="../pages/901-summary.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">Course Summary</span></a>
+ <span class="menu-text">Summary</span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -243,14 +231,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#what-we-covered-today" id="toc-what-we-covered-today" class="nav-link active" data-scroll-target="#what-we-covered-today">What We Covered Today</a>
-  <ul class="collapse">
-  <li><a href="#python-crash-course-20-min" id="toc-python-crash-course-20-min" class="nav-link" data-scroll-target="#python-crash-course-20-min">Python Crash Course (20 min)</a></li>
-  <li><a href="#data-with-pandas-45-min" id="toc-data-with-pandas-45-min" class="nav-link" data-scroll-target="#data-with-pandas-45-min">Data with Pandas (45 min)</a></li>
-  <li><a href="#exploratory-data-analysis-25-min" id="toc-exploratory-data-analysis-25-min" class="nav-link" data-scroll-target="#exploratory-data-analysis-25-min">Exploratory Data Analysis (25 min)</a></li>
-  <li><a href="#machine-learning-35-min" id="toc-machine-learning-35-min" class="nav-link" data-scroll-target="#machine-learning-35-min">Machine Learning (35 min)</a></li>
-  </ul></li>
-  <li><a href="#key-code-snippets" id="toc-key-code-snippets" class="nav-link" data-scroll-target="#key-code-snippets">Key Code Snippets</a></li>
+  <li><a href="#key-code-snippets" id="toc-key-code-snippets" class="nav-link active" data-scroll-target="#key-code-snippets">Key Code Snippets</a></li>
   </ul>
 </nav>
     </div>
@@ -259,7 +240,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Course Summary</h1>
+<h1 class="title">Summary</h1>
 </div>
 
 
@@ -276,52 +257,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<section id="what-we-covered-today" class="level2">
-<h2 class="anchored" data-anchor-id="what-we-covered-today">What We Covered Today</h2>
-<section id="python-crash-course-20-min" class="level3">
-<h3 class="anchored" data-anchor-id="python-crash-course-20-min">Python Crash Course (20 min)</h3>
-<ul>
-<li>Variables, data types, lists, conditionals, for loops, and functions — all illustrated with clinical examples</li>
-<li>Importing libraries (<code>pandas</code>, <code>numpy</code>, <code>matplotlib</code>, <code>seaborn</code>)</li>
-<li>Working inside Jupyter Notebooks</li>
-</ul>
-</section>
-<section id="data-with-pandas-45-min" class="level3">
-<h3 class="anchored" data-anchor-id="data-with-pandas-45-min">Data with Pandas (45 min)</h3>
-<ul>
-<li>Loading clinical CSV data with <code>pd.read_csv()</code></li>
-<li>Inspecting data: <code>.shape</code>, <code>.dtypes</code>, <code>.describe()</code>, <code>.isnull().sum()</code></li>
-<li>Querying: <code>value_counts()</code>, <code>groupby()</code>, and creating new columns</li>
-<li>Filtering rows with boolean conditions and <code>.isin()</code></li>
-<li>Three strategies for missing data: drop, impute with median, and indicator columns</li>
-</ul>
-</section>
-<section id="exploratory-data-analysis-25-min" class="level3">
-<h3 class="anchored" data-anchor-id="exploratory-data-analysis-25-min">Exploratory Data Analysis (25 min)</h3>
-<ul>
-<li>Histograms and KDE plots for continuous variables</li>
-<li>Bar charts for categorical frequencies and readmission rates</li>
-<li>Box plots and violin plots for comparing distributions by outcome</li>
-<li>Correlation heatmaps for identifying collinear features</li>
-<li>Pair plots for multivariate overview</li>
-</ul>
-</section>
-<section id="machine-learning-35-min" class="level3">
-<h3 class="anchored" data-anchor-id="machine-learning-35-min">Machine Learning (35 min)</h3>
-<ul>
-<li>Classification vs regression; features vs labels</li>
-<li>The critical importance of train/test splitting and data leakage</li>
-<li>Evaluation metrics: confusion matrix, sensitivity, specificity, precision, AUC-ROC</li>
-<li>Logistic regression: fitting, evaluating, and interpreting coefficients as odds ratios</li>
-<li>Threshold tuning and the precision-recall trade-off</li>
-<li>Random Forest: fitting, evaluating, feature importance (MDI and permutation)</li>
-<li>Hyperparameter tuning with <code>GridSearchCV</code></li>
-<li>Model comparison and calibration</li>
-</ul>
-</section>
-</section>
-<section id="key-code-snippets" class="level2">
-<h2 class="anchored" data-anchor-id="key-code-snippets">Key Code Snippets</h2>
+<section id="key-code-snippets" class="level3">
+<h3 class="anchored" data-anchor-id="key-code-snippets">Key Code Snippets</h3>
 <div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load and inspect</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"nhs_readmission.csv"</span>)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>df.shape<span class="op">;</span> df.dtypes<span class="op">;</span> df.head()<span class="op">;</span> df.describe()<span class="op">;</span> df.isnull().<span class="bu">sum</span>()</span>
@@ -790,8 +727,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../pages/033-model-comparison.html" class="pagination-link" aria-label="Model Comparison">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Model Comparison</span>
+      <a href="../pages/032-random-forest.html" class="pagination-link" aria-label="Random Forest">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Random Forest</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">

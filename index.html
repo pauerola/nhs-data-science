@@ -157,13 +157,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./pages/001-setup.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Python Environment Setup</span></a>
+ <span class="menu-text">Workspace Setup</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./pages/010-python-basics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Python Crash Course</span></a>
+ <span class="menu-text">Python Basics</span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -186,13 +186,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./pages/023-missing-data.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Missing Data</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./pages/024-eda-visualisation.html" class="sidebar-item-text sidebar-link">
+  <a href="./pages/023-eda-visualisation.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Exploratory Data Analysis &amp; Visualisation</span></a>
   </div>
 </li>
@@ -216,14 +210,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./pages/033-model-comparison.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Model Comparison</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="./pages/901-summary.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Course Summary</span></a>
+ <span class="menu-text">Summary</span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -243,10 +231,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
   <li><a href="#intended-learning-outcomes" id="toc-intended-learning-outcomes" class="nav-link active" data-scroll-target="#intended-learning-outcomes">Intended Learning Outcomes</a></li>
-  <li><a href="#how-to-read-this-course" id="toc-how-to-read-this-course" class="nav-link" data-scroll-target="#how-to-read-this-course">How to Read This Course</a>
-  <ul class="collapse">
+  <li><a href="#how-to-read-these-materials" id="toc-how-to-read-these-materials" class="nav-link" data-scroll-target="#how-to-read-these-materials">How to Read These Materials</a></li>
   <li><a href="#about-this-course" id="toc-about-this-course" class="nav-link" data-scroll-target="#about-this-course">About this course</a></li>
-  </ul></li>
   </ul>
 </nav>
     </div>
@@ -273,23 +259,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <p>Welcome to <strong>Data Science in Python for Healthcare</strong>. This course is designed for healthcare professionals with <strong>no prior programming experience</strong>. By the end of today’s session, you will be able to load, clean, and visualise datasets, and fit machine learning models that are directly relevant to clinical practice.</p>
-<section id="intended-learning-outcomes" class="level2">
-<h2 class="anchored" data-anchor-id="intended-learning-outcomes">Intended Learning Outcomes</h2>
+<section id="intended-learning-outcomes" class="level3">
+<h3 class="anchored" data-anchor-id="intended-learning-outcomes">Intended Learning Outcomes</h3>
 <p>By the end of this course, you will:</p>
 <ul>
-<li>Know how to use <strong>Notebooks</strong> for interactive clinical data analysis.</li>
-<li>Be familiar with <strong><code>pandas</code></strong> and <strong><code>seaborn</code></strong> for data manipulation and visualisation.</li>
+<li>Know how to use <em>Jupyter Notebooks</em> for interactive data analysis.</li>
+<li>Be familiar with <code>pandas</code> and <code>seaborn</code> for data manipulation and visualisation.</li>
 <li>Know how to read a data file, handle format issues, and deal with missing data.</li>
-<li>Understand the principles of <strong>logistic regression</strong> and <strong>random forest</strong> classification.</li>
-<li>Be able to <strong>evaluate and compare</strong> machine learning models using appropriate clinical metrics.</li>
+<li>Understand the principles of <strong>Machine Learning</strong> and <code>scikit-learn</code>.</li>
+<li>Know how to fit <strong>logistic regression</strong> and <strong>random forest</strong> classification models.</li>
+<li>Be able to <strong>evaluate and compare</strong> machine learning models using appropriate metrics.</li>
 </ul>
 </section>
-<section id="how-to-read-this-course" class="level2">
-<h2 class="anchored" data-anchor-id="how-to-read-this-course">How to Read This Course</h2>
-<p>Code is shown in grey boxes with a blue left border:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Hello, NHS!"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Output appears below:</p>
+<section id="how-to-read-these-materials" class="level3">
+<h3 class="anchored" data-anchor-id="how-to-read-these-materials">How to Read These Materials</h3>
+<p>Code is shown in grey boxes and output appears below with a pink left border:</p>
+<div id="36d619fd" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Hello, NHS!"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
 <pre><code>Hello, NHS!</code></pre>
+</div>
+</div>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -332,22 +322,10 @@ Important points
 <p>Green boxes highlight key clinical or technical concepts.</p>
 </div>
 </div>
-<div class="callout callout-style-default callout-warning callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Clinical caution
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Orange/red boxes flag important clinical interpretation caveats.</p>
-</div>
-</div>
+</section>
 <section id="about-this-course" class="level3">
 <h3 class="anchored" data-anchor-id="about-this-course">About this course</h3>
-<p>These course materials have been designed and developed by <strong>Pau Erola, PhD</strong> (Jean Golding Institute, University of Bristol).</p>
+<p>These course materials have been designed by <strong>Pau Erola, PhD</strong> (Jean Golding Institute, University of Bristol).</p>
 <p>We used the enhancement of AI in alignment with our institutional guidance:</p>
 <ul>
 <li><strong>Microsoft Copilot (GPT-4 &amp; GPT-5)</strong>– Writing assistance</li>
@@ -356,7 +334,6 @@ Clinical caution
 <p>For queries related to this course please contact <a href="mailto:jgi-training@bristol.ac.uk">jgi-training@bristol.ac.uk</a>.</p>
 
 
-</section>
 </section>
 
 </main> <!-- /main -->
