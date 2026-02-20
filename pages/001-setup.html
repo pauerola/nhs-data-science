@@ -57,7 +57,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </style>
 
 
-<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="../site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="../site_libs/quarto-nav/headroom.min.js"></script>
 <script src="../site_libs/clipboard/clipboard.min.js"></script>
 <script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
@@ -102,6 +102,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 
 
 </head>
@@ -175,14 +178,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../pages/021-querying-filtering.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Filtering &amp; Missing Data</span></a>
+  <a href="../pages/021-reading-data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Reading Data</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../pages/022-reading-data.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Reading &amp; Querying Clinical Data</span></a>
+  <a href="../pages/022-querying-filtering.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Filtering &amp; Missing Data</span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -258,7 +261,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p><span class="time-badge">⏱ 10 minutes</span></p>
+<p><span class="time-badge">⏱ 15 minutes</span></p>
 <p>Before we start, let’s make sure everyone has a working Python environment with the right packages installed.</p>
 <section id="option-a-jupyter-notebooks-via-uv" class="level3">
 <h3 class="anchored" data-anchor-id="option-a-jupyter-notebooks-via-uv">Option A — Jupyter Notebooks (via <code>uv</code>)</h3>
@@ -349,7 +352,8 @@ What is a package manager?
 <p><a href="https://colab.google/">Google Colab</a> is a free, cloud‑based platform that lets you write and run Python code directly in your web browser. It provides an environment similar to Jupyter Notebooks, but without the need to install Python or any additional software on your computer. This makes it an ideal starting point for medics and healthcare professionals who want to explore machine learning without worrying about technical setup.</p>
 <p>Colab also includes a wide range of pre‑installed scientific and machine‑learning libraries—such as NumPy, Pandas, Matplotlib, and TensorFlow—so you can focus on learning concepts rather than configuring tools. Notebooks are easy to share, collaborate on, and store in Google Drive, making it a convenient platform for both individual study and group work. With its simplicity and accessibility, Colab provides a smooth entry point into Python programming and practical machine‑learning experimentation.</p>
 <p>Download <code>nhs_readmission.csv</code> from the course repository and place it in your working directory. You can verify everything is set up correctly by running this in a new notebook cell:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<div id="0fa6a371" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.ensemble <span class="im">import</span> RandomForestClassifier</span>
@@ -359,6 +363,120 @@ What is a package manager?
 <span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Dataset loaded: </span><span class="sc">{</span>df<span class="sc">.</span>shape[<span class="dv">0</span>]<span class="sc">}</span><span class="ss"> patients, </span><span class="sc">{</span>df<span class="sc">.</span>shape[<span class="dv">1</span>]<span class="sc">}</span><span class="ss"> columns"</span>)</span>
 <span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>df.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>All packages loaded successfully!
+Dataset loaded: 5000 patients, 13 columns</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">patient_id</th>
+<th data-quarto-table-cell-role="th">age</th>
+<th data-quarto-table-cell-role="th">sex</th>
+<th data-quarto-table-cell-role="th">imd_decile</th>
+<th data-quarto-table-cell-role="th">primary_diagnosis</th>
+<th data-quarto-table-cell-role="th">charlson_index</th>
+<th data-quarto-table-cell-role="th">hba1c</th>
+<th data-quarto-table-cell-role="th">egfr</th>
+<th data-quarto-table-cell-role="th">bmi</th>
+<th data-quarto-table-cell-role="th">los_days</th>
+<th data-quarto-table-cell-role="th">ed_prior_year</th>
+<th data-quarto-table-cell-role="th">discharge_ward</th>
+<th data-quarto-table-cell-role="th">readmitted_30d</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>1001</td>
+<td>69</td>
+<td>M</td>
+<td>8</td>
+<td>E11</td>
+<td>2</td>
+<td>67.6</td>
+<td>29.4</td>
+<td>36.4</td>
+<td>5</td>
+<td>1.0</td>
+<td>Endocrine</td>
+<td>No</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>1002</td>
+<td>59</td>
+<td>M</td>
+<td>2</td>
+<td>I10</td>
+<td>4</td>
+<td>67.5</td>
+<td>42.8</td>
+<td>37.8</td>
+<td>4</td>
+<td>2.0</td>
+<td>General Medicine</td>
+<td>No</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>1003</td>
+<td>72</td>
+<td>M</td>
+<td>2</td>
+<td>I63</td>
+<td>1</td>
+<td>44.1</td>
+<td>61.7</td>
+<td>26.2</td>
+<td>3</td>
+<td>1.0</td>
+<td>Gastro</td>
+<td>No</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>1004</td>
+<td>86</td>
+<td>M</td>
+<td>10</td>
+<td>J18</td>
+<td>1</td>
+<td>55.5</td>
+<td>62.9</td>
+<td>34.0</td>
+<td>2</td>
+<td>1.0</td>
+<td>General Medicine</td>
+<td>No</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>1005</td>
+<td>58</td>
+<td>M</td>
+<td>10</td>
+<td>C34</td>
+<td>2</td>
+<td>59.8</td>
+<td>120.0</td>
+<td>18.5</td>
+<td>6</td>
+<td>0.0</td>
+<td>Respiratory</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
 <p>If you see the success messages, you’re ready to go!</p>
 
 

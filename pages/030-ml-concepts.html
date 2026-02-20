@@ -175,14 +175,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../pages/021-querying-filtering.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Filtering &amp; Missing Data</span></a>
+  <a href="../pages/021-reading-data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Reading Data</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../pages/022-reading-data.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Reading &amp; Querying Clinical Data</span></a>
+  <a href="../pages/022-querying-filtering.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Filtering &amp; Missing Data</span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -322,7 +322,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 │
 └── Test set (20%, N=1000)      ← evaluate here only, at the very end</code></pre>
 <p>We use <code>scikit-learn</code>’s <code>train_test_split()</code> function:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
+<div id="f6a4f9ad" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(</span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    X, y,</span>
@@ -330,6 +331,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    random_state<span class="op">=</span><span class="dv">42</span>,     <span class="co"># reproducible random split</span></span>
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    stratify<span class="op">=</span>y           <span class="co"># preserve 77/23 class ratio in both splits</span></span>
 <span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<div class="ansi-escaped-output">
+<pre><span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
+Cell <span class="ansi-green-fg">In[1], line 4</span>
+<span class="ansi-green-fg ansi-bold">      1</span> <span style="font-weight:bold;color:rgb(0,135,0)">from</span> <span style="font-weight:bold;color:rgb(0,0,255)">sklearn</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">model_selection</span> <span style="font-weight:bold;color:rgb(0,135,0)">import</span> train_test_split
+<span class="ansi-green-fg ansi-bold">      3</span> X_train, X_test, y_train, y_test <span style="color:rgb(98,98,98)">=</span> train_test_split(
+<span class="ansi-green-fg">----&gt; 4</span>     <span class="ansi-yellow-bg">X</span>, y,
+<span class="ansi-green-fg ansi-bold">      5</span>     test_size<span style="color:rgb(98,98,98)">=</span><span style="color:rgb(98,98,98)">0.2</span>,       <span style="font-style:italic;color:rgb(95,135,135)"># 20% held out for testing</span>
+<span class="ansi-green-fg ansi-bold">      6</span>     random_state<span style="color:rgb(98,98,98)">=</span><span style="color:rgb(98,98,98)">42</span>,     <span style="font-style:italic;color:rgb(95,135,135)"># reproducible random split</span>
+<span class="ansi-green-fg ansi-bold">      7</span>     stratify<span style="color:rgb(98,98,98)">=</span>y           <span style="font-style:italic;color:rgb(95,135,135)"># preserve 77/23 class ratio in both splits</span>
+<span class="ansi-green-fg ansi-bold">      8</span> )
+
+<span class="ansi-red-fg">NameError</span>: name 'X' is not defined</pre>
+</div>
+</div>
+</div>
 <div class="callout callout-style-default callout-warning callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -419,17 +437,45 @@ Actual: Yes             FN                TP        ← Correctly caught readmis
 </section>
 <section id="encode-categorical-variables" class="level3">
 <h3 class="anchored" data-anchor-id="encode-categorical-variables">1. Encode categorical variables</h3>
-<div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert sex (M/F) and diagnosis to numbers</span></span>
+<div id="195f0c32" class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert sex (M/F) and diagnosis to numbers</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> pd.get_dummies(df[feature_cols], columns<span class="op">=</span>[<span class="st">"sex"</span>, <span class="st">"primary_diagnosis"</span>], drop_first<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<div class="ansi-escaped-output">
+<pre><span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
+Cell <span class="ansi-green-fg">In[2], line 2</span>
+<span class="ansi-green-fg ansi-bold">      1</span> <span style="font-style:italic;color:rgb(95,135,135)"># Convert sex (M/F) and diagnosis to numbers</span>
+<span class="ansi-green-fg">----&gt; 2</span> X <span style="color:rgb(98,98,98)">=</span> <span class="ansi-yellow-bg">pd</span><span style="color:rgb(98,98,98)">.</span>get_dummies(df[feature_cols], columns<span style="color:rgb(98,98,98)">=</span>[<span style="color:rgb(175,0,0)">"</span><span style="color:rgb(175,0,0)">sex</span><span style="color:rgb(175,0,0)">"</span>, <span style="color:rgb(175,0,0)">"</span><span style="color:rgb(175,0,0)">primary_diagnosis</span><span style="color:rgb(175,0,0)">"</span>], drop_first<span style="color:rgb(98,98,98)">=</span><span style="font-weight:bold;color:rgb(0,135,0)">True</span>)
+
+<span class="ansi-red-fg">NameError</span>: name 'pd' is not defined</pre>
+</div>
+</div>
+</div>
 </section>
 <section id="scale-numeric-features-for-logistic-regression" class="level3">
 <h3 class="anchored" data-anchor-id="scale-numeric-features-for-logistic-regression">2. Scale numeric features (for logistic regression)</h3>
 <p>Logistic regression requires features on a similar scale. We use <code>StandardScaler</code> (zero mean, unit variance):</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler</span>
+<div id="77544ef7" class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>scaler <span class="op">=</span> StandardScaler()</span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>X_train_scaled <span class="op">=</span> scaler.fit_transform(X_train)   <span class="co"># fit AND transform</span></span>
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>X_test_scaled  <span class="op">=</span> scaler.transform(X_test)         <span class="co"># transform ONLY — no re-fitting</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<div class="ansi-escaped-output">
+<pre><span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
+Cell <span class="ansi-green-fg">In[3], line 4</span>
+<span class="ansi-green-fg ansi-bold">      1</span> <span style="font-weight:bold;color:rgb(0,135,0)">from</span> <span style="font-weight:bold;color:rgb(0,0,255)">sklearn</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">preprocessing</span> <span style="font-weight:bold;color:rgb(0,135,0)">import</span> StandardScaler
+<span class="ansi-green-fg ansi-bold">      3</span> scaler <span style="color:rgb(98,98,98)">=</span> StandardScaler()
+<span class="ansi-green-fg">----&gt; 4</span> X_train_scaled <span style="color:rgb(98,98,98)">=</span> scaler<span style="color:rgb(98,98,98)">.</span>fit_transform(<span class="ansi-yellow-bg">X_train</span>)   <span style="font-style:italic;color:rgb(95,135,135)"># fit AND transform</span>
+<span class="ansi-green-fg ansi-bold">      5</span> X_test_scaled  <span style="color:rgb(98,98,98)">=</span> scaler<span style="color:rgb(98,98,98)">.</span>transform(X_test)         <span style="font-style:italic;color:rgb(95,135,135)"># transform ONLY — no re-fitting</span>
+
+<span class="ansi-red-fg">NameError</span>: name 'X_train' is not defined</pre>
+</div>
+</div>
+</div>
 <div class="callout callout-style-default callout-warning callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
