@@ -126,7 +126,7 @@ A patient's blood pressure readings (systolic, mmHg) over one week were:
 :::
 
 ::: {.callout-caution collapse="true"}
-### Answer (click to open)
+### Answer 
 ```{python}
 bp_readings = [138, 142, 135, 150, 141, 137, 145]
 print(len(bp_readings))   # 7
@@ -138,7 +138,7 @@ print(bp_readings[2])     # 135
 
 Conditionals let your code make decisions — essential for flagging abnormal values.
 
-```python
+```{python}
 hba1c = 71   # mmol/mol
 
 if hba1c >= 48 and hba1c < 58:
@@ -206,7 +206,7 @@ for score in [0, 1, 3, 6]:
 
 Python's real power comes from its libraries. We import them at the top of a notebook:
 
-```python
+```{python}
 import pandas as pd          # Data manipulation — we use this alias throughout
 import numpy as np           # Numerical operations
 import matplotlib.pyplot as plt   # Plotting

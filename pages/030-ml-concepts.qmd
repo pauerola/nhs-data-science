@@ -47,7 +47,7 @@ All data (N=5000)
 
 We use `scikit-learn`'s `train_test_split()` function:
 
-```python
+```{python}
 from sklearn.model_selection import train_test_split
 
 X_train, X_test, y_train, y_test = train_test_split(
@@ -102,7 +102,7 @@ Before fitting models, features need to be in a numeric format. Two steps are re
 
 ### 1. Encode categorical variables
 
-```python
+```{python}
 # Convert sex (M/F) and diagnosis to numbers
 X = pd.get_dummies(df[feature_cols], columns=["sex", "primary_diagnosis"], drop_first=True)
 ```
@@ -111,7 +111,7 @@ X = pd.get_dummies(df[feature_cols], columns=["sex", "primary_diagnosis"], drop_
 
 Logistic regression requires features on a similar scale. We use `StandardScaler` (zero mean, unit variance):
 
-```python
+```{python}
 from sklearn.preprocessing import StandardScaler
 
 scaler = StandardScaler()

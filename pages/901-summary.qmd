@@ -5,7 +5,7 @@ title: "Summary"
 
 ### Key Code Snippets
 
-```python
+```{python}
 # Load and inspect
 df = pd.read_csv("nhs_readmission.csv")
 df.shape; df.dtypes; df.head(); df.describe(); df.isnull().sum()

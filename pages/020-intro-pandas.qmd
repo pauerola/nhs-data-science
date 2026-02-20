@@ -6,23 +6,15 @@ title: "Introduction to Pandas"
 
 
 
-[`Pandas`](https://pandas.pydata.org/) is the most widely used Python library for working with tabular data. You can think of it as Excel in code form — but far more powerful, reproducible, and *scriptable*.
+`Pandas` is a core Python library for working with structured (tabular) data. It provides high-level data structures like **DataFrame** and **Series**, designed to make data cleaning, transformation, and analysis efficient and expressive.
 
-### Why pandas?
-
-| Task | Excel | pandas |
-|------|-------|--------|
-| Reproducible workflow | ❌ Manual clicks | ✅ Written code |
-| Datasets > 1M rows | ❌ Crashes | ✅ Handles millions |
-| Merging multiple files | ❌ Manual VLOOKUP | ✅ One line of code |
-| Auditability | ❌ Hidden formulas | ✅ Code review |
-| Machine learning pipeline | ❌ Not possible | ✅ Direct integration |
+With `pandas`, you can filter rows, compute aggregates, reshape datasets, merge multiple sources, and handle missing values using concise, readable code. Because every step of your workflow is written as code, analyses can be rerun, reviewed, version-controlled, and shared without ambiguity. It also scales well to large datasets and integrates seamlessly with visualization libraries and machine learning frameworks.
 
 ### The DataFrame
 
-The core pandas object is the **DataFrame** — a two-dimensional table with labelled rows and columns.
+The core pandas object (data structure) is the **DataFrame** — a two-dimensional table with labelled rows and columns.
 
-```python
+```{python}
 import pandas as pd
 
 # A minimal patient DataFrame built from a dictionary
@@ -47,100 +39,54 @@ print(df)
 3       P004   55   M       E11   84.0       False
 ```
 
-::: {.callout-note}
-### Key vocabulary
-- **DataFrame**: the whole table (rows × columns)  
-- **Series**: a single column (or row) of a DataFrame  
-- **Index**: the row labels (by default 0, 1, 2, …)  
-- **NaN**: *Not a Number* — pandas' representation of a missing value
-:::
 
 ### Accessing Columns
 
 Select a single column using square brackets — this returns a **Series**:
 
-```python
+```{python}
 ages = df["age"]
 print(ages)
 print(type(ages))
 ```
 
-```
-0    67
-1    45
-2    82
-3    55
-Name: age, dtype: int64
-<class 'pandas.core.series.Series'>
-```
 
 Select multiple columns by passing a list of names — this returns a **DataFrame**:
 
-```python
+```{python}
 demographics = df[["patient_id", "age", "sex"]]
 print(demographics)
 ```
 
-```
-  patient_id  age sex
-0       P001   67   M
-1       P002   45   F
-2       P003   82   F
-3       P004   55   M
-```
 
 ### Quick Inspection Methods
 
-When you first receive a dataset, always run these four commands:
+When you first receive a dataset, you can use these four commands to quickly understand its structure and contents:
 
-```python
+```{python}
 print(df.shape)           # (rows, columns)
+```
+
+```{python}
 print(df.dtypes)          # data type of each column
+```
+
+```{python}
 print(df.head())          # first 5 rows
-print(df.describe())      # summary statistics for numeric columns
 ```
 
-```
-(4, 6)
-patient_id     object
-age             int64
-sex            object
-diagnosis      object
-hba1c         float64
-readmitted       bool
-dtype: object
+```{python}
+print(df.describe())    # summary statistics for numeric columns
 ```
 
-`describe()` gives count, mean, standard deviation, min, quartiles, and max for every numeric column — equivalent to running `=AVERAGE()`, `=STDEV()`, `=MIN()`, `=MAX()` in Excel simultaneously.
+`describe()` gives count, mean, standard deviation, min, quartiles, and max for every numeric column.
 
-::: {.callout-tip}
-### Exercise 3
-Using the small DataFrame `df` we built above:
-
-1. Print the `diagnosis` column.
-2. Print only the `age` and `readmitted` columns together.
-3. What is the mean age? (*Hint*: `df["age"].mean()`)
-:::
-
-::: {.callout-caution collapse="true"}
-### Answer (click to open)
-```python
-# 1.
-print(df["diagnosis"])
-
-# 2.
-print(df[["age", "readmitted"]])
-
-# 3.
-print(df["age"].mean())   # 62.25
-```
-:::
 
 ### Series Operations
 
-A Series supports vectorised operations — you apply a function to every element at once, without a loop:
+A Series supports vectorised operations — you apply a function to every element at once. They use optimised C code under the hood, making them much faster than Python `for` loops. For large datasets with hundreds of thousands of rows, this matters.
 
-```python
+```{python}
 # Classify each patient's age in a single line
 age_over_65 = df["age"] > 65
 print(age_over_65)
@@ -156,17 +102,54 @@ Name: age, dtype: bool
 
 Common Series methods:
 
-```python
+```{python}
 df["age"].mean()      # average age
+```
+
+```{python}
 df["age"].median()    # median age
+```
+
+```{python}
 df["age"].std()       # standard deviation
+```
+
+```{python}
 df["age"].min()       # minimum
+```
+
+```{python}
 df["age"].max()       # maximum
+```
+
+```{python}
 df["hba1c"].count()   # non-missing count
+```
+
+```{python}
 df["sex"].value_counts()  # frequency of each category
 ```
 
-::: {.callout-note}
-### Important points
-Series operations are **vectorised** — they are applied to all elements simultaneously using optimised C code under the hood, making them much faster than Python `for` loops. For large datasets with hundreds of thousands of rows, this matters.
+
+::: {.callout-tip}
+### Exercise 3
+Using the small DataFrame `df` we built above:
+
+1. Print the `diagnosis` column.
+2. Print only the `age` and `readmitted` columns together.
+3. What is the mean age? (*Hint*: `df["age"].mean()`)
+:::
+
+::: {.callout-caution collapse="true"}
+### Answer 
+```{python}
+# 1.
+print(df["diagnosis"])
+
+# 2.
+print(df[["age", "readmitted"]])
+
+# 3.
+print(df["age"].mean())   # 62.25
+```
 :::

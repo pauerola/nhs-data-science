@@ -11,7 +11,7 @@ Filtering in pandas works by passing a **boolean condition** inside square brack
 
 ### Single condition
 
-```python
+```{python}
 # All patients aged over 65
 elderly = df[df["age"] > 65]
 print(f"Patients over 65: {len(elderly)}")
@@ -25,7 +25,7 @@ Patients over 65: 2341
 
 Use `&` (AND) and `|` (OR) to combine conditions. Each condition must be wrapped in parentheses:
 
-```python
+```{python}
 # Elderly patients with Type 2 diabetes (E11)
 elderly_dm = df[(df["age"] > 65) & (df["primary_diagnosis"] == "E11")]
 print(f"Elderly T2DM patients: {len(elderly_dm)}")
@@ -42,7 +42,7 @@ Elderly T2DM patients: 387
 ...
 ```
 w
-```python
+```{python}
 # Heart failure (I50) OR COPD (J44) patients with long stays
 complex_patients = df[
     (df["primary_diagnosis"].isin(["I50", "J44"])) & 
@@ -54,14 +54,14 @@ print(f"Complex respiratory/cardiac patients with ≥7 days LOS: {len(complex_pa
 ::: {.callout-note}
 ### `.isin()` for multiple values
 Instead of writing `(df["col"] == "A") | (df["col"] == "B") | (df["col"] == "C")`, use:
-```python
+```{python}
 df[df["col"].isin(["A", "B", "C"])]
 ```
 :::
 
 ### Filtering on missing values
 
-```python
+```{python}
 # Patients with a missing HbA1c
 missing_hba1c = df[df["hba1c"].isnull()]
 print(f"Patients with no HbA1c result: {len(missing_hba1c)}")
@@ -84,8 +84,8 @@ Patients with HbA1c result: 4188
 :::
 
 ::: {.callout-caution collapse="true"}
-### Answer (click to open)
-```python
+### Answer 
+```{python}
 # 1.
 high_charlson = df[df["charlson_index"] >= 5]
 print(len(high_charlson))
@@ -117,7 +117,7 @@ MNAR is the most dangerous type — simply imputing or dropping these rows intro
 
 ### Strategy 1: Drop rows with missing values
 
-```python
+```{python}
 # Drop any row with a missing value in critical columns
 df_dropped = df.dropna(subset=["hba1c", "egfr"])
 print(f"Rows after dropping missing hba1c/egfr: {len(df_dropped)}")
@@ -138,7 +138,7 @@ Dropping 24% of your data introduces selection bias — the remaining patients a
 
 For skewed clinical variables (e.g. length of stay, HbA1c), the **median** is a better imputation value than the mean because it is robust to outliers:
 
-```python
+```{python}
 # Impute missing BMI with the median
 bmi_median = df["bmi"].median()
 print(f"Median BMI: {bmi_median:.1f}")
@@ -154,7 +154,7 @@ Remaining BMI missing: 0
 
 For categorical variables, impute with the **mode** (most common value):
 
-```python
+```{python}
 # Impute missing ward with the most common ward
 ward_mode = df["discharge_ward"].mode()[0]
 df["discharge_ward"] = df["discharge_ward"].fillna(ward_mode)
@@ -164,7 +164,7 @@ df["discharge_ward"] = df["discharge_ward"].fillna(ward_mode)
 
 Create a new column flagging whether the value was originally missing, then impute. This preserves the information that the value was absent:
 
-```python
+```{python}
 # For HbA1c: flag missingness before imputing
 df["hba1c_missing"] = df["hba1c"].isnull().astype(int)
 
@@ -193,7 +193,7 @@ The **indicator column strategy** is best practice for clinical machine learning
 
 After imputation, always confirm no unexpected missingness remains:
 
-```python
+```{python}
 print("Remaining missing values:")
 print(df[["age", "bmi", "hba1c", "egfr", "charlson_index"]].isnull().sum())
 ```
@@ -219,8 +219,8 @@ Apply the indicator column strategy to `egfr`:
 :::
 
 ::: {.callout-caution collapse="true"}
-### Answer (click to open)
-```python
+### Answer 
+```{python}
 # 1. Flag missingness
 df["egfr_missing"] = df["egfr"].isnull().astype(int)
 

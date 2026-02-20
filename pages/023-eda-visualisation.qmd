@@ -24,8 +24,6 @@ import pandas as pd
 
 df = pd.read_csv("https://raw.githubusercontent.com/pauerola/nhs-data-science/refs/heads/main/data/nhs_readmission.csv")
 
-print(df.shape)
-print(df.head())
 ```
 ### Univariate Analysis — Understanding Each Variable
 
@@ -78,7 +76,7 @@ What does the shape tell you about length of stay patterns in this cohort?
 :::
 
 ::: {.callout-caution collapse="true"}
-### Answer (click to open)
+### Answer 
 ```{python}
 plt.figure(figsize=(8, 4))
 sns.histplot(df["los_days"], bins=30, kde=True, color="#1B5AA0")
@@ -228,8 +226,8 @@ Create a boxplot showing `hba1c` by `readmitted_30d`.
 :::
 
 ::: {.callout-caution collapse="true"}
-### Answer (click to open)
-```python
+### Answer 
+```{python}
 plt.figure(figsize=(6, 5))
 sns.boxplot(
     data=df, x="readmitted_30d", y="hba1c",

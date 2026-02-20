@@ -27,7 +27,7 @@ print("Hello, NHS!")
 
 ::: {.callout-tip}
 ### Exercise
-These blue boxes contain exercises. Try to solve them before opening the answer.
+These green boxes contain exercises. Try to solve them before opening the answer.
 :::
 
 ::: {.callout-caution collapse="true"}

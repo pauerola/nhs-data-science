@@ -244,7 +244,7 @@ The default classification threshold is 0.5 — patients with predicted probabil
 :::
 
 ::: {.callout-caution collapse="true"}
-### Answer (click to open)
+### Answer 
 ```{python}
 for threshold in [0.3, 0.4, 0.5]:
     y_pred_t = (y_prob >= threshold).astype(int)

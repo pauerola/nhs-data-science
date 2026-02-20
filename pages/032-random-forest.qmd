@@ -28,7 +28,7 @@ A **Random Forest** solves this by training **many trees in parallel**, each on 
 
 Random Forest does not require feature scaling. We use the same feature matrix `X` as before, but no `StandardScaler`:
 
-```python
+```{python}
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import roc_auc_score, classification_report, RocCurveDisplay, ConfusionMatrixDisplay
@@ -56,7 +56,7 @@ print(f"Number of trees: {rf.n_estimators}")
 
 ### Evaluating the Random Forest
 
-```python
+```{python}
 y_pred_rf = rf.predict(X_test_rf)
 y_prob_rf  = rf.predict_proba(X_test_rf)[:, 1]
 
@@ -92,7 +92,7 @@ One of the key advantages of Random Forest over black-box models is its built-in
 
 MDI measures how much each feature reduces impurity (Gini index) across all splits in all trees. It is fast but biased towards high-cardinality (many unique values) numeric features.
 
-```python
+```{python}
 importances_mdi = pd.Series(
     rf.feature_importances_,
     index=X.columns
@@ -110,7 +110,7 @@ plt.show()
 
 Permutation importance measures how much model performance drops when a feature's values are randomly shuffled — breaking its relationship with the outcome. It is model-agnostic and unbiased, but slower:
 
-```python
+```{python}
 from sklearn.inspection import permutation_importance
 
 perm = permutation_importance(
@@ -144,7 +144,7 @@ print(perm_df.head(12).to_string(index=False))
                   bmi       0.004   0.001
 ```
 
-```python
+```{python}
 # Visualise permutation importance with error bars
 fig, ax = plt.subplots(figsize=(8, 6))
 top_n = perm_df.head(12).sort_values("Importance")
@@ -182,7 +182,7 @@ The key hyperparameters for Random Forest are:
 
 We use `GridSearchCV` to search over combinations systematically, using **cross-validation** rather than a single split:
 
-```python
+```{python}
 from sklearn.model_selection import GridSearchCV
 
 param_grid = {
@@ -225,8 +225,8 @@ The grid search tested 3 × 3 × 1 = 9 parameter combinations with 5-fold CV, me
 :::
 
 ::: {.callout-caution collapse="true"}
-### Answer (click to open)
-```python
+### Answer 
+```{python}
 best_rf = grid_search.best_estimator_
 
 y_prob_best = best_rf.predict_proba(X_test_rf)[:, 1]

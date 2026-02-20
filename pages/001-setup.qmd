@@ -2,7 +2,7 @@
 title: "Workspace Setup"
 ---
 
-<span class="time-badge">⏱ 10 minutes</span>
+<span class="time-badge">⏱ 15 minutes</span>
 
 Before we start, let's make sure everyone has a working Python environment with the right packages installed.
 
@@ -126,7 +126,7 @@ Colab also includes a wide range of pre‑installed scientific and machine‑lea
 
 Download `nhs_readmission.csv` from the course repository and place it in your working directory. You can verify everything is set up correctly by running this in a new notebook cell:
 
-```python
+```{python}
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns

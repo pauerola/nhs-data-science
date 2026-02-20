@@ -17,7 +17,41 @@ Its ecosystem — `pandas` for data wrangling, `scikit-learn` for machine learni
 `seaborn` for visualisation, `PyTorch` and `TensorFlow` for deep learning — is unmatched in breadth
 and quality.
 
+```{python}
+#| echo: false
+#| fig-cap: "Python's dominance in data science is reflected in the programming languages used by [2022 Kaggle Machine Learning & Data Science Survey](https://www.kaggle.com/c/kaggle-survey-2022) respondents."
+#| fig-alt: "Bar chart showing Python as the most used programming language, followed by SQL and R."
 
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Approximate Kaggle usage percentages
+data = {
+    "Language": ["Python", "SQL", "R", "C++", "MATLAB", "Java", "Bash/Shell"],
+    "Usage (%)": [84, 41, 20, 6, 5, 7, 8]
+}
+
+df = pd.DataFrame(data)
+
+# Plot
+plt.figure(figsize=(10, 6))
+bars = plt.bar(df["Language"], df["Usage (%)"], color=[
+    "#306998", "#f7952e", "#1f77b4", "#4e79a7",
+    "#dd5182", "#ff7f0e", "#2ca02c", "#9467bd", "#8c564b"
+])
+
+plt.title("Programming Language Usage (Approx.) — Kaggle Machine Learning & Data Science Survey")
+plt.ylabel("Approx. % of Respondents")
+plt.ylim(0, 90)
+
+# Add value labels
+for i, v in enumerate(df["Usage (%)"]):
+    plt.text(i, v + 1, f"{v}%", ha="center", fontweight="bold")
+
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.show()
+```
 
 ### Python by the numbers
 
